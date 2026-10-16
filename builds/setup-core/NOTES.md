@@ -81,3 +81,14 @@ afterwards:
    this: a re-deploy clears every dual-relation value (finding 18).
 4. Add members to the teamspaces by hand. Permissions aren't expressible
    (finding 7).
+
+## Removed (2026-10-16)
+
+Removed from the demo workspace before the core template's test build
+(`template-demo`, TKT-978) was deployed there. Notion as Code can't delete, so
+the top-level pages were moved to trash through the public API
+(`PATCH /v1/pages/{id}` with `in_trash: true`; recoverable for 30 days), and
+the teamspaces were deleted by hand in Settings → Teamspaces (the API can't
+delete teamspaces). The script and `session.json` stay as a record. `npm run
+build` refuses to deploy a `removed` build: its session maps to trashed
+resources.

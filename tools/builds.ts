@@ -7,6 +7,7 @@
  * pairing of script ↔ session ↔ workspace is the one mistake that can damage a
  * deployed build.
  */
+import { execFileSync } from "child_process"
 import * as fs from "fs"
 import * as path from "path"
 
@@ -30,11 +31,15 @@ export type BuildManifest = {
   tokenRef?: string
   opAccount?: string
   autoIncrementPrefixes?: string[]
-  status: "deployed" | "not-deployed"
+  status: "deployed" | "not-deployed" | "retired" | "removed"
   deployedAt?: string | null
+  removedAt?: string | null
   teamspace?: string
   hubUrl?: string | null
   modelledFrom?: string
+  /** Generated builds (tools/new-build.ts): the WorkspaceSpec file and resourceId prefix. */
+  spec?: string
+  prefix?: string
 }
 
 export type Build = {
@@ -137,4 +142,27 @@ export function findPrefixCollisions(
   return [...byPrefix.entries()]
     .filter(([, names]) => names.length > 1)
     .map(([key, names]) => ({ prefix: key.split("::")[1]!, builds: names }))
+}
+
+/**
+ * The deploy token: $NOTION_TOKEN if set, otherwise the build's `tokenRef` via
+ * the 1Password CLI. Never print it.
+ */
+export function readToken(tokenRef?: string, opAccount?: string): string {
+  const fromEnv = process.env["NOTION_TOKEN"]
+  if (fromEnv) {
+    console.log("token: $NOTION_TOKEN (already in the environment)")
+    return fromEnv
+  }
+  if (!tokenRef) {
+    throw new Error(
+      "No $NOTION_TOKEN and no tokenRef in build.json. Export the token or add a tokenRef."
+    )
+  }
+  console.log(`token: reading ${tokenRef} from 1Password`)
+  const args = ["read", tokenRef]
+  if (opAccount) args.push("--account", opAccount)
+  const token = execFileSync("op", args, { encoding: "utf8" }).trim()
+  if (!token) throw new Error(`1Password returned an empty value for ${tokenRef}`)
+  return token
 }

@@ -11,7 +11,7 @@
  * `tokenRef` via the 1Password CLI. It is never printed and never passed on the
  * command line — only through the child process environment.
  */
-import { execFileSync, spawnSync } from "child_process"
+import { spawnSync } from "child_process"
 import * as fs from "fs"
 import * as os from "os"
 import * as path from "path"
@@ -21,29 +21,11 @@ import {
   listBuildNames,
   loadAllBuilds,
   loadBuild,
+  readToken,
   SDK_DIR,
   type Build,
 } from "./builds"
 import { compileWithNtnRuntime } from "./ntn"
-
-function readToken(tokenRef?: string, opAccount?: string): string {
-  const fromEnv = process.env["NOTION_TOKEN"]
-  if (fromEnv) {
-    console.log("token: $NOTION_TOKEN (already in the environment)")
-    return fromEnv
-  }
-  if (!tokenRef) {
-    throw new Error(
-      "No $NOTION_TOKEN and no tokenRef in build.json. Export the token or add a tokenRef."
-    )
-  }
-  console.log(`token: reading ${tokenRef} from 1Password`)
-  const args = ["read", tokenRef]
-  if (opAccount) args.push("--account", opAccount)
-  const token = execFileSync("op", args, { encoding: "utf8" }).trim()
-  if (!token) throw new Error(`1Password returned an empty value for ${tokenRef}`)
-  return token
-}
 
 function main() {
   const args = process.argv.slice(2)
@@ -57,7 +39,9 @@ function main() {
       const deployed =
         manifest.status === "deployed"
           ? `deployed ${manifest.deployedAt}`
-          : "not deployed"
+          : manifest.status === "removed"
+            ? `removed ${manifest.removedAt}`
+            : manifest.status.replace("-", " ")
       console.log(`  ${manifest.name.padEnd(12)} ${deployed.padEnd(22)} ${manifest.title}`)
     }
     console.log("\nRun one with:  npm run build -- <name> [--dry]")
@@ -68,6 +52,12 @@ function main() {
   const { manifest } = build
 
   // Safety gates before anything reaches Notion.
+  if (!dryRun && (manifest.status === "retired" || manifest.status === "removed")) {
+    throw new Error(
+      `${manifest.name} is ${manifest.status}. Its script is a record now; ` +
+        `don't deploy it (docs/GUARDRAILS.md).`
+    )
+  }
   assertSessionMatchesManifest(build)
   const prefixCollisions = findPrefixCollisions(loadAllBuilds())
   if (prefixCollisions.length > 0) {

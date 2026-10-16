@@ -75,8 +75,10 @@ from the script. So for a client workspace:
   project, not in `builds/<name>/`.
 - Set `status` in the build's `build.json` to `retired` at the cut-off, and note
   the date in its `NOTES.md`. The script stays as a record of the first build.
-  (`npm run build` doesn't check this status yet, so it's a convention, not a
-  lock.)
+  `npm run build` refuses to deploy a `retired` or `removed` build.
+- A build taken out of a workspace (pages trashed through the API,
+  teamspaces deleted by hand, since Notion as Code can't delete) gets status
+  `removed` and a `removedAt` date.
 - Copy a change into the core template only if it should apply to future
   clients.
 - **Add-ons after go-live** (e.g. CRM) are built by hand or MCP: Notion as Code

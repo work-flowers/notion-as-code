@@ -13,8 +13,9 @@ sandbox teamspace** in the work.flowers workspace — see
 | --- | --- | --- |
 | [`knoxx-rnd`](builds/knoxx-rnd/NOTES.md) | Knoxx Innovations R&D management & evidence system — Projects / Activities / Knowledge + ATO audit views | deployed 2026-07-24 |
 | [`crm`](builds/crm/NOTES.md) | work.flowers CRM — Contacts / Companies / Deals, Meetings, Emails, views, sample records | deployed 2026-07-25 |
-| [`setup-core`](builds/setup-core/NOTES.md) | Demo workspace: open Company teamspace with core databases, plus Operations / Marketing teamspaces showing filtered views of them | deployed 2026-10-16 |
-| [`default-teamspace-probe`](builds/default-teamspace-probe/NOTES.md) | Demo workspace: a script can create the all-company teamspace as a workspace default, alongside the pre-installed one (on create only) | deployed 2026-10-16 |
+| [`setup-core`](builds/setup-core/NOTES.md) | Demo workspace: open Company teamspace with core databases, plus Operations / Marketing teamspaces showing filtered views of them | removed 2026-10-16 |
+| [`template-demo`](builds/template-demo/NOTES.md) | Demo workspace: the core template (TKT-978) generated from the example spec. Default company teamspace (DemoCo HQ), four core databases, two team teamspaces with filtered views | deployed 2026-10-16 |
+| [`default-teamspace-probe`](builds/default-teamspace-probe/NOTES.md) | Demo workspace: a script can create the all-company teamspace as a workspace default, alongside the pre-installed one (on create only) | removed 2026-10-16 |
 | [`dsl-recheck-probe`](builds/dsl-recheck-probe/NOTES.md) | Demo workspace: checks whether the DSL `ntn` 0.23.20 ships fixes findings 4, 9, 12 and 14, plus feed views and `this_page` page-layout tabs. First build on the `ntn` engine | deployed 2026-10-16 |
 
 **Findings so far: [docs/FINDINGS.md](docs/FINDINGS.md)** — the actual output of
@@ -52,6 +53,12 @@ Nothing to install at the repo root — the npm scripts borrow `tsx` and `tsc`
 from that checkout. Auth is a Personal Access Token read from 1Password at run
 time (details in [docs/WORKSPACE.md](docs/WORKSPACE.md)); `$NOTION_TOKEN` wins if
 it's already exported.
+
+## Generating a client build from a spec
+
+The core workspace template lives in `templates/workspace-setup/`. See its
+[README](templates/workspace-setup/README.md) for how to turn a signed-off spec
+into a deployable build with `npm run new-build`.
 
 ## Working on a build
 

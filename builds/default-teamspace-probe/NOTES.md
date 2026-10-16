@@ -53,3 +53,14 @@ re-deploying wouldn't work (finding 24). It would also clear setup-core's relati
 Teamspaces and set `default` in the script to match, or create it as `default`
 on a build's first deploy. Either way, delete the workspace's pre-installed
 default teamspace by hand if it's empty.
+
+## Removed (2026-10-16)
+
+Removed from the demo workspace before the core template's test build
+(`template-demo`, TKT-978) was deployed there. Notion as Code can't delete, so
+the top-level pages were moved to trash through the public API
+(`PATCH /v1/pages/{id}` with `in_trash: true`; recoverable for 30 days), and
+the teamspaces were deleted by hand in Settings → Teamspaces (the API can't
+delete teamspaces). The script and `session.json` stay as a record. `npm run
+build` refuses to deploy a `removed` build: its session maps to trashed
+resources.

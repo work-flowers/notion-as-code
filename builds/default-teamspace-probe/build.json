@@ -8,8 +8,9 @@
   "tokenRef": "op://Employee/notion-as-code-demo/credential",
   "opAccount": "work-flowers",
   "autoIncrementPrefixes": [],
-  "status": "deployed",
+  "status": "removed",
   "deployedAt": "2026-10-16",
+  "removedAt": "2026-10-16",
   "teamspace": "Default Probe A (default), Default Probe B (open; script says default, finding 24)",
   "hubUrl": null
 }
