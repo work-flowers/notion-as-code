@@ -278,7 +278,7 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           name: "Board",
           type: "board",
           groupBy: { property: p("tasks", "status"), type: "status", statusBy: "option" },
-          properties: show(p("tasks", "name"), p("tasks", "assignee"), p("tasks", "due"), p("tasks", "priority"), p("tasks", "team")),
+          properties: show(p("tasks", "name"), p("tasks", "assignee"), p("tasks", "due"), p("tasks", "priority"), p("tasks", "team"), p("tasks", "project")),
         },
         {
           key: "all",

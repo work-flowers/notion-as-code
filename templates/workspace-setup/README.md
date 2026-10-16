@@ -16,7 +16,7 @@ build in `builds/<client>/` that deploys:
   | Docs | All docs, By type (table grouped by Type) |
 
   Boards have one column per status option. Projects cards show Priority
-  and Owner; Tasks cards show Assignee, Due, Priority and Team. "My …" tabs
+  and Owner; Tasks cards show Assignee, Due, Priority, Team and Project. "My …" tabs
   filter on the viewer (`me`). Every database has **Team**, a multi-select with one option per team, plus the
   standard relations: Projects ↔ Tasks, Projects ↔ Meeting Notes, Projects ↔
   Docs, and Meeting Notes → Tasks (`Action Items`).

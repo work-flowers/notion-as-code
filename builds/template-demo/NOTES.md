@@ -162,8 +162,8 @@ no longer matches the workspace on these points:
 - **Board views (6: company + both teams, Projects and Tasks)** now group by
   status **option** instead of status group, with columns sorted
   **ascending** (option order: Not started, In progress, Done, Cancelled).
-  Cards show Priority and Owner (Projects) and Assignee, Due, Priority and
-  Team (Tasks). Team filters were unchanged by the patch.
+  Cards show Priority and Owner (Projects) and Assignee, Due, Priority,
+  Team and Project (Tasks). Team filters were unchanged by the patch.
 
 The template gives new builds `statusBy: "option"` and the card properties.
 The DSL has no setting for the column sort, so whether a fresh deploy puts
