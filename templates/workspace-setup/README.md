@@ -6,19 +6,55 @@ build in `builds/<client>/` that deploys:
 
 - An all-company teamspace with `default` access, holding a Home page and one
   page per core database: Projects, Tasks, Meeting Notes, Docs.
-- The playbook's standard schema and default views on those databases, plus
-  "My projects", "My tasks" and "My meetings" tabs that filter on the viewer
-  (`me`). Every
-  database has **Team**, a multi-select with one option per team, plus the
+- The playbook's standard schema and these tabs:
+
+  | Database | Tabs |
+  | --- | --- |
+  | Projects | Board (by status), Timeline (by Dates, earliest first), All projects, Active projects (In progress), My projects |
+  | Tasks | Board (by status), All tasks, Open tasks (not Done or Cancelled), My tasks |
+  | Meeting Notes | By date (newest first), Calendar, My meetings |
+  | Docs | All docs, By type (table grouped by Type) |
+
+  Boards have one column per status option. Projects cards show Priority
+  and Owner; Tasks cards show Assignee, Due, Priority and Project. Company
+  boards also show Team; team pages leave it off, since every row there has
+  that team. "My …" tabs
+  filter on the viewer (`me`). Every database has **Team**, a multi-select with one option per team, plus the
   standard relations: Projects ↔ Tasks, Projects ↔ Meeting Notes, Projects ↔
-  Docs, and Meeting Notes → Tasks (`Action Items`).
+  Docs, and Meeting Notes ↔ Tasks (`Action Items`, with `Meeting` on
+  Tasks).
+- Page layouts on the four core databases, following the
+  clean-database-page-layouts principles:
+
+  | Database | Pinned under the title | Own block | Side pane "Details" | Tabs |
+  | --- | --- | --- | --- | --- |
+  | Projects | Status, Owner, Dates, Priority, Team | Summary | Spec-added properties; Tasks, Meeting Notes, Docs hidden | Overview, Tasks, Meeting Notes, Docs |
+  | Meeting Notes | Date, Type, Attendees, Team | — | Project; Action Items hidden | Notes, Action Items |
+  | Tasks | Status, Assignee, Due, Priority, Project, Team | — | Meeting | — |
+  | Docs | Type, Owner, Last reviewed, Team | — | Project | — |
+
+  Each related tab is a view on the related database, filtered to rows whose
+  relation contains the page being viewed (`this_page`), and marked
+  `ephemeral` so it isn't one of that database's own tabs.
 - One teamspace per team, at the access level the spec gives it, holding a
-  Home page and pages named "<Team> Projects", "<Team> Tasks" and so on. Each
-  shows the company database filtered to Team contains that team.
+  Home page ("<Team> Home") and pages named "<Team> Projects", "<Team> Tasks"
+  and so on. Each shows the company database with the same tabs, every one
+  also filtered to Team contains that team, as a saved filter.
+- Top-level page icons in one colour per teamspace: gray in the company
+  teamspace, the team's colour in a team's (its Home keeps the team's icon).
 - The spec's extra core properties and team databases. Team databases are
   nested in their team's Home page.
 
-There are no permissions, no sample rows and no relative-date views.
+- With `sampleRecords: true` in the spec, example rows in every database:
+  3 projects with emoji icons (one tagged with every team), 6 tasks, 3 meeting notes, 3 docs
+  and 2 rows per team database, dated around the sign-off date. Relation
+  values are written on one side, and pair on both sides on `ntn`
+  (finding 32). Spec-added properties get placeholder values.
+
+There are no permissions and no relative-date views. **Sample records end the
+build's re-deploy window:** once a build has rows, `--force` refuses to
+regenerate it, and a re-deploy would clear their relation values (finding 18).
+So deploy them on the first and only deploy.
 
 Generated builds run on the **`ntn` engine** (`"engine": "ntn"` in
 `build.json`, see [AGENTS.md](../../AGENTS.md)): they type-check against
@@ -107,18 +143,26 @@ Notion as Code can't do these (see the playbook's Notion as Code section and
 3. ~~Save the team views' filters.~~ No longer needed. Each team view wraps
    its Team filter in a one-member `and` group, which deploys as the view's
    saved filter, not a removable quick filter (findings 21, 27, 30).
-4. **Check the "My" tabs** (My projects, My tasks, My meetings) show a
-   "… contains Me" filter. The API reads a `me` filter back as `null`, so the
-   UI is the only check.
-5. **Add relative-date views** such as "due this week" by hand (finding 4).
-6. **Set up database templates** for Meeting Notes, Tasks and so on. They
+4. **Check the "My" tabs** (My projects, My tasks, My meetings), on the
+   company databases and the team pages, show a "… contains Me" filter. The
+   API doesn't read a `me` filter back (findings 30, 32), so the UI is the
+   only check.
+5. **Check the board column order** is Not started, In progress, Done,
+   Cancelled. The DSL can't set it; if it's wrong, set the group sort to
+   ascending in the view's Group settings.
+6. **Check the Projects Timelines show their rows** (company and team
+   pages). One deploy's showed none until patched (see FINDINGS, template
+   refinements section). Click Today too: a timeline saves its scroll
+   position, and the DSL can't set it.
+7. **Add relative-date views** such as "due this week" by hand (finding 4).
+8. **Set up database templates** for Meeting Notes, Tasks and so on. They
    aren't in the scripting language.
-7. **Build Home-page charts and dashboards** (finding 8), **buttons and
+9. **Build Home-page charts and dashboards** (finding 8), **buttons and
    automations** (finding 9), and **number formats** such as percent
    (finding 11) where the spec asks for them.
-8. **Apply permissions and teamspace membership** in phase 4, from the
+10. **Apply permissions and teamspace membership** in phase 4, from the
    permissions plan (finding 7).
-9. At handover, each user sets the company Meeting Notes database as their
+11. At handover, each user sets the company Meeting Notes database as their
    default destination for Notion AI meeting notes. It's a per-user setting.
 
 ## After deploy

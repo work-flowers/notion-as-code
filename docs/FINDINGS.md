@@ -432,6 +432,99 @@ Also confirmed on this run:
       runner. Only the UI shows them. Untested: whether a `me` filter wrapped
       in an `and` group would read back under `filter`.
 
+## From the template refinements deploy of 2026-10-16 (31–32)
+
+`template-demo` re-deployed on `ntn` with new tabs (All projects, Active
+projects, Open tasks), team pages mirroring every company tab, Docs "By type"
+changed from board to table, and 17 sample rows with relation values. One
+run, no errors: 17 pages created, and the 33 new view tabs mapped.
+
+31. **A re-deploy ignores a change of view type, and the API can't change it
+    either.** The company Docs "By type" view was deployed as a board and
+    re-deployed as a table grouped by Type. It still reads `type: board`. The
+    run reported nothing. `PATCH /v1/views/{id}` with `type: "table"` fails
+    with `Configuration type "table" does not match view type "board"`. So a
+    view's type only applies on create, like a teamspace's access level
+    (finding 24). Fix it by hand in the UI (Layout → Table keeps the view's
+    ID), or give the view a new resourceId, which leaves the old view in
+    place.
+32. **✅ On `ntn`, script-written relation values pair on both sides.** All
+    sample relations were written on one side only (Tasks, Meeting Notes and
+    Docs → Project, Meeting Notes → Action Items, Vendors → Projects), and
+    every two-way one reads back from both sides: Projects shows Tasks 2/2/2,
+    Meeting Notes 1/1/0 and Docs 2/0/0, matching the rows. That includes
+    Tasks → Project, which read empty from the Tasks side on the SDK runner
+    (findings 19 and 22). So on `ntn` a script can seed linked sample records
+    on a first deploy. A re-deploy still clears them (finding 18, not
+    retested).
+
+Also confirmed on this run:
+
+- **One-member `and` groups give a saved filter on a company database too.**
+  "Active projects" (Status is In progress) reads under `filter`, with
+  `quick_filters: null`.
+- **Multi-member `and` groups stay groups.** Team "Active projects" and "Open
+  tasks" read `filter: {and: [Team contains …, Status …]}`. Two
+  `status_is_not` filters on one property inside one `and` group were
+  accepted (cf. finding 17).
+- **A `me` member drops out of the readback.** Team "My …" tabs read
+  `filter: {and: [Team contains <team>]}`, with no person member. That's the
+  same as the relative-date member missing in finding 25, so only the UI
+  shows whether the `me` part landed.
+- **The API can change a view's configuration, just not its type.**
+  `PATCH /v1/views/{id}` accepted a board's `group_by` (status by `option`,
+  `sort: ascending`) and card `properties` visibility, and kept the view's
+  filter. The `configuration` must include `group_by` even when only
+  `properties` changes, and a property left out of `properties` comes back
+  hidden, including the title. The DSL has `statusBy: "option"` but no
+  group sort.
+- **A script-deployed timeline showed no rows until patched.** The company
+  Projects Timeline showed nothing in the app, not even in its side table,
+  though the rows had dates. Its config read back centred on
+  2 January 2027 and, after the first patch, with
+  `table_properties: [{property_id: "name"}]`, a property that doesn't
+  exist. Re-centring (`preference.center_timestamp`) and setting
+  `table_properties` to the real title and Dates IDs, then refreshing the
+  app, fixed it. The cause isn't pinned down. A timeline created through the
+  API on the same database worked straight away. The DSL has `tableProperties`
+  but no centre or zoom.
+- **Re-deploying adds tabs to an existing linked database.** Each team's
+  linked databases kept their first tab's ID (renamed from the team name to
+  "Board", "By date" and so on) and gained the new tabs.
+
+## From re-deploying democo on `ntn`, 2026-10-16 (33)
+
+`democo` (fresh deploy of the core template with page layouts and sample
+rows) was re-deployed unchanged except for layout pins and tab columns, to
+test finding 18 on `ntn`. Regenerated with `new-build --force --allow-rows`.
+One run, no errors: 0 resources created, every ID kept, and the layout
+changes applied.
+
+33. **On `ntn`, a re-deploy still clears some relation values on existing
+    rows, but not all.** Every value the script writes was compared before
+    and after:
+
+    | Relation, written on | After the re-deploy |
+    | --- | --- |
+    | Tasks → Project (two-way, `limit: 1`) | ✅ kept on all 6 |
+    | Docs → Project (two-way) | ✅ kept on both |
+    | Vendors → Projects (one-way) | ✅ kept on both |
+    | Meeting Notes → Project (two-way) | ❌ cleared on both |
+    | Meeting Notes → Action Items (two-way) | ❌ cleared on both, with the Tasks → Meeting back-links |
+
+    The rows that lost values are the only ones the script writes two
+    relations on. That may be the trigger, but it's one run, so untested. On
+    the SDK runner (finding 18) every two-way value was cleared. So
+    re-deploying a build with rows is still unsafe on `ntn`. The guard in
+    `new-build --force` stays, and `--allow-rows` is for demo tests only.
+
+Also on the fresh `democo-2` deploy that replaced it: **Action Items came out
+empty on every meeting** (and no Tasks → Meeting back-links), on a clean first
+deploy, while every other relation landed. `democo`'s first deploy wrote the
+same values fine, so finding 32 isn't reliable: a script-written relation can
+still go missing on `ntn`, intermittently, as in findings 19 and 22. Check
+sample relations after every deploy.
+
 ## What works
 
 Everything else deployed faithfully on the knoxx-rnd first run: two-way

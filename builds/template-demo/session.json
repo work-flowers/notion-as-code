@@ -218,6 +218,16 @@
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
       "type": "collection_property"
     },
+    "td-projects-view-active": {
+      "id": "3fb6b878-1c06-8164-a1b4-000cc28b2447",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-projects-view-all": {
+      "id": "3fb6b878-1c06-81e1-84cf-000c59f2664f",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
     "td-projects-view-board": {
       "id": "3fb6b878-1c06-8198-8e1d-000cccf3b488",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
@@ -245,6 +255,91 @@
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
       "type": "collection_property"
     },
+    "td-s-docs-1": {
+      "id": "3fb6b878-1c06-811a-ab40-dab45b018084",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-docs-2": {
+      "id": "3fb6b878-1c06-812b-8636-cfab1b413249",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-docs-3": {
+      "id": "3fb6b878-1c06-8134-abd4-d23d793f7e79",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-meetings-1": {
+      "id": "3fb6b878-1c06-81cc-b3d5-f01eb10fad7b",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-meetings-2": {
+      "id": "3fb6b878-1c06-8162-8db8-e3bc0feea70c",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-meetings-3": {
+      "id": "3fb6b878-1c06-81f7-babd-dfb344e41202",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-projects-1": {
+      "id": "3fb6b878-1c06-8105-8e13-fc041a759191",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-projects-2": {
+      "id": "3fb6b878-1c06-8162-b024-ec15066ed716",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-projects-3": {
+      "id": "3fb6b878-1c06-81f3-a23a-d358b64a430f",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-tasks-1": {
+      "id": "3fb6b878-1c06-813f-be76-c2138ed26264",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-tasks-2": {
+      "id": "3fb6b878-1c06-8171-91b7-e41691ed13d5",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-tasks-3": {
+      "id": "3fb6b878-1c06-813b-9238-ca8e16ef2ccb",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-tasks-4": {
+      "id": "3fb6b878-1c06-8121-94ea-d0a801f17f44",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-tasks-5": {
+      "id": "3fb6b878-1c06-8183-abed-f7ea49219d7b",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-tasks-6": {
+      "id": "3fb6b878-1c06-815d-b8b8-eae6f6dfd810",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-tdb-vendors-1": {
+      "id": "3fb6b878-1c06-8124-87af-ea5688a2802f",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-s-tdb-vendors-2": {
+      "id": "3fb6b878-1c06-81f0-adbb-e9057149744d",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
     "td-space": {
       "id": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
@@ -270,6 +365,11 @@
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
       "type": "collection_view"
     },
+    "td-t-mkt-docs-view-by-type": {
+      "id": "3fb6b878-1c06-8107-b2ac-000ce94c2a33",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
     "td-t-mkt-home": {
       "id": "3fb6b878-1c06-8199-97d1-cb99b31bdee8",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
@@ -290,6 +390,16 @@
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
       "type": "collection_view"
     },
+    "td-t-mkt-meetings-view-calendar": {
+      "id": "3fb6b878-1c06-8142-9f47-000c916facec",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-mkt-meetings-view-mine": {
+      "id": "3fb6b878-1c06-813e-9525-000cd6c8666f",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
     "td-t-mkt-projects-linked": {
       "id": "3fb6b878-1c06-8183-b95c-d5b8674f5ef0",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
@@ -305,6 +415,26 @@
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
       "type": "collection_view"
     },
+    "td-t-mkt-projects-view-active": {
+      "id": "3fb6b878-1c06-8199-a41d-000c81f5f9be",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-mkt-projects-view-all": {
+      "id": "3fb6b878-1c06-8108-bb47-000c849f8b10",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-mkt-projects-view-mine": {
+      "id": "3fb6b878-1c06-817c-80af-000cc26d65d6",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-mkt-projects-view-timeline": {
+      "id": "3fb6b878-1c06-81d2-bd82-000c643b9b63",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
     "td-t-mkt-tasks-linked": {
       "id": "3fb6b878-1c06-8151-af06-ece6f64b565f",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
@@ -317,6 +447,21 @@
     },
     "td-t-mkt-tasks-view": {
       "id": "3fb6b878-1c06-8134-8600-000c94185b84",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-mkt-tasks-view-all": {
+      "id": "3fb6b878-1c06-8185-bac0-000cbf116177",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-mkt-tasks-view-mine": {
+      "id": "3fb6b878-1c06-8154-bbe6-000cd7c6f088",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-mkt-tasks-view-open": {
+      "id": "3fb6b878-1c06-819b-830b-000ca46ed1a2",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
       "type": "collection_view"
     },
@@ -340,6 +485,11 @@
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
       "type": "collection_view"
     },
+    "td-t-ops-docs-view-by-type": {
+      "id": "3fb6b878-1c06-81c5-9cb1-000c8b21e8a7",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
     "td-t-ops-home": {
       "id": "3fb6b878-1c06-81a4-b005-efbefc2c851c",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
@@ -360,6 +510,16 @@
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
       "type": "collection_view"
     },
+    "td-t-ops-meetings-view-calendar": {
+      "id": "3fb6b878-1c06-81b0-89c8-000cd3838f91",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-ops-meetings-view-mine": {
+      "id": "3fb6b878-1c06-81f3-a72d-000c42b8fe8e",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
     "td-t-ops-projects-linked": {
       "id": "3fb6b878-1c06-812e-83d8-c0bdf312d19a",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
@@ -375,6 +535,26 @@
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
       "type": "collection_view"
     },
+    "td-t-ops-projects-view-active": {
+      "id": "3fb6b878-1c06-81e0-9f8e-000cb5262e8f",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-ops-projects-view-all": {
+      "id": "3fb6b878-1c06-812d-b7e9-000cfdeb57ed",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-ops-projects-view-mine": {
+      "id": "3fb6b878-1c06-8160-976b-000c4733b9a4",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-ops-projects-view-timeline": {
+      "id": "3fb6b878-1c06-814f-b549-000ccb616bef",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
     "td-t-ops-tasks-linked": {
       "id": "3fb6b878-1c06-81ec-af2a-f359a3e16944",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
@@ -387,6 +567,21 @@
     },
     "td-t-ops-tasks-view": {
       "id": "3fb6b878-1c06-81fd-beb4-000cdac27849",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-ops-tasks-view-all": {
+      "id": "3fb6b878-1c06-8151-96cd-000c01f34bf4",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-ops-tasks-view-mine": {
+      "id": "3fb6b878-1c06-8194-a6f1-000c93372023",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-ops-tasks-view-open": {
+      "id": "3fb6b878-1c06-8182-9013-000ce4d91a90",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
       "type": "collection_view"
     },
@@ -462,6 +657,11 @@
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
       "type": "collection_view"
     },
+    "td-tasks-view-open": {
+      "id": "3fb6b878-1c06-81ad-b153-000c4e5505aa",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
     "td-tdb-vendors-db": {
       "id": "3fb6b878-1c06-81ef-9fdb-c517726ead00",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
@@ -504,12 +704,12 @@
   },
   "meta": {
     "workspaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-    "lastAppliedAtMs": 1792135897805,
-    "lastScript": "/private/var/folders/kv/pcf5ssk502gbmhj49kyz5qmw0000gn/T/nac-apply-6wvMSH/intents.json",
+    "lastAppliedAtMs": 1792137707415,
+    "lastScript": "/private/var/folders/kv/pcf5ssk502gbmhj49kyz5qmw0000gn/T/nac-apply-AABMB4/intents.json",
     "createdRecordCounts": {
       "custom_agent": 0,
       "database": 0,
-      "page": 0,
+      "page": 17,
       "space": 0,
       "teamspace": 0
     }

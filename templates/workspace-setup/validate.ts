@@ -15,7 +15,7 @@ const CORE_DATABASES: Record<CoreDatabase, string> = {
 /** Names the template already gives each core database. Keep in step with template.ts. */
 const STANDARD_PROPERTY_NAMES: Record<CoreDatabase, string[]> = {
   projects: ["Name", "Team", "Status", "Owner", "Dates", "Priority", "Summary", "Tasks", "Meeting Notes", "Docs"],
-  tasks: ["Name", "Team", "Status", "Assignee", "Due", "Priority", "Project"],
+  tasks: ["Name", "Team", "Status", "Assignee", "Due", "Priority", "Project", "Meeting"],
   meetingNotes: ["Name", "Team", "Date", "Type", "Attendees", "Project", "Action Items"],
   docs: ["Name", "Team", "Type", "Owner", "Last reviewed", "Project"],
 }
@@ -58,6 +58,7 @@ export function validateSpec(spec: WorkspaceSpec): string[] {
   for (const name of duplicates(spec.teams.map(t => t.name))) errors.push(`duplicate team name "${name}"`)
   for (const t of spec.teams) {
     if (!KEY.test(t.key)) errors.push(`team key "${t.key}" must be lowercase letters, digits and hyphens`)
+    if (t.name.includes(",")) errors.push(`team "${t.key}": name can't contain a comma (it's a multi-select option)`)
     if (same(t.name, spec.companyTeamspace.name)) {
       errors.push(`team "${t.key}" has the same name as the company teamspace ("${t.name}")`)
     }

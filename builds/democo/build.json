@@ -1,0 +1,19 @@
+{
+  "name": "democo",
+  "title": "DemoCo workspace (core template)",
+  "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+  "spaceAnchorResourceId": "dc-space",
+  "script": "build.ts",
+  "session": "session.json",
+  "spec": "spec.ts",
+  "engine": "ntn",
+  "prefix": "dc",
+  "tokenRef": "op://Employee/notion-as-code-demo/credential",
+  "opAccount": "work-flowers",
+  "autoIncrementPrefixes": [],
+  "status": "removed",
+  "deployedAt": "2026-10-16",
+  "removedAt": "2026-10-16",
+  "teamspace": "DemoCo HQ (default), Operations (closed), Marketing (closed)",
+  "hubUrl": "https://app.notion.com/p/3fb6b8781c068176874aed4fd2be6815"
+}

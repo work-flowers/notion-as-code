@@ -23,7 +23,6 @@ export default defineSpec({
   coreDatabases: {
     projects: {
       addProperties: [
-        { key: "budget", name: "Budget", type: "number" },
         { key: "client-facing", name: "Client-facing", type: "checkbox" },
       ],
     },
@@ -47,4 +46,5 @@ export default defineSpec({
     teams: { mkt: "Marketing's home. Campaigns live in Projects; tag anything cross-team with both teams." },
   },
   addOns: { crm: false },
+  sampleRecords: true,
 })
