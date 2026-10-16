@@ -19,8 +19,9 @@
  *     `is_empty` has no operator in the types, so it isn't probed.
  *   - Tasks view "Feed": a feed view, and whether GET /v1/views can read it
  *     back now (finding 8 caveat).
- *   - "Log new tasks" automation: a database automation (finding 9). Buttons
- *     have no DSL surface, so they aren't probed.
+ *   - Database automations (finding 9): dropped before the first deploy,
+ *     because the Demo workspace isn't on Plus (see below). Buttons have no
+ *     DSL surface, so they aren't probed.
  *   - Projects page layout: a view tab filtered to `this_page`, so each
  *     project page lists its own tasks (per-record layouts).
  *   - The hub page's <tabs> block (finding 14).
@@ -56,11 +57,15 @@ Each view and layout here tests one feature the July SDK couldn't express. The r
 </tab>
 <tab icon="🧪">What to check
 
-- **Probe Tasks:** the relative-date and and/or views, the Feed view, and the "Log new tasks" automation.
+- **Probe Tasks:** the relative-date and and/or views, and the Feed view.
 - **Probe Projects:** open a project. Its **Tasks** tab should list only that project's tasks.
 - **This page:** this block should render as two tabs (finding 14).
 </tab>
 </tabs>
+
+<database url="{{drp-projects-db}}" inline="true">Probe Projects</database>
+
+<database url="{{drp-tasks-db}}" inline="true">Probe Tasks</database>
 `,
 })
 
@@ -126,20 +131,6 @@ const tasksDb = notion.database({
   ],
 })
 
-const logDb = notion.database({
-  resourceId: "drp-log-db",
-  parent: { type: "resourceId", resourceId: hub.resourceId },
-  name: "Probe Automation Log",
-  icon: { type: "notion_icon", description: "list", color: "purple" },
-  dataSources: [
-    {
-      resourceId: "drp-log-ds",
-      name: "Probe Automation Log",
-      properties: [{ resourceId: "drp-lg-name", name: "Name", type: "title" }],
-    },
-  ],
-})
-
 // ---------------------------------------------------------------------------
 // Views
 // ---------------------------------------------------------------------------
@@ -152,7 +143,9 @@ projectsDb.addView({
 })
 
 // The page-layout tab: Tasks rows whose Project is the page being viewed.
-projectsDb.addView({
+// It belongs to the Tasks database: the server rejects a view whose data
+// source lives in another database ("references unknown data source").
+tasksDb.addView({
   resourceId: "drp-project-tasks-tab-view",
   name: "Tasks",
   icon: { type: "notion_icon", description: "checkmark square" },
@@ -306,29 +299,21 @@ tasksDb.addView({
   showAuthorByline: true,
 })
 
-logDb.addView({
-  resourceId: "drp-log-all-view",
-  name: "All entries",
-  type: "table",
-  dataSourceResourceId: "drp-log-ds",
-})
-
 // ---------------------------------------------------------------------------
-// Finding 9: a database automation. Plus plan or higher.
+// Finding 9: dropped before the first deploy. The Demo workspace is on Free,
+// and the server rejected the run with "Database automations require a
+// workspace on the Plus plan or higher." The probe was:
+//
+//   tasksDb.dataSources["drp-tasks-ds"].addAutomation({
+//     resourceId: "drp-log-new-tasks-automation",
+//     name: "Log new tasks",
+//     triggers: [{ type: "page_added" }],
+//     actions: [{ resourceId: "drp-log-new-tasks-action", type: "create_page",
+//                 dataSourceResourceId: "drp-log-ds" }],
+//   })
+//
+// with a one-property "Probe Automation Log" database (drp-log-db / drp-log-ds).
 // ---------------------------------------------------------------------------
-
-tasksDb.dataSources["drp-tasks-ds"].addAutomation({
-  resourceId: "drp-log-new-tasks-automation",
-  name: "Log new tasks",
-  triggers: [{ type: "page_added" }],
-  actions: [
-    {
-      resourceId: "drp-log-new-tasks-action",
-      type: "create_page",
-      dataSourceResourceId: "drp-log-ds",
-    },
-  ],
-})
 
 // ---------------------------------------------------------------------------
 // Seed rows. Dates are relative to the first deploy (planned 2026-10-16).

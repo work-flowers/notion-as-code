@@ -8,66 +8,58 @@ can't clear another build's relation values (finding 18).
 
 It's the first build with `"engine": "ntn"`: it compiles against
 `vendor/ntn-template` and deploys through `ntn notion-as-code apply`, still via
-`npm run build` (finding 25).
+`npm run build` (findings 25–26).
 
-**Status: not deployed.** `check`, `typecheck` and `--dry` pass (2026-10-16).
-The verdicts below are from the types only, until a deploy.
+**Deployed 2026-10-16** (hub: [About this probe](https://app.notion.com/p/3fb6b8781c0681349eb7ca86ba438138)). It took four runs.
+Runs 1–3 were rejected with nothing created:
 
-## What each piece probes
+1. The page-layout tab view sat on the Projects database. It has to be on the
+   Tasks database, its own data source's.
+2. Child databases weren't placed in the hub's content. Added
+   `<database url="{{…}}" inline="true">` tags.
+3. The automation was rejected because the Demo workspace isn't on Plus. Dropped
+   it and its log database; the shape is kept in a comment in `build.ts`.
 
-| Piece | Probes | Types say | Server |
-| --- | --- | --- | --- |
-| Tasks views **Due today**, **Next 2 weeks**, **Ends this month** | relative-date filters (finding 4); the last uses `dateFilterMode: "end_date"` | fixed | pending |
-| Tasks view **In progress or overdue** | an advanced `or` group (finding 12) | fixed | pending |
-| Tasks view **Open, due soon** | an `and` group nesting an `or` that holds two filters on Due, which finding 17's one-filter-per-property rule might reject | fixed | pending |
-| *(none)* | `is_empty` (finding 12) | still open: no operator, typecheck rejects it | — |
-| Tasks view **Feed** | a feed view, and whether `GET /v1/views/{id}` can read one now (finding 8 caveat) | unchanged | pending |
-| **Log new tasks** automation | a database automation: page added to Probe Tasks → create a page in Probe Automation Log (finding 9) | fixed, `create_page` only | pending |
-| *(none)* | buttons (finding 9) | still open: no DSL surface | — |
-| Probe Projects **page layout** | a **Tasks** view tab filtered to `relation_contains this_page` | new | pending |
-| Hub page **`<tabs>` block** | two tabs in page content (finding 14) | fixed | pending |
+## Results
 
-`Tasks → Project` is one-way, so the `this_page` tab can't be confounded by
-findings 19 and 22 (dual relations that land one-sided).
+| Piece | Probes | Result |
+| --- | --- | --- |
+| Hub page `<tabs>` block | finding 14 | ✅ deploys as a `tab` block with two panes |
+| Tasks view **Due today** | finding 4, preset | ✅ reads back as a quick filter, `Due equals today` |
+| Tasks views **Next 2 weeks**, **Ends this month** | finding 4, `relative_to_today` (+ `dateFilterMode: "end_date"`) | accepted; API reads `null`, so the UI check is pending |
+| Tasks view **In progress or overdue** | finding 12, `or` group | ✅ reads back as the saved filter (finding 27) |
+| Tasks view **Open, due soon** | finding 12, `and` nesting an `or` with two Due filters | accepted (no finding-17 rejection); the readback is missing the `relative_to_today` member, so the UI check is pending |
+| `is_empty` | finding 12 | ❌ no operator in the DSL |
+| Tasks view **Feed** | feed views | created; `GET /v1/views` still 400s; UI check pending |
+| Probe Projects page layout, **Tasks** tab | `this_page` filter | layout and tab view created; the filter reads `null`; UI check pending |
+| Database automation | finding 9 | ❌ needs Plus or higher; the Demo workspace is on Free |
+| Buttons | finding 9 | ❌ no DSL surface |
 
-## Expected results after a deploy on 2026-10-16
+Raw readbacks aren't committed. To re-run them: `GET /v1/views/{id}` for each
+`collection_view` in `session.json`.
 
-Seed dates assume the deploy runs on 2026-10-16. Later deploys shift what
-each relative view shows.
+## UI check (pending)
+
+With the seed dates (deployed 2026-10-16), each view should show:
 
 | View | Should show |
 | --- | --- |
-| Due today | Due on deploy day |
 | Next 2 weeks | Due 5 days after deploy, Range ending next month (it starts 2026-10-20), and probably Due on deploy day, if "next" counts today |
 | Ends this month | the three single-date tasks, since single dates fall back to their start; not the range, which ends 2026-11-10 |
-| In progress or overdue | Due 5 days after deploy (in progress), Overdue at deploy |
-| Open, due soon | Due on deploy day, Due 5 days after deploy |
-| Alpha's Tasks tab | the three Alpha tasks; Beta's shows one |
+| Open, due soon | Due on deploy day, Due 5 days after deploy. The filter editor should show both Due conditions in the OR group |
+| Feed | renders as a feed with author bylines |
+| Alpha → Tasks tab | the three Alpha tasks; Beta's shows one |
 
-Also check that Probe Automation Log gets an entry whenever a task is added in
-the UI, and whether the four seeded tasks created entries too.
+Record the results in docs/FINDINGS.md (findings 4, 12 and 25) and here.
 
-## Risks
+## Clean-up
 
-- **Plan:** database automations need Plus or higher. If the Demo workspace
-  is on Free, the run should fail before creating anything (rejections are
-  atomic, finding 17). Then drop the automation, re-run and record the
-  error.
-- **Rejected filters:** if finding 17's rule rejects **Open, due soon**, the
-  whole run fails the same way. Record the error, split the view and re-run.
-- **ntn apply:** this is the first deploy through `ntn`. It may prompt for
-  confirmation in a non-TTY shell, as the SDK runner did (finding 3), and it
-  writes metadata (`lastAppliedAtMs`, `lastScript`, `createdRecordCounts`)
-  into `session.json`. Commit that file as usual.
+Delete these by hand when the probe is no longer needed (the API can't
+delete). Deleting the teamspace removes everything inside it:
 
-## After a deploy
+- Teamspace **DSL Recheck Probe** (Settings → Teamspaces), containing:
+  - page **About this probe**
+  - databases **Probe Projects** (2 rows: Alpha, Beta) and **Probe Tasks** (4 rows)
 
-1. Read every view back with `GET /v1/views/{id}`, checking both `filter` and
-   `quick_filters` (finding 21), and note whether the feed view reads.
-2. In the UI, check the hub's tabs, a project's Tasks tab and the
-   automation's settings.
-3. Mark findings 4, 9, 12 and 14 confirmed-fixed or still-open in
-   docs/FINDINGS.md, and fill in the Server column above.
-4. Set `status`, `deployedAt` and `hubUrl` in `build.json`.
-
-Everything here is safe to delete.
+Then set `status` to `retired` in `build.json`. Don't re-deploy afterwards: the
+session file would point at deleted records.

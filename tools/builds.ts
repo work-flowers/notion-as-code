@@ -98,7 +98,10 @@ export function assertSessionMatchesManifest(build: Build): void {
     )
   }
   const session = JSON.parse(fs.readFileSync(sessionPath, "utf8"))
-  const mappings = session.resourceIdToPointerMappings ?? {}
+  // The SDK runner writes resourceIdToPointerMappings; `ntn` rewrites the
+  // file as resourceIdToResourcePointers + meta (finding 26).
+  const mappings =
+    session.resourceIdToPointerMappings ?? session.resourceIdToResourcePointers ?? {}
   const anchor = mappings[manifest.spaceAnchorResourceId]
 
   if (!anchor) {

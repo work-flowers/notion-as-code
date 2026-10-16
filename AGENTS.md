@@ -29,7 +29,11 @@ template's types and runtime, unchanged) and deploys through
 repo's conventions: a `build.ts` with the global `notion`, `npm run build`, and
 a committed `session.json`. For those builds the DSL reference is
 `vendor/ntn-template/types.d.ts`, and the Markdown spec is
-`NotionAsCodeMarkdownSpec` in it.
+`NotionAsCodeMarkdownSpec` in it. Two server rules apply to them (finding 25):
+place every child database in its parent page's content as
+`<database url="{{id}}">`, and declare a page-layout tab view on its own data
+source's database. `ntn` rewrites `session.json` in a new shape (finding 26),
+so don't switch a deployed build's engine.
 
 ## Authoring rules
 

@@ -9,8 +9,8 @@
   "tokenRef": "op://Employee/notion-as-code-demo/credential",
   "opAccount": "work-flowers",
   "autoIncrementPrefixes": [],
-  "status": "not-deployed",
-  "deployedAt": null,
+  "status": "deployed",
+  "deployedAt": "2026-10-16",
   "teamspace": "DSL Recheck Probe (open)",
-  "hubUrl": null
+  "hubUrl": "https://app.notion.com/p/3fb6b8781c0681349eb7ca86ba438138"
 }
