@@ -225,7 +225,7 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           name: "Board",
           type: "board",
           groupBy: { property: p("projects", "status"), type: "status", statusBy: "option" },
-          properties: show(p("projects", "name"), p("projects", "priority"), p("projects", "owner")),
+          properties: show(p("projects", "name"), p("projects", "priority"), p("projects", "owner"), p("projects", "team")),
         },
         { key: "timeline", name: "Timeline", type: "timeline", timelineBy: p("projects", "dates") },
         {
@@ -407,7 +407,10 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
   ]
 
   /** addPage on each data source the template creates, keyed by data source resourceId. */
-  const addRow: Record<string, (args: { resourceId: string; properties: Record<string, any>; content?: string }) => void> = {}
+  const addRow: Record<
+    string,
+    (args: { resourceId: string; icon?: { type: "emoji"; emoji: string }; properties: Record<string, any>; content?: string }) => void
+  > = {}
 
   const coreIcon = (def: CoreDef) =>
     ({ type: "notion_icon", description: def.icon, color: "gray" }) as const
@@ -555,6 +558,10 @@ ${
         name: title,
         views: def.tabs.map((tab, index): ViewSchema => {
           const { key, filters, ...shape } = tab
+          // Every row on a team page has that team, so cards don't repeat it.
+          if (shape.type === "board" && shape.properties) {
+            shape.properties = shape.properties.filter(prop => prop.property !== core.prop(def.db, "team"))
+          }
           return {
             ...shape,
             // The first tab keeps the ID of the single team view the template
@@ -647,13 +654,14 @@ ${
       )
 
     const projects = [
-      { name: "Website refresh", status: "In progress", priority: "High", start: -14, end: 45, summary: "Rebuild the company website on the new brand." },
-      { name: "Quarterly planning", status: "Not started", priority: "Medium", start: 21, end: 35, summary: "Agree next quarter's goals and owners." },
-      { name: "Team onboarding guide", status: "Done", priority: "Low", start: -60, end: -10, summary: "One place for everything a new starter needs." },
+      { name: "Website refresh", icon: "🌐", status: "In progress", priority: "High", start: -14, end: 45, summary: "Rebuild the company website on the new brand." },
+      { name: "Quarterly planning", icon: "🗓️", status: "Not started", priority: "Medium", start: 21, end: 35, summary: "Agree next quarter's goals and owners." },
+      { name: "Team onboarding guide", icon: "🧭", status: "Done", priority: "Low", start: -60, end: -10, summary: "One place for everything a new starter needs." },
     ]
     projects.forEach((pj, i) => {
       addRow[core.ds("projects")]!({
         resourceId: row("projects", i + 1),
+        icon: { type: "emoji", emoji: pj.icon },
         properties: {
           Name: notion.text(pj.name),
           // The first project is cross-team, to show the multi-select.

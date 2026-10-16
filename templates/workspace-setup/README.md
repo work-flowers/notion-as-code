@@ -16,7 +16,9 @@ build in `builds/<client>/` that deploys:
   | Docs | All docs, By type (table grouped by Type) |
 
   Boards have one column per status option. Projects cards show Priority
-  and Owner; Tasks cards show Assignee, Due, Priority, Team and Project. "My …" tabs
+  and Owner; Tasks cards show Assignee, Due, Priority and Project. Company
+  boards also show Team; team pages leave it off, since every row there has
+  that team. "My …" tabs
   filter on the viewer (`me`). Every database has **Team**, a multi-select with one option per team, plus the
   standard relations: Projects ↔ Tasks, Projects ↔ Meeting Notes, Projects ↔
   Docs, and Meeting Notes → Tasks (`Action Items`).
@@ -28,7 +30,7 @@ build in `builds/<client>/` that deploys:
   nested in their team's Home page.
 
 - With `sampleRecords: true` in the spec, example rows in every database:
-  3 projects (one tagged with every team), 6 tasks, 3 meeting notes, 3 docs
+  3 projects with emoji icons (one tagged with every team), 6 tasks, 3 meeting notes, 3 docs
   and 2 rows per team database, dated around the sign-off date. Relation
   values are written on one side, and pair on both sides on `ntn`
   (finding 32). Spec-added properties get placeholder values.
