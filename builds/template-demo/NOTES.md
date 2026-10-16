@@ -173,6 +173,8 @@ no longer matches the workspace on these points:
   Name and Dates on all three (the company one listed a `name` property
   that doesn't exist). Which one did it is unclear. A test Timeline created
   through the API showed the rows straight away; it was deleted afterwards.
+- **Projects Timelines sorted by Dates, ascending** (all three), via
+  `PATCH /v1/views/{id}` with `sorts`.
 - **Emoji icons** on the three sample projects (🌐 Website refresh,
   🗓️ Quarterly planning, 🧭 Team onboarding guide), via `PATCH /v1/pages`.
 

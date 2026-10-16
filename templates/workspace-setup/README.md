@@ -10,7 +10,7 @@ build in `builds/<client>/` that deploys:
 
   | Database | Tabs |
   | --- | --- |
-  | Projects | Board (by status), Timeline, All projects, Active projects (In progress), My projects |
+  | Projects | Board (by status), Timeline (by Dates, earliest first), All projects, Active projects (In progress), My projects |
   | Tasks | Board (by status), All tasks, Open tasks (not Done or Cancelled), My tasks |
   | Meeting Notes | By date (newest first), Calendar, My meetings |
   | Docs | All docs, By type (table grouped by Type) |

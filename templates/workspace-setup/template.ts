@@ -150,7 +150,7 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
   type TabDef = { key: string; name: string; filters?: PropertyFilter[] } & (
     | { type: "table"; sorts?: Sort[]; groupBy?: GroupBy }
     | { type: "board"; groupBy: GroupBy; properties?: Shown }
-    | { type: "timeline"; timelineBy: string }
+    | { type: "timeline"; timelineBy: string; sorts?: Sort[] }
     | { type: "calendar"; calendarBy: string }
   )
 
@@ -227,7 +227,13 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           groupBy: { property: p("projects", "status"), type: "status", statusBy: "option" },
           properties: show(p("projects", "name"), p("projects", "priority"), p("projects", "owner"), p("projects", "team")),
         },
-        { key: "timeline", name: "Timeline", type: "timeline", timelineBy: p("projects", "dates") },
+        {
+          key: "timeline",
+          name: "Timeline",
+          type: "timeline",
+          timelineBy: p("projects", "dates"),
+          sorts: [{ propertyId: p("projects", "dates"), direction: "ascending" }],
+        },
         {
           key: "all",
           name: "All projects",
