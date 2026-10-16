@@ -405,15 +405,32 @@ Also confirmed on this run:
     globals for the typecheck. The runtime doesn't need them.
 
     So a script written for one engine doesn't type-check on the other.
-    Generated builds now get `"engine": "ntn"`, and their team views wrap the
-    Team filter in a one-member `and` group, so it should deploy as the saved
-    filter (finding 27). The compiled resourceIds are identical to the SDK
-    build's (`template-demo`: 93 and 93, every `session.json` mapping still
-    claimed). **Not yet verified on the server:** whether the one-member group
-    reads back under `filter`, whether a viewer can clear it, and whether the
-    `me` filters read back on `ntn`. That needs `template-demo` re-deployed on
-    `ntn`, which can't be undone (finding 26), so it waits for Dennis's
-    go-ahead.
+    Generated builds now get `"engine": "ntn"`.
+
+    **✅ A one-member `and` group deploys as the view's saved filter.**
+    `template-demo` was re-deployed on `ntn` with each team view's Team filter
+    wrapped in a one-member `and` group. All 8 views now read
+    `filter: {"property": …, "multi_select": {"contains": ["Operations"]}}`
+    with `quick_filters: null`. Before, they read `filter: null` with the same
+    condition under `quick_filters` (finding 21). The server flattens the
+    group: the readback has no `and` wrapper. So finding 27's workaround
+    works, and a script can now set a saved filter that isn't a removable
+    pill. The API can't show whether a read-only member can change it, which
+    is a UI check.
+
+    Also on that run:
+
+    - **An SDK-deployed build moves to `ntn` cleanly.** `ntn` read the SDK
+      runner's `session.json`, created 0 resources, kept all 57 resource IDs
+      unchanged, and rewrote the file in its own shape (finding 26) with the
+      36 properties as `collection_property` entries. The compiled resourceIds
+      are identical across the two engines (93 and 93). The build had no rows,
+      so whether `ntn` re-deploys also clear relation values (finding 18) is
+      untested.
+    - **`me` filters still read back `null` on `ntn`.** My projects, My tasks
+      and My meetings read `filter: null, quick_filters: null`, as on the SDK
+      runner. Only the UI shows them. Untested: whether a `me` filter wrapped
+      in an `and` group would read back under `filter`.
 
 ## What works
 

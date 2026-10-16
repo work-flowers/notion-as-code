@@ -104,12 +104,9 @@ Notion as Code can't do these (see the playbook's Notion as Code section and
    teamspace should be Default, and each team's should match the spec. The API
    can't read them back.
 2. **Delete the pre-installed default teamspace** if it's empty (finding 23).
-3. **Check the team views' filters are saved.** Each team view wraps its Team
-   filter in a one-member `and` group, which should deploy as the view's saved
-   filter rather than a quick filter (findings 21, 27). That's unverified on a
-   one-member group (finding 30): if a view shows a removable "Team" pill in
-   its filter bar instead, save it by hand. There's one per team per core
-   database.
+3. ~~Save the team views' filters.~~ No longer needed. Each team view wraps
+   its Team filter in a one-member `and` group, which deploys as the view's
+   saved filter, not a removable quick filter (findings 21, 27, 30).
 4. **Check the "My" tabs** (My projects, My tasks, My meetings) show a
    "… contains Me" filter. The API reads a `me` filter back as `null`, so the
    UI is the only check.
