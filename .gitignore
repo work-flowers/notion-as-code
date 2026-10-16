@@ -1,5 +1,5 @@
 # Local checkout of the Notion SDK experimental branch (cloned, not vendored)
-notion-sdk-js/
+notion-sdk-js
 
 node_modules/
 .env

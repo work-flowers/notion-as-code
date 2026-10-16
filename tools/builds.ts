@@ -21,6 +21,12 @@ export type BuildManifest = {
   spaceAnchorResourceId: string
   script: string
   session: string
+  /**
+   * Which Notion as Code toolchain compiles and deploys this build. "sdk"
+   * (default) is the notion-sdk-js checkout; "ntn" is the vendored template
+   * runtime plus `ntn notion-as-code apply` (see tools/ntn.ts).
+   */
+  engine?: "sdk" | "ntn"
   tokenRef?: string
   opAccount?: string
   autoIncrementPrefixes?: string[]
@@ -92,7 +98,10 @@ export function assertSessionMatchesManifest(build: Build): void {
     )
   }
   const session = JSON.parse(fs.readFileSync(sessionPath, "utf8"))
-  const mappings = session.resourceIdToPointerMappings ?? {}
+  // The SDK runner writes resourceIdToPointerMappings; `ntn` rewrites the
+  // file as resourceIdToResourcePointers + meta (finding 26).
+  const mappings =
+    session.resourceIdToPointerMappings ?? session.resourceIdToResourcePointers ?? {}
   const anchor = mappings[manifest.spaceAnchorResourceId]
 
   if (!anchor) {

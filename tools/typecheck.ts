@@ -12,6 +12,7 @@
 import { spawnSync } from "child_process"
 import * as path from "path"
 import { listBuildNames, loadBuild, SDK_DIR } from "./builds"
+import { NTN_VENDOR_DIR } from "./ntn"
 
 const DSL_TYPES = path.join(
   SDK_DIR,
@@ -25,6 +26,10 @@ function main() {
 
   for (const name of names) {
     const build = loadBuild(name)
+    const dslTypes =
+      build.manifest.engine === "ntn"
+        ? path.join(NTN_VENDOR_DIR, "globals.d.ts")
+        : DSL_TYPES
     const result = spawnSync(
       path.join(SDK_DIR, "node_modules/.bin/tsc"),
       [
@@ -37,7 +42,7 @@ function main() {
         "esnext",
         "--moduleResolution",
         "bundler",
-        DSL_TYPES,
+        dslTypes,
         build.scriptPath,
       ],
       { stdio: "inherit" }

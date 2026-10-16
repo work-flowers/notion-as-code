@@ -3,7 +3,8 @@
 Feedback-tracker candidates, accumulated across builds. **Numbers are stable —
 append, never renumber** (they get cited in feedback to Notion). Findings 1–7
 come from the **knoxx-rnd** deploy (2026-07-24); 8–16 from modelling the live
-**crm** build as code; 21–24 from **setup-core** and **default-teamspace-probe** in the demo workspace.
+**crm** build as code; 21–24 from **setup-core** and **default-teamspace-probe** in the demo workspace;
+25–28 from rechecking the DSL that `ntn` 0.23.20 ships (**dsl-recheck-probe**).
 
 ## Bugs and hard limits (1–6)
 
@@ -27,6 +28,10 @@ come from the **knoxx-rnd** deploy (2026-07-24); 8–16 from modelling the live
 4. **No relative-date view filters** — fixed `YYYY-MM-DD` only, so "Today's
    Activities" / "Today's Meetings" can't be built as specced; both builds fall
    back to date-sorted lists.
+   **Recheck 2026-10-16: confirmed fixed for presets.** A `date_is` +
+   `today` filter deploys and reads back (as a quick filter, finding 21).
+   `relative_to_today` ranges ("next 2 weeks", "this month") are accepted but
+   read back `null`, so they're unconfirmed until a UI check (finding 25).
 5. **Person property values can't be set by script** — columns exist, seed rows
    leave them empty. Teamspace membership also can't be configured.
 6. **Auto-increment ID prefixes are workspace-global** — `KIP`/`KIA`/`KIK`/`KIC`
@@ -71,6 +76,11 @@ views, roughly a third cannot be expressed at all.
    Drive Folder, Enrich, Add to Mailing List, Create Harvest Project) plus every
    database automation stays a manual post-deploy pass. Together with finding 7,
    this is what stops one script from fully provisioning a client workspace.
+   **Recheck 2026-10-16: still open here.** Database automations are in the
+   DSL (`addAutomation`, `create_page` only) and the server recognises them,
+   but it rejected the run: "Database automations require a workspace on the
+   Plus plan or higher." The Demo workspace is on Free, so untested beyond
+   that. Buttons still have no DSL surface (finding 25).
 10. **No `place` property type** (Companies → Address) — degrades to text.
 11. **No number formats.** `number` takes no `format`, so `number_with_commas`
     (Deal Value) and `percent` (Probability) are lost; a percent property has to
@@ -79,12 +89,17 @@ views, roughly a third cannot be expressed at all.
     pipeline board means "open deals" as *Actual Close is empty*. Approximated
     with three `status_is_not` filters — which also probes whether multiple
     filters AND together (undocumented).
+    **Recheck 2026-10-16: still open.** There's still no `is_empty` operator.
+    Advanced `and` / `or` groups are **confirmed fixed**, and they deploy as
+    the view's saved filter (finding 27).
 13. **Rollups can't target `unique_id`** either (`RollupTargetPropertyType`
     excludes it, as it does `formula` — finding 2), so Deals → Company ID is
     unbuildable, as are Deals → Slack Channel / Google Drive Folder (formula
     targets).
 14. **No tabs block** in page-content markdown, so the CRM hub's tabbed left
     column (Quick Actions / Databases) becomes callouts + columns.
+    **Recheck 2026-10-16: confirmed fixed.** A `<tabs>` block with two
+    `<tab>`s deploys as a `tab` block with two panes (finding 25).
 15. **Date values are date-only.** `notion.date(start, end?)` compiles to a
     Notion inline date mention carrying only `start_date` / `end_date` — no
     `start_time`, no `time_zone` — so a calendar-synced database (meetings,
@@ -245,6 +260,85 @@ Also confirmed on this run:
 - **One-way relations write fine.** `Action Items` (Meeting Notes → Tasks)
   holds 2 / 1 / 2 values as written.
 
+## Rechecking the DSL that `ntn` 0.23.20 ships, 2026-10-16 (25–28)
+
+25. **The SDK branch is frozen; the current DSL ships with `ntn`.**
+    `EXPERIMENTAL__notion-as-code` on makenotion/notion-sdk-js is still at
+    `3d33935` (2026-07-23). The current DSL is the one `ntn notion-as-code new`
+    downloads: makenotion/notion-as-code-template @ `80be619` (2026-10-06),
+    whose `src/lib/types.d.ts` says it is vendored from a newer SDK runtime.
+    `ntn` posts to `/v1/infra_as_code` with
+    `Notion-Beta: notion-as-code-2026-07-31`, and its state file uses the same
+    `resourceIdToPointerMappings` / `resourceIdToPropertyIdMappings` shape as our
+    `session.json`. So this repo now has an `ntn` engine: a build with
+    `"engine": "ntn"` compiles against `vendor/ntn-template` and deploys through
+    `ntn notion-as-code apply --state <session.json>`, still via `npm run build`.
+    Diffing the template's types against `3d33935`:
+
+    | Finding | In the 2026-10-06 types | Verdict |
+    | --- | --- | --- |
+    | 4 relative-date filters | `date_is` + `{type: "relative", value: "today"}` (also tomorrow, yesterday, ±1 week, ±1 month); `date_is_relative_to` past / next / this N day–year; `date_is_within` exact ranges; `dateFilterMode: "end_date"` | fixed in the DSL |
+    | 9 automations / buttons | `dataSource.addAutomation()` → `database_automation` intent: triggers `page_added`, `property_updated` (optionally per property), or a recurrence; one action type, `create_page` (optional template); Plus plan or higher. No button anywhere. | automations partly fixed; buttons still open |
+    | 12 `is_empty` / advanced filters | no `is_empty` / `is_not_empty` operator (typecheck rejects it); new `{type: "advanced", operator: "and" \| "or", filters}` groups, nestable | `is_empty` still open; advanced filters fixed in the DSL |
+    | 14 tabs | `<tab icon="…">` in `<tabs>` in the Markdown spec | fixed in the DSL |
+    | feed views | `feed` was already a view type (finding 8); now adds `showAuthorByline` | unchanged in the DSL |
+    | `this_page` per-record layouts | `pageLayout.tabs` takes `{type: "view", resourceId}` tabs; `relation_contains` accepts `{type: "relative", value: "this_page"}` | new |
+
+    Other changes seen in the diff, not probed: `notion.datetime()` with times
+    and time zone (finding 15's gap), `verification` properties, view `groupBy`
+    for most property types, view icons, recurring templates and default
+    templates, custom-agent triggers and access, and a rewritten Markdown spec.
+    The spec now writes mentions as `<mention url="resourceId" type="database">`
+    with bare resource IDs, not `<mention-database url="{{id}}">`, which may
+    be why finding 20's tag is rejected.
+
+    **Server results** ([dsl-recheck-probe](../builds/dsl-recheck-probe/NOTES.md),
+    deployed 2026-10-16 on the fourth run, read back through the public API):
+
+    | Finding | Server | Evidence |
+    | --- | --- | --- |
+    | 4 | ✅ presets; ranges unconfirmed | "Due today" reads `quick_filters: {Due: {date: {equals: "today"}}}`. "Next 2 weeks" and "Ends this month" read `filter: null, quick_filters: null`, the same as relative/`me` filters always have (see "Reading a build back out"), so only the UI can confirm them. |
+    | 9 | ❌ on Free | run 3 rejected: "Database automations require a workspace on the Plus plan or higher." Nothing was created. |
+    | 12 | `is_empty` ❌, advanced ✅ | "In progress or overdue" reads `filter: {or: [status equals In progress, Due before today]}`. "Open, due soon" reads `{and: [status ≠ Done, {or: [Due equals today]}]}`: its nested `relative_to_today` member is missing from the readback, unconfirmed as above. Two filters on one property inside an `or` group were accepted (cf. finding 17). |
+    | 14 | ✅ | the hub's first block after the intro is a `tab` block whose two children are the "Overview" and "What to check" panes. |
+    | feed views | created; still unreadable | `GET /v1/views/{id}` still returns 400 `Unsupported view type: feed`. |
+    | `this_page` layouts | created; filter unconfirmed | the run mapped the page layout (`type: "layout"`), its content view and the tab view; the tab view reads `filter: null`. The page-layout content view 400s with `Unsupported view type: page`. |
+
+    Runs 1 and 2 hit two new server rules, both rejected at validation with
+    nothing created:
+
+    - A view used as a page-layout tab must be declared on its own data
+      source's database. Adding it to the Projects database gave `View
+      "drp-project-tasks-tab-view" references unknown data source
+      "drp-tasks-ds" in database "drp-projects-db".`
+    - **A child database must be placed in its parent page's content.** It
+      failed with `Child database "drp-projects-db" must appear exactly once as
+      <database url="{{drp-projects-db}}"> in parent page "drp-hub" content.`
+      Setup-core's databases have pages as parents too and deployed earlier the
+      same day through the SDK runner, so the rule may only apply under the
+      `ntn` beta header. Untested.
+
+26. **`ntn` rewrites the state file in a new shape.** After the apply,
+    `session.json` holds `resourceIdToResourcePointers` (each entry has `type`
+    in place of `table`, and properties are included as `collection_property`
+    entries with their `collectionId`) plus a `meta` block (`workspaceId`,
+    `lastAppliedAtMs`, `lastScript`, `createdRecordCounts`). The
+    `resourceIdToPointerMappings` / `resourceIdToPropertyIdMappings` keys are
+    gone. The seed in the old shape was read correctly. `tools/builds.ts` now
+    accepts both shapes for the anchor check. Untested: whether the SDK runner
+    can read the new shape, so don't switch a build's engine back after an
+    `ntn` deploy.
+27. **Advanced filter groups deploy as the view's saved filter.** Single
+    filters still land in `quick_filters` (finding 21, reconfirmed by "Due
+    today"), but both views whose filter is an `and` / `or` group read back
+    with it under `filter` and nothing in `quick_filters`. So wrapping a lone
+    filter in a one-member `and` group may be the way to get a saved filter
+    that viewers can't clear. That's untested on a one-member group.
+28. **Plan-gated intents fail after submission, but still atomically.** The
+    automation was rejected by the async task (`internal_server_error`), not
+    at validation, but nothing was created and `session.json` was untouched,
+    like the validation failures in findings 17 and 20.
+
 ## What works
 
 Everything else deployed faithfully on the knoxx-rnd first run: two-way
@@ -273,6 +367,10 @@ placement.
 - Does a re-deploy also clear relation values that were set **by hand in the
   UI**, or only ones the script wrote? (bears on whether finding 18 makes
   re-deploys unusable on live client workspaces)
+- Do `relative_to_today` filters and the `this_page` page-layout tab work in
+  the UI? (dsl-recheck-probe; the API reads both as `null`.) Does the feed
+  view render?
+- Do database automations work on a Plus workspace? (finding 9)
 - Is finding 20 limited to `<mention-database>`, or are the other mention
   tags rejected too? `<mention-page>` is accepted (setup-core); `data-source`
   and `agent` are untested. Is the change
