@@ -1,5 +1,5 @@
 {
-  "name": "notion-as-code-test",
+  "name": "notion-as-code",
   "private": true,
   "description": "Test bed for Notion's Notion as Code alpha. Uses the tsx binary from the notion-sdk-js checkout, so no install is needed at the repo root.",
   "scripts": {

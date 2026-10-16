@@ -23,7 +23,7 @@ import * as path from "path"
 import { REPO_ROOT } from "./builds"
 
 const NOTION_VERSION = "2026-03-11"
-const DEFAULT_TOKEN_REF = "op://Employee/notion-as-code-test/credential"
+const DEFAULT_TOKEN_REF = "op://Employee/notion-as-code/credential"
 const DEFAULT_OP_ACCOUNT = "work-flowers"
 
 function arg(name: string): string | undefined {
