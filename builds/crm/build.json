@@ -5,7 +5,7 @@
   "spaceAnchorResourceId": "crm-sandbox-space",
   "script": "build.ts",
   "session": "session.json",
-  "tokenRef": "op://Employee/notion-as-code-test/credential",
+  "tokenRef": "op://Employee/notion-as-code/credential",
   "opAccount": "work-flowers",
   "autoIncrementPrefixes": [
     "CRMC",

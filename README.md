@@ -1,4 +1,4 @@
-# Notion as Code — test bed
+# Notion as Code
 
 Testing Notion's **Notion as Code** alpha (declarative TypeScript → workspace
 deploys) by building realistic client systems as code and recording what the

@@ -1,4 +1,4 @@
-# Notion as Code test bed
+# Notion as Code
 
 This repo builds realistic Notion systems as declarative TypeScript (Notion's
 **Notion as Code** alpha) and records what the alpha can and can't express. Each

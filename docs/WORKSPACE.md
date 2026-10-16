@@ -10,7 +10,7 @@ access), which is why every build is fenced into a private teamspace — see
 [GUARDRAILS.md](GUARDRAILS.md).
 
 Auth: **Personal Access Token** (not an integration bot token), attached to this
-workspace, stored at `op://Employee/notion-as-code-test/credential`
+workspace, stored at `op://Employee/notion-as-code/credential`
 (1Password account `work-flowers`).
 
 | Build | Teamspace | Status | Auto-increment prefixes |
