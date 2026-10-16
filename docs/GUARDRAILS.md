@@ -51,10 +51,34 @@ shells (finding 3). Seed it with the workspace anchor only — the
 }
 ```
 
-## Structure is code, data is UI
+## Structure is code, data is UI — until the cut-off
 
-The script is the source of truth for structure; the workspace is the source of
-truth for row data. There is no pull or drift detection (session state is only an
-ID ledger), so any structural change made in the UI must be back-ported into the
-script — otherwise it drifts silently, and script-declared fields overwrite it on
-the next deploy.
+Before any real data goes in, the script is the source of truth for structure.
+There is no pull or drift detection (session state is only an ID ledger), so a
+structural change made in the UI during the build must be back-ported into the
+script, or script-declared fields overwrite it on the next deploy.
+
+## Client workspaces: retire the script at the cut-off
+
+Re-applies are destructive to a workspace in use: they clear dual-relation
+values (finding 18), revert hand edits to declared fields, clear values in
+undeclared properties, and never remove pages, views or automations dropped
+from the script. So for a client workspace:
+
+- **Cut-off** = go-live or the client's first real record, whichever comes
+  first. After it, never run `npm run build` against that workspace again —
+  not even an "additive" change.
+- **After the cut-off, the client's workspace is the master copy.** Changes are
+  made by hand or through the Notion MCP, approved by Dennis in the same
+  conversation, with the effect on existing data checked first (deleting a
+  property or changing its type still loses values). Log them on the client's
+  project, not in `builds/<name>/`.
+- Set `status` in the build's `build.json` to `retired` at the cut-off, and note
+  the date in its `NOTES.md`. The script stays as a record of the first build.
+  (`npm run build` doesn't check this status yet, so it's a convention, not a
+  lock.)
+- Copy a change into the core template only if it should apply to future
+  clients.
+- **Add-ons after go-live** (e.g. CRM) are built by hand or MCP: Notion as Code
+  can't reference resources it didn't create, so a separate build couldn't
+  relate to the existing databases.
