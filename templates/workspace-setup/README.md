@@ -28,10 +28,10 @@ build in `builds/<client>/` that deploys:
 
   | Database | Pinned under the title | Own block | Side pane "Details" | Tabs |
   | --- | --- | --- | --- | --- |
-  | Projects | Status, Owner, Dates, Priority | Summary | Team, spec-added properties; Tasks, Meeting Notes, Docs hidden | Overview, Tasks, Meeting Notes, Docs |
-  | Meeting Notes | Date, Type, Attendees | — | Team, Project; Action Items hidden | Notes, Action Items |
-  | Tasks | Status, Assignee, Due, Priority | — | Team, Project, Meeting | — |
-  | Docs | Type, Owner, Last reviewed | — | Team, Project | — |
+  | Projects | Status, Owner, Dates, Priority, Team | Summary | Spec-added properties; Tasks, Meeting Notes, Docs hidden | Overview, Tasks, Meeting Notes, Docs |
+  | Meeting Notes | Date, Type, Attendees, Team | — | Project; Action Items hidden | Notes, Action Items |
+  | Tasks | Status, Assignee, Due, Priority, Project, Team | — | Meeting | — |
+  | Docs | Type, Owner, Last reviewed, Team | — | Project | — |
 
   Each related tab is a view on the related database, filtered to rows whose
   relation contains the page being viewed (`this_page`), and marked

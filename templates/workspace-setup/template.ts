@@ -483,7 +483,10 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
   ]
 
   type LayoutDef = {
-    /** Up to four short, decision-useful properties under the title. */
+    /**
+     * Short, decision-useful properties under the title (the principles say up
+     * to four; Dennis wants Team pinned everywhere, and Project on Tasks).
+     */
     pins: string[]
     /** Long text shown as its own block, inside the Content tab when there are tabs. */
     blocks?: string[]
@@ -496,25 +499,25 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
   }
   const layoutDefs: Record<CoreDatabase, LayoutDef> = {
     projects: {
-      pins: ["status", "owner", "dates", "priority"],
+      pins: ["status", "owner", "dates", "priority", "team"],
       blocks: ["summary"],
-      details: ["team"],
+      details: [],
       collections: ["tasks", "meetings", "docs"],
       contentTab: "Overview",
     },
     meetingNotes: {
-      pins: ["date", "type", "attendees"],
-      details: ["team", "project"],
+      pins: ["date", "type", "attendees", "team"],
+      details: ["project"],
       collections: ["action-items"],
       contentTab: "Notes",
     },
     tasks: {
-      pins: ["status", "assignee", "due", "priority"],
-      details: ["team", "project", "meeting"],
+      pins: ["status", "assignee", "due", "priority", "project", "team"],
+      details: ["meeting"],
     },
     docs: {
-      pins: ["type", "owner", "last-reviewed"],
-      details: ["team", "project"],
+      pins: ["type", "owner", "last-reviewed", "team"],
+      details: ["project"],
     },
   }
 
@@ -644,7 +647,14 @@ ${teamLinks.length > 0 ? `\n# Teams\n\n${teamLinks.join("\n")}\n` : ""}`,
           },
         ]),
         sorts: tab.sorts,
-        properties: tab.show.map(property => ({ property, visible: true })),
+        // A table shows unlisted properties too, so list the rest as hidden.
+        properties: [
+          ...tab.show.map(property => ({ property, visible: true })),
+          ...[...def.properties, ...extras(def.db)]
+            .map(prop => prop.resourceId)
+            .filter(property => !tab.show.includes(property))
+            .map(property => ({ property, visible: false })),
+        ],
       })
     }
   }
