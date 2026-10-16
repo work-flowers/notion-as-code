@@ -1,0 +1,15 @@
+{
+  "name": "default-teamspace-probe",
+  "title": "Probe: can a script make a teamspace a workspace default?",
+  "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+  "spaceAnchorResourceId": "dtp-demo-space",
+  "script": "build.ts",
+  "session": "session.json",
+  "tokenRef": "op://Employee/notion-as-code-demo/credential",
+  "opAccount": "work-flowers",
+  "autoIncrementPrefixes": [],
+  "status": "deployed",
+  "deployedAt": "2026-10-16",
+  "teamspace": "Default Probe A (default), Default Probe B (open; script says default, finding 23)",
+  "hubUrl": null
+}
