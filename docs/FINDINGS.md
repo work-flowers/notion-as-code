@@ -518,6 +518,13 @@ changes applied.
     re-deploying a build with rows is still unsafe on `ntn`. The guard in
     `new-build --force` stays, and `--allow-rows` is for demo tests only.
 
+Also on the fresh `democo-2` deploy that replaced it: **Action Items came out
+empty on every meeting** (and no Tasks → Meeting back-links), on a clean first
+deploy, while every other relation landed. `democo`'s first deploy wrote the
+same values fine, so finding 32 isn't reliable: a script-written relation can
+still go missing on `ntn`, intermittently, as in findings 19 and 22. Check
+sample relations after every deploy.
+
 ## What works
 
 Everything else deployed faithfully on the knoxx-rnd first run: two-way

@@ -661,8 +661,24 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
     (args: { resourceId: string; icon?: { type: "emoji"; emoji: string }; properties: Record<string, any>; content?: string }) => void
   > = {}
 
-  const coreIcon = (def: CoreDef) =>
-    ({ type: "notion_icon", description: def.icon, color: "gray" }) as const
+  /**
+   * Top-level pages in a teamspace share one icon colour: gray in the company
+   * teamspace, the team's colour in a team's. A team page keeps the icon of
+   * the company database it shows, so people recognise the data.
+   */
+  const coreIcon = (def: CoreDef, color: IconColor = "gray") =>
+    ({ type: "notion_icon", description: def.icon, color }) as const
+  const teamColor = (t: TeamSpec): IconColor =>
+    t.icon.type === "notion_icon" && t.icon.color
+      ? t.icon.color
+      : t.color && t.color !== "default"
+        ? t.color
+        : "gray"
+  /** A team's Home: its own icon in the team colour (an emoji can't take one). */
+  const teamHomeIcon = (t: TeamSpec) =>
+    t.icon.type === "notion_icon"
+      ? ({ type: "notion_icon", description: t.icon.description, color: teamColor(t) } as const)
+      : ({ type: "notion_icon", description: "home", color: teamColor(t) } as const)
 
   // -------------------------------------------------------------------------
   // Page layouts (Dennis's clean-database-page-layouts principles): up to four
@@ -914,7 +930,7 @@ ${teamLinks.length > 0 ? `\n# Teams\n\n${teamLinks.join("\n")}\n` : ""}`,
 
     teamspace.addPage({
       resourceId: team.home(t.key),
-      icon: t.icon,
+      icon: teamHomeIcon(t),
       properties: { title: notion.text(`${t.name} Home`) },
       content: `${paragraphs(intro)}
 
@@ -941,7 +957,7 @@ ${
       const title = `${t.name} ${def.title}`
       teamspace.addPage({
         resourceId: team.page(t.key, def.db),
-        icon: coreIcon(def),
+        icon: coreIcon(def, teamColor(t)),
         properties: { title: notion.text(title) },
         fullWidth: true,
         content: `<database url="{{${team.linked(t.key, def.db)}}}" inline="true">${md(title)}</database>\n`,

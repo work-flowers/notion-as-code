@@ -40,6 +40,8 @@ build in `builds/<client>/` that deploys:
   Home page ("<Team> Home") and pages named "<Team> Projects", "<Team> Tasks"
   and so on. Each shows the company database with the same tabs, every one
   also filtered to Team contains that team, as a saved filter.
+- Top-level page icons in one colour per teamspace: gray in the company
+  teamspace, the team's colour in a team's (its Home keeps the team's icon).
 - The spec's extra core properties and team databases. Team databases are
   nested in their team's Home page.
 

@@ -52,3 +52,8 @@ were cleared on every meeting, along with the Tasks → Meeting back-links
 
 So this build's sample data is now incomplete, and it gets replaced by a
 fresh deploy.
+
+## Removed (2026-10-16)
+
+Replaced by `builds/democo-2` after the re-deploy test cleared its Meeting
+Notes relations. Dennis deleted its three teamspaces by hand.
