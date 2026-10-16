@@ -141,9 +141,15 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
    * One tab, as both the company database and every team's linked database
    * show it. `filters` are the tab's own; team tabs add Team contains <team>.
    */
+  type GroupBy =
+    | { property: string; type: "select" }
+    /** "option": one column per status option, not one per status group. */
+    | { property: string; type: "status"; statusBy?: "group" | "option" }
+  /** Properties shown on board cards, in order. */
+  type Shown = Array<{ property: string; visible: true }>
   type TabDef = { key: string; name: string; filters?: PropertyFilter[] } & (
-    | { type: "table"; sorts?: Sort[]; groupBy?: { property: string; type: "select" | "status" } }
-    | { type: "board"; groupBy: { property: string; type: "select" | "status" } }
+    | { type: "table"; sorts?: Sort[]; groupBy?: GroupBy }
+    | { type: "board"; groupBy: GroupBy; properties?: Shown }
     | { type: "timeline"; timelineBy: string }
     | { type: "calendar"; calendarBy: string }
   )
@@ -155,6 +161,7 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
    */
   const saved = (filters: PropertyFilter[]): FilterSchema | undefined =>
     filters.length > 0 ? [{ type: "advanced", operator: "and", filters }] : undefined
+  const show = (...properties: string[]): Shown => properties.map(property => ({ property, visible: true }))
   const isMe = (propertyId: string): PropertyFilter => ({
     type: "property",
     propertyId,
@@ -213,7 +220,13 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
         },
       ],
       tabs: [
-        { key: "board", name: "Board", type: "board", groupBy: { property: p("projects", "status"), type: "status" } },
+        {
+          key: "board",
+          name: "Board",
+          type: "board",
+          groupBy: { property: p("projects", "status"), type: "status", statusBy: "option" },
+          properties: show(p("projects", "name"), p("projects", "priority"), p("projects", "owner")),
+        },
         { key: "timeline", name: "Timeline", type: "timeline", timelineBy: p("projects", "dates") },
         {
           key: "all",
@@ -260,7 +273,13 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
         },
       ],
       tabs: [
-        { key: "board", name: "Board", type: "board", groupBy: { property: p("tasks", "status"), type: "status" } },
+        {
+          key: "board",
+          name: "Board",
+          type: "board",
+          groupBy: { property: p("tasks", "status"), type: "status", statusBy: "option" },
+          properties: show(p("tasks", "name"), p("tasks", "assignee"), p("tasks", "due"), p("tasks", "priority"), p("tasks", "team")),
+        },
         {
           key: "all",
           name: "All tasks",

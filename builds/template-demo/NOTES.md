@@ -149,6 +149,26 @@ regenerated or re-deployed: `--force` refuses, and a re-deploy would clear the
 sample relation values (finding 18). Test further template changes in a new
 build with its own prefix.
 
+## After deploy #5: changes through the API (2026-10-16)
+
+This build has rows, so it can't be re-deployed. These changes were made
+through the public API instead, with Dennis's go-ahead, and copied into the
+template for future builds. `build.ts` stays the record of deploy #5, so it
+no longer matches the workspace on these points:
+
+- **Budget removed** from Projects (`PATCH /v1/data_sources/{id}` with
+  `Budget: null`), along with its 3 sample values. Also removed from
+  `spec.ts` and `example.spec.ts`.
+- **Board views (6: company + both teams, Projects and Tasks)** now group by
+  status **option** instead of status group, with columns sorted
+  **ascending** (option order: Not started, In progress, Done, Cancelled).
+  Cards show Priority and Owner (Projects) and Assignee, Due, Priority and
+  Team (Tasks). Team filters were unchanged by the patch.
+
+The template gives new builds `statusBy: "option"` and the card properties.
+The DSL has no setting for the column sort, so whether a fresh deploy puts
+Not started first is untested.
+
 ## Post-deploy manual steps
 
 1. ✅ In Settings → Teamspaces, the company teamspace is **Default** and the
@@ -162,7 +182,9 @@ build with its own prefix.
 4. Change the company Docs **By type** view's layout to **Table** (finding 31).
    Changing the layout in the UI keeps the view's ID.
 5. Check the tab order on each database matches the script. The API can't
-   read it.
+   read it. Projects shows My projects before All projects and Active
+   projects, because My projects was created in an earlier deploy: drag it to
+   the end.
 6. Members and permissions by hand (finding 7).
 
 **Don't re-deploy.** A re-deploy clears dual-relation values on existing rows

@@ -471,6 +471,13 @@ Also confirmed on this run:
   `filter: {and: [Team contains <team>]}`, with no person member. That's the
   same as the relative-date member missing in finding 25, so only the UI
   shows whether the `me` part landed.
+- **The API can change a view's configuration, just not its type.**
+  `PATCH /v1/views/{id}` accepted a board's `group_by` (status by `option`,
+  `sort: ascending`) and card `properties` visibility, and kept the view's
+  filter. The `configuration` must include `group_by` even when only
+  `properties` changes, and a property left out of `properties` comes back
+  hidden, including the title. The DSL has `statusBy: "option"` but no
+  group sort.
 - **Re-deploying adds tabs to an existing linked database.** Each team's
   linked databases kept their first tab's ID (renamed from the team name to
   "Board", "By date" and so on) and gained the new tabs.

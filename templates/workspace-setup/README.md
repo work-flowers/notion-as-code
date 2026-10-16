@@ -15,7 +15,9 @@ build in `builds/<client>/` that deploys:
   | Meeting Notes | By date (newest first), Calendar, My meetings |
   | Docs | All docs, By type (table grouped by Type) |
 
-  "My …" tabs filter on the viewer (`me`). Every database has **Team**, a multi-select with one option per team, plus the
+  Boards have one column per status option. Projects cards show Priority
+  and Owner; Tasks cards show Assignee, Due, Priority and Team. "My …" tabs
+  filter on the viewer (`me`). Every database has **Team**, a multi-select with one option per team, plus the
   standard relations: Projects ↔ Tasks, Projects ↔ Meeting Notes, Projects ↔
   Docs, and Meeting Notes → Tasks (`Action Items`).
 - One teamspace per team, at the access level the spec gives it, holding a
@@ -127,15 +129,18 @@ Notion as Code can't do these (see the playbook's Notion as Code section and
    company databases and the team pages, show a "… contains Me" filter. The
    API doesn't read a `me` filter back (findings 30, 32), so the UI is the
    only check.
-5. **Add relative-date views** such as "due this week" by hand (finding 4).
-6. **Set up database templates** for Meeting Notes, Tasks and so on. They
+5. **Check the board column order** is Not started, In progress, Done,
+   Cancelled. The DSL can't set it; if it's wrong, set the group sort to
+   ascending in the view's Group settings.
+6. **Add relative-date views** such as "due this week" by hand (finding 4).
+7. **Set up database templates** for Meeting Notes, Tasks and so on. They
    aren't in the scripting language.
-7. **Build Home-page charts and dashboards** (finding 8), **buttons and
+8. **Build Home-page charts and dashboards** (finding 8), **buttons and
    automations** (finding 9), and **number formats** such as percent
    (finding 11) where the spec asks for them.
-8. **Apply permissions and teamspace membership** in phase 4, from the
+9. **Apply permissions and teamspace membership** in phase 4, from the
    permissions plan (finding 7).
-9. At handover, each user sets the company Meeting Notes database as their
+10. At handover, each user sets the company Meeting Notes database as their
    default destination for Notion AI meeting notes. It's a per-user setting.
 
 ## After deploy

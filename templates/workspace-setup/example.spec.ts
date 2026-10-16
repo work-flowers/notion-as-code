@@ -23,7 +23,6 @@ export default defineSpec({
   coreDatabases: {
     projects: {
       addProperties: [
-        { key: "budget", name: "Budget", type: "number" },
         { key: "client-facing", name: "Client-facing", type: "checkbox" },
       ],
     },
