@@ -56,7 +56,7 @@ session anchor `td-space` matches the demo workspace.
 ## Deploy #1 (2026-10-16)
 
 One run, no errors → [Template Demo Company Home](https://app.notion.com/p/3fb6b8781c068141ace9d4964611c466).
-`session.json` holds 53 new resources (3 teamspaces, 28 blocks, 5 data
+`session.json` held 53 new resources (3 teamspaces, 28 blocks, 5 data
 sources, 17 views) and 36 properties, plus the workspace anchor. `setup-core`
 and `default-teamspace-probe` were removed from the workspace first, so these
 are the only script-built teamspaces in it.
@@ -103,13 +103,33 @@ errors, and no mapping added or changed.
 | Team views | ✅ tabs named Operations / Marketing, quick filters `contains ["Operations"]` / `["Marketing"]` |
 | Teamspace names | ⚠️ not readable through the API; check in the UI (finding 24 left open whether a re-deploy renames a teamspace) |
 
+## Deploy #4 (2026-10-16): moved to the `ntn` engine
+
+Regenerated with `npm run new-build -- template-demo --prefix td --force`
+(every database still empty) after the template moved to `ntn` (finding 30).
+`build.json` now has `"engine": "ntn"`, and each team view wraps its Team
+filter in a one-member `and` group so it deploys as a saved filter
+(finding 27). The resourceIds are unchanged: the SDK and `ntn` compiles both
+claim the same 93, including every mapping in `session.json`. `check`,
+`typecheck` and `--dry` pass (43 intents).
+
+Re-deployed through `ntn` with Dennis's go-ahead. One run, no errors: 0
+resources created and all 57 resource IDs unchanged. `session.json` is now in
+`ntn`'s shape (finding 26), so **this build can't go back to the SDK runner.**
+
+| Check | Result |
+| --- | --- |
+| Team views (8) | ✅ each reads `filter: {multi_select: {contains: [<team>]}}` with `quick_filters: null`: a saved filter, not a quick filter. The server drops the one-member `and` wrapper (finding 30) |
+| My projects / My tasks / My meetings | ⚠️ still `filter: null, quick_filters: null`, as on the SDK runner. Only the UI can confirm them |
+
 ## Post-deploy manual steps
 
 1. ✅ In Settings → Teamspaces, the company teamspace is **Default** and the
    two team teamspaces are **Closed** (confirmed by Dennis after deploy #2).
    After deploy #3, also check they're named DemoCo HQ, Operations and
    Marketing.
-2. Save each team view's quick filter as a saved filter (finding 21): 8 views.
+2. ~~Save each team view's quick filter.~~ Done by the script since deploy #4.
+   Check in the UI that the filter bar shows no removable "Team" pill.
 3. Check that My projects, My tasks and My meetings each show a "… contains
    Me" filter.
 4. Members and permissions by hand (finding 7).

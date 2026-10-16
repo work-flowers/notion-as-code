@@ -33,7 +33,9 @@ a committed `session.json`. For those builds the DSL reference is
 place every child database in its parent page's content as
 `<database url="{{id}}">`, and declare a page-layout tab view on its own data
 source's database. `ntn` rewrites `session.json` in a new shape (finding 26),
-so don't switch a deployed build's engine.
+so don't switch a deployed build's engine. Builds generated from the core
+template (`npm run new-build`) are always `ntn` builds, and the template uses
+the 2026-10-06 filter shapes (finding 30).
 
 ## Authoring rules
 

@@ -385,6 +385,53 @@ Also confirmed on this run:
   deleted in the UI. Child databases still read `in_trash: false` afterwards,
   so the flag isn't inherited in API reads.
 
+## Moving the core template to the `ntn` engine, 2026-10-16 (30)
+
+30. **The 2026-10-06 DSL changes the filter shapes, and makes its types
+    non-global.** Porting the core template from the SDK runner to the `ntn`
+    engine, typecheck rejected three things the SDK branch accepts:
+
+    - Every property filter needs `type: "property"` (the discriminant for
+      `type: "advanced"` groups).
+    - Select, multi-select and status filters take an array:
+      `value: ["Operations"]`, not `value: "Operations"`.
+    - A `me` person filter is a one-element array:
+      `value: [{ type: "relative", value: "me" }]`.
+
+    The template's `types.d.ts` also exports its types instead of declaring
+    them globally, so a build script can't name `PropertySchemaDefinition` or
+    `ViewSchema` without an import, which build scripts can't have (finding
+    29). `vendor/ntn-template/globals.d.ts` now re-declares those two as
+    globals for the typecheck. The runtime doesn't need them.
+
+    So a script written for one engine doesn't type-check on the other.
+    Generated builds now get `"engine": "ntn"`.
+
+    **✅ A one-member `and` group deploys as the view's saved filter.**
+    `template-demo` was re-deployed on `ntn` with each team view's Team filter
+    wrapped in a one-member `and` group. All 8 views now read
+    `filter: {"property": …, "multi_select": {"contains": ["Operations"]}}`
+    with `quick_filters: null`. Before, they read `filter: null` with the same
+    condition under `quick_filters` (finding 21). The server flattens the
+    group: the readback has no `and` wrapper. So finding 27's workaround
+    works, and a script can now set a saved filter that isn't a removable
+    pill. The API can't show whether a read-only member can change it, which
+    is a UI check.
+
+    Also on that run:
+
+    - **An SDK-deployed build moves to `ntn` cleanly.** `ntn` read the SDK
+      runner's `session.json`, created 0 resources, kept all 57 resource IDs
+      unchanged, and rewrote the file in its own shape (finding 26) with the
+      36 properties as `collection_property` entries. The compiled resourceIds
+      are identical across the two engines (93 and 93). The build had no rows,
+      so whether `ntn` re-deploys also clear relation values (finding 18) is
+      untested.
+    - **`me` filters still read back `null` on `ntn`.** My projects, My tasks
+      and My meetings read `filter: null, quick_filters: null`, as on the SDK
+      runner. Only the UI shows them. Untested: whether a `me` filter wrapped
+      in an `and` group would read back under `filter`.
+
 ## What works
 
 Everything else deployed faithfully on the knoxx-rnd first run: two-way

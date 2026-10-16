@@ -6,6 +6,7 @@
   "script": "build.ts",
   "session": "session.json",
   "spec": "spec.ts",
+  "engine": "ntn",
   "prefix": "td",
   "tokenRef": "op://Employee/notion-as-code-demo/credential",
   "opAccount": "work-flowers",

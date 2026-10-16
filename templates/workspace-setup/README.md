@@ -18,7 +18,13 @@ build in `builds/<client>/` that deploys:
 - The spec's extra core properties and team databases. Team databases are
   nested in their team's Home page.
 
-There are no permissions, no sample rows and no relative-date views. The design lives in the playbook's Standard
+There are no permissions, no sample rows and no relative-date views.
+
+Generated builds run on the **`ntn` engine** (`"engine": "ntn"` in
+`build.json`, see [AGENTS.md](../../AGENTS.md)): they type-check against
+`vendor/ntn-template` and deploy through `ntn notion-as-code apply`. The
+template uses the 2026-10-06 DSL's filter shapes (finding 30) and its `and`
+groups (finding 27), so it no longer compiles on the SDK runner. The design lives in the playbook's Standard
 schema section:
 [Playbook: New Notion Workspace Setup](https://app.notion.com/p/3fb91b0711ac81c59c44eea9bfbc608c).
 
@@ -49,7 +55,8 @@ schema section:
 
    The generator validates the spec and lists every problem at once. If the
    spec is valid, it writes `build.ts`, `build.json` (status `not-deployed`)
-   and a `session.json` seeded with the workspace anchor. If another build
+   and a `session.json` seeded with the workspace anchor. `ntn` rewrites
+   `session.json` in its own shape on the first deploy (finding 26). If another build
    already targets that workspace, the generator copies its `tokenRef` into
    `build.json`. For a new client workspace, add the `tokenRef` yourself (see
    [docs/WORKSPACE.md](../../docs/WORKSPACE.md)) and register the workspace
@@ -78,7 +85,10 @@ of what was deployed. The exception is `--force`, which regenerates a deployed
 build only if every one of its databases is still empty (it checks through the
 API), and keeps `session.json`. Use it to pick up a template change before any
 rows exist, then re-deploy. Once rows exist, a re-deploy would clear their
-relation values (finding 18).
+relation values (finding 18). `--force` reads both `session.json` shapes, so
+it works on builds deployed through either engine. Regenerating a build that
+was deployed through the SDK runner moves it to `ntn`, and its next deploy
+can't be moved back (finding 26).
 
 **Why generate, not import:** a build script can't import another file
 (finding 29), so `build.ts` carries its own copy of the spec types, the spec
@@ -94,8 +104,9 @@ Notion as Code can't do these (see the playbook's Notion as Code section and
    teamspace should be Default, and each team's should match the spec. The API
    can't read them back.
 2. **Delete the pre-installed default teamspace** if it's empty (finding 23).
-3. **Save the team views' filters.** Script filters land as quick filters that
-   any viewer can clear (finding 21). There's one per team per core database.
+3. ~~Save the team views' filters.~~ No longer needed. Each team view wraps
+   its Team filter in a one-member `and` group, which deploys as the view's
+   saved filter, not a removable quick filter (findings 21, 27, 30).
 4. **Check the "My" tabs** (My projects, My tasks, My meetings) show a
    "… contains Me" filter. The API reads a `me` filter back as `null`, so the
    UI is the only check.

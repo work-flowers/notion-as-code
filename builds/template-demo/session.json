@@ -1,327 +1,517 @@
 {
-  "resourceIdToPointerMappings": {
-    "td-space": {
-      "id": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "space"
-    },
+  "resourceIdToResourcePointers": {
     "td-company": {
       "id": "3fb6b878-1c06-8173-bb9b-00420a53ef88",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "team"
+      "type": "team"
     },
     "td-company-home": {
       "id": "3fb6b878-1c06-8141-ace9-d4964611c466",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
+      "type": "block"
     },
     "td-docs-db": {
       "id": "3fb6b878-1c06-813c-92de-f772239405a8",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
+      "type": "block"
     },
     "td-docs-ds": {
       "id": "3fb6b878-1c06-8107-b024-000b4ef0c113",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection"
+      "type": "collection"
+    },
+    "td-docs-last-reviewed": {
+      "collectionId": "3fb6b878-1c06-8107-b024-000b4ef0c113",
+      "id": "NmJh",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-docs-name": {
+      "collectionId": "3fb6b878-1c06-8107-b024-000b4ef0c113",
+      "id": "title",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-docs-owner": {
+      "collectionId": "3fb6b878-1c06-8107-b024-000b4ef0c113",
+      "id": "KGmJ",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
     },
     "td-docs-page": {
       "id": "3fb6b878-1c06-81d7-964b-f0cdf1d13c7b",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
+      "type": "block"
+    },
+    "td-docs-project": {
+      "collectionId": "3fb6b878-1c06-8107-b024-000b4ef0c113",
+      "id": "RzcP",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-docs-team": {
+      "collectionId": "3fb6b878-1c06-8107-b024-000b4ef0c113",
+      "id": "\\>ss",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-docs-type": {
+      "collectionId": "3fb6b878-1c06-8107-b024-000b4ef0c113",
+      "id": ">@ww",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
     },
     "td-docs-view-all": {
       "id": "3fb6b878-1c06-816c-b494-000cdc4c3900",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
+      "type": "collection_view"
     },
     "td-docs-view-by-type": {
       "id": "3fb6b878-1c06-81c0-829b-000c9600c398",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
+      "type": "collection_view"
+    },
+    "td-meetings-action-items": {
+      "collectionId": "3fb6b878-1c06-81b9-950d-000b00d594a4",
+      "id": "YGW}",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-meetings-attendees": {
+      "collectionId": "3fb6b878-1c06-81b9-950d-000b00d594a4",
+      "id": "yZrD",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-meetings-date": {
+      "collectionId": "3fb6b878-1c06-81b9-950d-000b00d594a4",
+      "id": "E`Jr",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
     },
     "td-meetings-db": {
       "id": "3fb6b878-1c06-81bf-9b12-e2588b698e4e",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
+      "type": "block"
     },
     "td-meetings-ds": {
       "id": "3fb6b878-1c06-81b9-950d-000b00d594a4",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection"
+      "type": "collection"
+    },
+    "td-meetings-name": {
+      "collectionId": "3fb6b878-1c06-81b9-950d-000b00d594a4",
+      "id": "title",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
     },
     "td-meetings-page": {
       "id": "3fb6b878-1c06-81f2-83c7-db9f9bdae207",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
+      "type": "block"
+    },
+    "td-meetings-project": {
+      "collectionId": "3fb6b878-1c06-81b9-950d-000b00d594a4",
+      "id": "oVjK",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-meetings-team": {
+      "collectionId": "3fb6b878-1c06-81b9-950d-000b00d594a4",
+      "id": "]KC;",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-meetings-type": {
+      "collectionId": "3fb6b878-1c06-81b9-950d-000b00d594a4",
+      "id": "<Ic^",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
     },
     "td-meetings-view-by-date": {
       "id": "3fb6b878-1c06-8105-a501-000c64f206b4",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
+      "type": "collection_view"
     },
     "td-meetings-view-calendar": {
       "id": "3fb6b878-1c06-8145-ab61-000c974cb127",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
-    },
-    "td-projects-db": {
-      "id": "3fb6b878-1c06-81a8-b7dc-f79c1fe64c0b",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-projects-ds": {
-      "id": "3fb6b878-1c06-817d-a828-000ba8097b69",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection"
-    },
-    "td-projects-page": {
-      "id": "3fb6b878-1c06-813b-8d07-d19c7d688595",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-projects-view-board": {
-      "id": "3fb6b878-1c06-8198-8e1d-000cccf3b488",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
-    },
-    "td-projects-view-timeline": {
-      "id": "3fb6b878-1c06-81de-b061-000ce466d547",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
-    },
-    "td-t-mkt": {
-      "id": "3fb6b878-1c06-817f-9c9a-0042957fcda7",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "team"
-    },
-    "td-t-mkt-docs-linked": {
-      "id": "3fb6b878-1c06-812e-8a5a-f5815fe14856",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-mkt-docs-page": {
-      "id": "3fb6b878-1c06-81a5-93c4-ff54d4516793",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-mkt-docs-view": {
-      "id": "3fb6b878-1c06-81e5-b5e1-000cf56e91e1",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
-    },
-    "td-t-mkt-home": {
-      "id": "3fb6b878-1c06-8199-97d1-cb99b31bdee8",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-mkt-meetings-linked": {
-      "id": "3fb6b878-1c06-8109-9487-f4a6f4101bd7",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-mkt-meetings-page": {
-      "id": "3fb6b878-1c06-81cd-81f7-cc9f7a85bcec",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-mkt-meetings-view": {
-      "id": "3fb6b878-1c06-81c8-b9a3-000cad398a00",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
-    },
-    "td-t-mkt-projects-linked": {
-      "id": "3fb6b878-1c06-8183-b95c-d5b8674f5ef0",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-mkt-projects-page": {
-      "id": "3fb6b878-1c06-818a-97c5-c4b0052c1e6e",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-mkt-projects-view": {
-      "id": "3fb6b878-1c06-8118-ba66-000c1d743daa",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
-    },
-    "td-t-mkt-tasks-linked": {
-      "id": "3fb6b878-1c06-8151-af06-ece6f64b565f",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-mkt-tasks-page": {
-      "id": "3fb6b878-1c06-8121-8d6d-f2801d69295e",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-mkt-tasks-view": {
-      "id": "3fb6b878-1c06-8134-8600-000c94185b84",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
-    },
-    "td-t-ops": {
-      "id": "3fb6b878-1c06-813e-a265-0042f082a91e",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "team"
-    },
-    "td-t-ops-docs-linked": {
-      "id": "3fb6b878-1c06-81c3-bdfc-e7cf3ecfb2fc",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-ops-docs-page": {
-      "id": "3fb6b878-1c06-817c-80a7-f38ec728873e",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-ops-docs-view": {
-      "id": "3fb6b878-1c06-81ee-967d-000c07f49c85",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
-    },
-    "td-t-ops-home": {
-      "id": "3fb6b878-1c06-81a4-b005-efbefc2c851c",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-ops-meetings-linked": {
-      "id": "3fb6b878-1c06-81c9-837b-e785fd8d955d",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-ops-meetings-page": {
-      "id": "3fb6b878-1c06-8114-a0cf-f03d49d60162",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-ops-meetings-view": {
-      "id": "3fb6b878-1c06-8155-ba2a-000c3cfdf0c8",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
-    },
-    "td-t-ops-projects-linked": {
-      "id": "3fb6b878-1c06-812e-83d8-c0bdf312d19a",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-ops-projects-page": {
-      "id": "3fb6b878-1c06-811a-9a79-dad6eb138cd6",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-ops-projects-view": {
-      "id": "3fb6b878-1c06-8156-9d67-000c272f86cc",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
-    },
-    "td-t-ops-tasks-linked": {
-      "id": "3fb6b878-1c06-81ec-af2a-f359a3e16944",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-ops-tasks-page": {
-      "id": "3fb6b878-1c06-8111-9a9c-dc4fe548bd46",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-t-ops-tasks-view": {
-      "id": "3fb6b878-1c06-81fd-beb4-000cdac27849",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
-    },
-    "td-tasks-db": {
-      "id": "3fb6b878-1c06-8192-8e8f-e81fcc935725",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-tasks-ds": {
-      "id": "3fb6b878-1c06-812b-93f9-000b2f141a14",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection"
-    },
-    "td-tasks-page": {
-      "id": "3fb6b878-1c06-813f-b6e0-e64370869c56",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-tasks-view-all": {
-      "id": "3fb6b878-1c06-81f3-92dd-000ca9582785",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
-    },
-    "td-tasks-view-board": {
-      "id": "3fb6b878-1c06-8105-9d03-000c5353cd47",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
-    },
-    "td-tdb-vendors-db": {
-      "id": "3fb6b878-1c06-81ef-9fdb-c517726ead00",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "block"
-    },
-    "td-tdb-vendors-ds": {
-      "id": "3fb6b878-1c06-81b3-9902-000bae3a6a30",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection"
-    },
-    "td-tdb-vendors-view-all": {
-      "id": "3fb6b878-1c06-815a-ae32-000c5e41897a",
-      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
+      "type": "collection_view"
     },
     "td-meetings-view-mine": {
       "id": "3fb6b878-1c06-8118-920a-000cf3aae34b",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
+      "type": "collection_view"
+    },
+    "td-projects-dates": {
+      "collectionId": "3fb6b878-1c06-817d-a828-000ba8097b69",
+      "id": "VyUj",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-projects-db": {
+      "id": "3fb6b878-1c06-81a8-b7dc-f79c1fe64c0b",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-projects-docs": {
+      "collectionId": "3fb6b878-1c06-817d-a828-000ba8097b69",
+      "id": "VIvE",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-projects-ds": {
+      "id": "3fb6b878-1c06-817d-a828-000ba8097b69",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection"
+    },
+    "td-projects-meetings": {
+      "collectionId": "3fb6b878-1c06-817d-a828-000ba8097b69",
+      "id": "MZ>V",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-projects-name": {
+      "collectionId": "3fb6b878-1c06-817d-a828-000ba8097b69",
+      "id": "title",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-projects-owner": {
+      "collectionId": "3fb6b878-1c06-817d-a828-000ba8097b69",
+      "id": "]Zrq",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-projects-page": {
+      "id": "3fb6b878-1c06-813b-8d07-d19c7d688595",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-projects-priority": {
+      "collectionId": "3fb6b878-1c06-817d-a828-000ba8097b69",
+      "id": "woCH",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-projects-status": {
+      "collectionId": "3fb6b878-1c06-817d-a828-000ba8097b69",
+      "id": "lBZH",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-projects-summary": {
+      "collectionId": "3fb6b878-1c06-817d-a828-000ba8097b69",
+      "id": "B;z<",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-projects-tasks": {
+      "collectionId": "3fb6b878-1c06-817d-a828-000ba8097b69",
+      "id": "bL;o",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-projects-team": {
+      "collectionId": "3fb6b878-1c06-817d-a828-000ba8097b69",
+      "id": "WRn\\",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-projects-view-board": {
+      "id": "3fb6b878-1c06-8198-8e1d-000cccf3b488",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
     },
     "td-projects-view-mine": {
       "id": "3fb6b878-1c06-81f8-8375-000c586115c7",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
+      "type": "collection_view"
+    },
+    "td-projects-view-timeline": {
+      "id": "3fb6b878-1c06-81de-b061-000ce466d547",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-projects-x-budget": {
+      "collectionId": "3fb6b878-1c06-817d-a828-000ba8097b69",
+      "id": "MTiS",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-projects-x-client-facing": {
+      "collectionId": "3fb6b878-1c06-817d-a828-000ba8097b69",
+      "id": ">];<",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-space": {
+      "id": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "space"
+    },
+    "td-t-mkt": {
+      "id": "3fb6b878-1c06-817f-9c9a-0042957fcda7",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "team"
+    },
+    "td-t-mkt-docs-linked": {
+      "id": "3fb6b878-1c06-812e-8a5a-f5815fe14856",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-mkt-docs-page": {
+      "id": "3fb6b878-1c06-81a5-93c4-ff54d4516793",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-mkt-docs-view": {
+      "id": "3fb6b878-1c06-81e5-b5e1-000cf56e91e1",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-mkt-home": {
+      "id": "3fb6b878-1c06-8199-97d1-cb99b31bdee8",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-mkt-meetings-linked": {
+      "id": "3fb6b878-1c06-8109-9487-f4a6f4101bd7",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-mkt-meetings-page": {
+      "id": "3fb6b878-1c06-81cd-81f7-cc9f7a85bcec",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-mkt-meetings-view": {
+      "id": "3fb6b878-1c06-81c8-b9a3-000cad398a00",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-mkt-projects-linked": {
+      "id": "3fb6b878-1c06-8183-b95c-d5b8674f5ef0",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-mkt-projects-page": {
+      "id": "3fb6b878-1c06-818a-97c5-c4b0052c1e6e",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-mkt-projects-view": {
+      "id": "3fb6b878-1c06-8118-ba66-000c1d743daa",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-mkt-tasks-linked": {
+      "id": "3fb6b878-1c06-8151-af06-ece6f64b565f",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-mkt-tasks-page": {
+      "id": "3fb6b878-1c06-8121-8d6d-f2801d69295e",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-mkt-tasks-view": {
+      "id": "3fb6b878-1c06-8134-8600-000c94185b84",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-ops": {
+      "id": "3fb6b878-1c06-813e-a265-0042f082a91e",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "team"
+    },
+    "td-t-ops-docs-linked": {
+      "id": "3fb6b878-1c06-81c3-bdfc-e7cf3ecfb2fc",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-ops-docs-page": {
+      "id": "3fb6b878-1c06-817c-80a7-f38ec728873e",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-ops-docs-view": {
+      "id": "3fb6b878-1c06-81ee-967d-000c07f49c85",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-ops-home": {
+      "id": "3fb6b878-1c06-81a4-b005-efbefc2c851c",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-ops-meetings-linked": {
+      "id": "3fb6b878-1c06-81c9-837b-e785fd8d955d",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-ops-meetings-page": {
+      "id": "3fb6b878-1c06-8114-a0cf-f03d49d60162",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-ops-meetings-view": {
+      "id": "3fb6b878-1c06-8155-ba2a-000c3cfdf0c8",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-ops-projects-linked": {
+      "id": "3fb6b878-1c06-812e-83d8-c0bdf312d19a",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-ops-projects-page": {
+      "id": "3fb6b878-1c06-811a-9a79-dad6eb138cd6",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-ops-projects-view": {
+      "id": "3fb6b878-1c06-8156-9d67-000c272f86cc",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-t-ops-tasks-linked": {
+      "id": "3fb6b878-1c06-81ec-af2a-f359a3e16944",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-ops-tasks-page": {
+      "id": "3fb6b878-1c06-8111-9a9c-dc4fe548bd46",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-t-ops-tasks-view": {
+      "id": "3fb6b878-1c06-81fd-beb4-000cdac27849",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-tasks-assignee": {
+      "collectionId": "3fb6b878-1c06-812b-93f9-000b2f141a14",
+      "id": "ti<h",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-tasks-db": {
+      "id": "3fb6b878-1c06-8192-8e8f-e81fcc935725",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-tasks-ds": {
+      "id": "3fb6b878-1c06-812b-93f9-000b2f141a14",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection"
+    },
+    "td-tasks-due": {
+      "collectionId": "3fb6b878-1c06-812b-93f9-000b2f141a14",
+      "id": "HYO:",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-tasks-name": {
+      "collectionId": "3fb6b878-1c06-812b-93f9-000b2f141a14",
+      "id": "title",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-tasks-page": {
+      "id": "3fb6b878-1c06-813f-b6e0-e64370869c56",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-tasks-priority": {
+      "collectionId": "3fb6b878-1c06-812b-93f9-000b2f141a14",
+      "id": "PkWG",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-tasks-project": {
+      "collectionId": "3fb6b878-1c06-812b-93f9-000b2f141a14",
+      "id": "Fict",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-tasks-status": {
+      "collectionId": "3fb6b878-1c06-812b-93f9-000b2f141a14",
+      "id": "i]`C",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-tasks-team": {
+      "collectionId": "3fb6b878-1c06-812b-93f9-000b2f141a14",
+      "id": "QHc;",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-tasks-view-all": {
+      "id": "3fb6b878-1c06-81f3-92dd-000ca9582785",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "td-tasks-view-board": {
+      "id": "3fb6b878-1c06-8105-9d03-000c5353cd47",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
     },
     "td-tasks-view-mine": {
       "id": "3fb6b878-1c06-81a3-a5f5-000c06086737",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-      "table": "collection_view"
+      "type": "collection_view"
+    },
+    "td-tdb-vendors-db": {
+      "id": "3fb6b878-1c06-81ef-9fdb-c517726ead00",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "td-tdb-vendors-ds": {
+      "id": "3fb6b878-1c06-81b3-9902-000bae3a6a30",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection"
+    },
+    "td-tdb-vendors-name": {
+      "collectionId": "3fb6b878-1c06-81b3-9902-000bae3a6a30",
+      "id": "title",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-tdb-vendors-p-category": {
+      "collectionId": "3fb6b878-1c06-81b3-9902-000bae3a6a30",
+      "id": "we{}",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-tdb-vendors-p-contract-end": {
+      "collectionId": "3fb6b878-1c06-81b3-9902-000bae3a6a30",
+      "id": "`s|T",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-tdb-vendors-p-projects": {
+      "collectionId": "3fb6b878-1c06-81b3-9902-000bae3a6a30",
+      "id": "TUr;",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "td-tdb-vendors-view-all": {
+      "id": "3fb6b878-1c06-815a-ae32-000c5e41897a",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
     }
   },
-  "resourceIdToPropertyIdMappings": {
-    "td-docs-last-reviewed": "NmJh",
-    "td-docs-name": "title",
-    "td-docs-owner": "KGmJ",
-    "td-docs-project": "RzcP",
-    "td-docs-team": "\\>ss",
-    "td-docs-type": ">@ww",
-    "td-meetings-action-items": "YGW}",
-    "td-meetings-attendees": "yZrD",
-    "td-meetings-date": "E`Jr",
-    "td-meetings-name": "title",
-    "td-meetings-project": "oVjK",
-    "td-meetings-team": "]KC;",
-    "td-meetings-type": "<Ic^",
-    "td-projects-dates": "VyUj",
-    "td-projects-docs": "VIvE",
-    "td-projects-meetings": "MZ>V",
-    "td-projects-name": "title",
-    "td-projects-owner": "]Zrq",
-    "td-projects-priority": "woCH",
-    "td-projects-status": "lBZH",
-    "td-projects-summary": "B;z<",
-    "td-projects-tasks": "bL;o",
-    "td-projects-team": "WRn\\",
-    "td-projects-x-budget": "MTiS",
-    "td-projects-x-client-facing": ">];<",
-    "td-tasks-assignee": "ti<h",
-    "td-tasks-due": "HYO:",
-    "td-tasks-name": "title",
-    "td-tasks-priority": "PkWG",
-    "td-tasks-project": "Fict",
-    "td-tasks-status": "i]`C",
-    "td-tasks-team": "QHc;",
-    "td-tdb-vendors-name": "title",
-    "td-tdb-vendors-p-category": "we{}",
-    "td-tdb-vendors-p-contract-end": "`s|T",
-    "td-tdb-vendors-p-projects": "TUr;"
+  "meta": {
+    "workspaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+    "lastAppliedAtMs": 1792135897805,
+    "lastScript": "/private/var/folders/kv/pcf5ssk502gbmhj49kyz5qmw0000gn/T/nac-apply-6wvMSH/intents.json",
+    "createdRecordCounts": {
+      "custom_agent": 0,
+      "database": 0,
+      "page": 0,
+      "space": 0,
+      "teamspace": 0
+    }
   }
 }
