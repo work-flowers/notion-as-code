@@ -47,4 +47,5 @@ export default defineSpec({
     teams: { mkt: "Marketing's home. Campaigns live in Projects; tag anything cross-team with both teams." },
   },
   addOns: { crm: false },
+  sampleRecords: true,
 })

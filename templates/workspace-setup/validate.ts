@@ -58,6 +58,7 @@ export function validateSpec(spec: WorkspaceSpec): string[] {
   for (const name of duplicates(spec.teams.map(t => t.name))) errors.push(`duplicate team name "${name}"`)
   for (const t of spec.teams) {
     if (!KEY.test(t.key)) errors.push(`team key "${t.key}" must be lowercase letters, digits and hyphens`)
+    if (t.name.includes(",")) errors.push(`team "${t.key}": name can't contain a comma (it's a multi-select option)`)
     if (same(t.name, spec.companyTeamspace.name)) {
       errors.push(`team "${t.key}" has the same name as the company teamspace ("${t.name}")`)
     }

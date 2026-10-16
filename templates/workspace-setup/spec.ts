@@ -148,6 +148,12 @@ export interface WorkspaceSpec {
   teamDatabases: TeamDatabaseSpec[]
   homePages: HomePagesSpec
   addOns: AddOnsSpec
+  /**
+   * Example rows in every database, including relation values, so the
+   * workspace isn't empty at the walkthrough. Deploy them once: a re-deploy
+   * clears two-way relation values on existing rows (finding 18).
+   */
+  sampleRecords?: boolean
 }
 
 // </spec-types>

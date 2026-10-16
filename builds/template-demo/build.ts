@@ -142,6 +142,12 @@ interface WorkspaceSpec {
   teamDatabases: TeamDatabaseSpec[]
   homePages: HomePagesSpec
   addOns: AddOnsSpec
+  /**
+   * Example rows in every database, including relation values, so the
+   * workspace isn't empty at the walkthrough. Deploy them once: a re-deploy
+   * clears two-way relation values on existing rows (finding 18).
+   */
+  sampleRecords?: boolean
 }
 
 // ---------------------------------------------------------------------------
@@ -248,7 +254,8 @@ const spec: WorkspaceSpec = {
   },
   "addOns": {
     "crm": false
-  }
+  },
+  "sampleRecords": true
 }
 
 // ---------------------------------------------------------------------------
@@ -366,9 +373,34 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
   // Core databases: playbook "Standard schema"
   // -------------------------------------------------------------------------
 
-  type TeamViewShape =
-    | { type: "table"; sorts: Array<{ propertyId: string; direction: "ascending" | "descending" }> }
-    | { type: "board"; groupBy: { property: string; type: "status" | "select" } }
+  type PropertyFilter = Extract<FilterSchema[number], { type: "property" }>
+  type Sort = { propertyId: string; direction: "ascending" | "descending" }
+
+  /**
+   * One tab, as both the company database and every team's linked database
+   * show it. `filters` are the tab's own; team tabs add Team contains <team>.
+   */
+  type TabDef = { key: string; name: string; filters?: PropertyFilter[] } & (
+    | { type: "table"; sorts?: Sort[]; groupBy?: { property: string; type: "select" | "status" } }
+    | { type: "board"; groupBy: { property: string; type: "select" | "status" } }
+    | { type: "timeline"; timelineBy: string }
+    | { type: "calendar"; calendarBy: string }
+  )
+
+  /**
+   * Filters go in a one-member-or-more `and` group: a lone filter lands as a
+   * quick filter that viewers can clear (finding 21), a group as the saved
+   * filter (finding 27).
+   */
+  const saved = (filters: PropertyFilter[]): FilterSchema | undefined =>
+    filters.length > 0 ? [{ type: "advanced", operator: "and", filters }] : undefined
+  const isMe = (propertyId: string): PropertyFilter => ({
+    type: "property",
+    propertyId,
+    propertyType: "person",
+    operator: "person_contains",
+    value: [{ type: "relative", value: "me" }],
+  })
 
   type CoreDef = {
     db: CoreDatabase
@@ -377,12 +409,8 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
     description: string
     blurb: string
     properties: PropertySchemaDefinition[]
-    /**
-     * Default tabs on the company database, then its "My …" tab (a person filter on
-     * the viewer, `me`). The team views copy the first tab's shape.
-     */
-    views: Array<(viewId: (key: string) => string) => ViewSchema>
-    teamView: TeamViewShape
+    /** Tabs, in order. Team pages show the same tabs, filtered to the team. */
+    tabs: TabDef[]
   }
 
   const p = core.prop
@@ -423,31 +451,30 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           targetDataSourcePropertyResourceId: p("docs", "project"),
         },
       ],
-      views: [
-        v => ({
-          resourceId: v("board"),
-          name: "Board",
-          type: "board",
-          dataSourceResourceId: core.ds("projects"),
-          groupBy: { property: p("projects", "status"), type: "status" },
-        }),
-        v => ({
-          resourceId: v("timeline"),
-          name: "Timeline",
-          type: "timeline",
-          dataSourceResourceId: core.ds("projects"),
-          timelineBy: p("projects", "dates"),
-        }),
-        v => ({
-          resourceId: v("mine"),
+      tabs: [
+        { key: "board", name: "Board", type: "board", groupBy: { property: p("projects", "status"), type: "status" } },
+        { key: "timeline", name: "Timeline", type: "timeline", timelineBy: p("projects", "dates") },
+        {
+          key: "all",
+          name: "All projects",
+          type: "table",
+          sorts: [{ propertyId: p("projects", "dates"), direction: "ascending" }],
+        },
+        {
+          key: "active",
+          name: "Active projects",
+          type: "table",
+          filters: [{ type: "property", propertyId: p("projects", "status"), propertyType: "status", operator: "status_is", value: ["In progress"] }],
+          sorts: [{ propertyId: p("projects", "dates"), direction: "ascending" }],
+        },
+        {
+          key: "mine",
           name: "My projects",
           type: "table",
-          dataSourceResourceId: core.ds("projects"),
-          filters: [{ type: "property", propertyId: p("projects", "owner"), propertyType: "person", operator: "person_contains", value: [{ type: "relative", value: "me" }] }],
+          filters: [isMe(p("projects", "owner"))],
           sorts: [{ propertyId: p("projects", "dates"), direction: "ascending" }],
-        }),
+        },
       ],
-      teamView: { type: "board", groupBy: { property: p("projects", "status"), type: "status" } },
     },
     {
       db: "tasks",
@@ -471,31 +498,32 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           limit: 1,
         },
       ],
-      views: [
-        v => ({
-          resourceId: v("board"),
-          name: "Board",
-          type: "board",
-          dataSourceResourceId: core.ds("tasks"),
-          groupBy: { property: p("tasks", "status"), type: "status" },
-        }),
-        v => ({
-          resourceId: v("all"),
+      tabs: [
+        { key: "board", name: "Board", type: "board", groupBy: { property: p("tasks", "status"), type: "status" } },
+        {
+          key: "all",
           name: "All tasks",
           type: "table",
-          dataSourceResourceId: core.ds("tasks"),
           sorts: [{ propertyId: p("tasks", "due"), direction: "ascending" }],
-        }),
-        v => ({
-          resourceId: v("mine"),
+        },
+        {
+          key: "open",
+          name: "Open tasks",
+          type: "table",
+          filters: [
+            { type: "property", propertyId: p("tasks", "status"), propertyType: "status", operator: "status_is_not", value: ["Done"] },
+            { type: "property", propertyId: p("tasks", "status"), propertyType: "status", operator: "status_is_not", value: ["Cancelled"] },
+          ],
+          sorts: [{ propertyId: p("tasks", "due"), direction: "ascending" }],
+        },
+        {
+          key: "mine",
           name: "My tasks",
           type: "table",
-          dataSourceResourceId: core.ds("tasks"),
-          filters: [{ type: "property", propertyId: p("tasks", "assignee"), propertyType: "person", operator: "person_contains", value: [{ type: "relative", value: "me" }] }],
+          filters: [isMe(p("tasks", "assignee"))],
           sorts: [{ propertyId: p("tasks", "due"), direction: "ascending" }],
-        }),
+        },
       ],
-      teamView: { type: "board", groupBy: { property: p("tasks", "status"), type: "status" } },
     },
     {
       db: "meetingNotes",
@@ -534,34 +562,22 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           targetDataSourceResourceId: core.ds("tasks"),
         },
       ],
-      views: [
-        v => ({
-          resourceId: v("by-date"),
+      tabs: [
+        {
+          key: "by-date",
           name: "By date",
           type: "table",
-          dataSourceResourceId: core.ds("meetingNotes"),
           sorts: [{ propertyId: p("meetingNotes", "date"), direction: "descending" }],
-        }),
-        v => ({
-          resourceId: v("calendar"),
-          name: "Calendar",
-          type: "calendar",
-          dataSourceResourceId: core.ds("meetingNotes"),
-          calendarBy: p("meetingNotes", "date"),
-        }),
-        v => ({
-          resourceId: v("mine"),
+        },
+        { key: "calendar", name: "Calendar", type: "calendar", calendarBy: p("meetingNotes", "date") },
+        {
+          key: "mine",
           name: "My meetings",
           type: "table",
-          dataSourceResourceId: core.ds("meetingNotes"),
-          filters: [{ type: "property", propertyId: p("meetingNotes", "attendees"), propertyType: "person", operator: "person_contains", value: [{ type: "relative", value: "me" }] }],
+          filters: [isMe(p("meetingNotes", "attendees"))],
           sorts: [{ propertyId: p("meetingNotes", "date"), direction: "descending" }],
-        }),
+        },
       ],
-      teamView: {
-        type: "table",
-        sorts: [{ propertyId: p("meetingNotes", "date"), direction: "descending" }],
-      },
     },
     {
       db: "docs",
@@ -592,28 +608,26 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           targetDataSourcePropertyResourceId: p("projects", "docs"),
         },
       ],
-      views: [
-        v => ({
-          resourceId: v("all"),
+      tabs: [
+        {
+          key: "all",
           name: "All docs",
           type: "table",
-          dataSourceResourceId: core.ds("docs"),
           sorts: [{ propertyId: p("docs", "name"), direction: "ascending" }],
-        }),
-        v => ({
-          resourceId: v("by-type"),
+        },
+        {
+          key: "by-type",
           name: "By type",
-          type: "board",
-          dataSourceResourceId: core.ds("docs"),
+          type: "table",
           groupBy: { property: p("docs", "type"), type: "select" },
-        }),
+          sorts: [{ propertyId: p("docs", "name"), direction: "ascending" }],
+        },
       ],
-      teamView: {
-        type: "table",
-        sorts: [{ propertyId: p("docs", "name"), direction: "ascending" }],
-      },
     },
   ]
+
+  /** addPage on each data source the template creates, keyed by data source resourceId. */
+  const addRow: Record<string, (args: { resourceId: string; properties: Record<string, any>; content?: string }) => void> = {}
 
   const coreIcon = (def: CoreDef) =>
     ({ type: "notion_icon", description: def.icon, color: "gray" }) as const
@@ -678,7 +692,18 @@ ${teamLinks.length > 0 ? `\n# Teams\n\n${teamLinks.join("\n")}\n` : ""}`,
         },
       ],
     })
-    for (const view of def.views) database.addView(view(key => core.view(def.db, key)))
+    const coreDs = database.getDataSource(core.ds(def.db))
+    addRow[core.ds(def.db)] = args => void coreDs.addPage(args as any)
+
+    for (const tab of def.tabs) {
+      const { key, filters, ...shape } = tab
+      database.addView({
+        ...shape,
+        resourceId: core.view(def.db, key),
+        dataSourceResourceId: core.ds(def.db),
+        filters: saved(filters ?? []),
+      })
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -735,36 +760,30 @@ ${
         content: `<database url="{{${team.linked(t.key, def.db)}}}" inline="true">${md(title)}</database>\n`,
       })
 
-      // Views-only linked database on the company data source. A lone filter
-      // lands as a quick filter that viewers can clear (finding 21); wrapped
-      // in a one-member `and` group it deploys as the saved filter (finding 27).
+      // Views-only linked database on the company data source, with the
+      // company database's tabs, each also filtered to Team contains <team>.
+      const teamFilter: PropertyFilter = {
+        type: "property",
+        propertyId: core.prop(def.db, "team"),
+        propertyType: "multi_select",
+        operator: "enum_contains",
+        value: [t.name],
+      }
       notion.database({
         resourceId: team.linked(t.key, def.db),
         parent: at(team.page(t.key, def.db)),
         name: title,
-        views: [
-          {
-            resourceId: team.view(t.key, def.db),
-            name: t.name,
+        views: def.tabs.map((tab, index): ViewSchema => {
+          const { key, filters, ...shape } = tab
+          return {
+            ...shape,
+            // The first tab keeps the ID of the single team view the template
+            // had before, so an existing build's tab is updated, not orphaned.
+            resourceId: index === 0 ? team.view(t.key, def.db) : `${team.view(t.key, def.db)}-${key}`,
             dataSourceResourceId: core.ds(def.db),
-            filters: [
-              {
-                type: "advanced",
-                operator: "and",
-                filters: [
-                  {
-                    type: "property",
-                    propertyId: core.prop(def.db, "team"),
-                    propertyType: "multi_select",
-                    operator: "enum_contains",
-                    value: [t.name],
-                  },
-                ],
-              },
-            ],
-            ...def.teamView,
-          },
-        ],
+            filters: saved([teamFilter, ...(filters ?? [])]),
+          }
+        }),
       })
     }
   }
@@ -791,6 +810,9 @@ ${
         },
       ],
     })
+    const teamDs = database.getDataSource(teamDb.ds(d.key))
+    addRow[teamDb.ds(d.key)] = args => void teamDs.addPage(args as any)
+
     database.addView({
       resourceId: teamDb.view(d.key),
       name: `All ${d.name.toLowerCase()}`,
@@ -798,6 +820,154 @@ ${
       dataSourceResourceId: teamDb.ds(d.key),
       sorts: [{ propertyId: teamDb.title(d.key), direction: "ascending" }],
     })
+  }
+
+  // -------------------------------------------------------------------------
+  // Sample records (spec.sampleRecords)
+  // -------------------------------------------------------------------------
+
+  // Relation values are written on one side only: the "many" side (Tasks,
+  // Meeting Notes and Docs → Project, Meeting Notes → Action Items). A
+  // re-deploy clears two-way relation values (finding 18), so deploy sample
+  // records once, on the first deploy.
+  if (spec.sampleRecords) {
+    const base = new Date(`${spec.engagement.signedOffOn}T00:00:00Z`)
+    const day = (offset: number) => {
+      const d = new Date(base.getTime() + offset * 86_400_000)
+      return d.toISOString().slice(0, 10)
+    }
+    const names = spec.teams.map(t => t.name)
+    /** The i-th team, cycling; no Team value if the spec has no teams. */
+    const teamOf = (i: number) => notion.multiSelect(names.length > 0 ? [names[i % names.length]!] : [])
+    const row = (db: CoreDatabase, n: number) => `${prefix}-s-${slugOf[db]}-${n}`
+
+    /** A plausible value for a spec-defined property, or undefined to leave it empty. */
+    const sampleValue = (prop: PropertySpec, i: number): any => {
+      switch (prop.type) {
+        case "text": return notion.text(`Example ${prop.name.toLowerCase()}`)
+        case "number": return notion.number(1000 * (i + 1))
+        case "select":
+        case "status": return prop.options?.[i % prop.options.length]
+        case "multi_select": return notion.multiSelect(prop.options ? [prop.options[i % prop.options.length]!] : [])
+        case "date": return notion.date(day(30 * (i + 1)))
+        case "checkbox": return notion.checkbox(i === 0)
+        case "url": return notion.url("https://example.com")
+        case "email": return notion.email("hello@example.com")
+        case "phone_number": return notion.phone("+65 6000 0000")
+        case "relation":
+          return typeof prop.relationTo === "string" ? notion.relation([row(prop.relationTo, 1)]) : undefined
+        default: return undefined // person values can't be set (finding 5)
+      }
+    }
+    const extraValues = (db: CoreDatabase, i: number) =>
+      Object.fromEntries(
+        (spec.coreDatabases[db]?.addProperties ?? [])
+          .map(prop => [prop.name, sampleValue(prop, i)] as const)
+          .filter(([, value]) => value !== undefined)
+      )
+
+    const projects = [
+      { name: "Website refresh", status: "In progress", priority: "High", start: -14, end: 45, summary: "Rebuild the company website on the new brand." },
+      { name: "Quarterly planning", status: "Not started", priority: "Medium", start: 21, end: 35, summary: "Agree next quarter's goals and owners." },
+      { name: "Team onboarding guide", status: "Done", priority: "Low", start: -60, end: -10, summary: "One place for everything a new starter needs." },
+    ]
+    projects.forEach((pj, i) => {
+      addRow[core.ds("projects")]!({
+        resourceId: row("projects", i + 1),
+        properties: {
+          Name: notion.text(pj.name),
+          // The first project is cross-team, to show the multi-select.
+          Team: i === 0 && names.length > 1 ? notion.multiSelect(names) : teamOf(i),
+          Status: notion.status(pj.status),
+          Priority: notion.select(pj.priority),
+          Dates: notion.date(day(pj.start), day(pj.end)),
+          Summary: notion.text(pj.summary),
+          ...extraValues("projects", i),
+        },
+      })
+    })
+
+    const tasks = [
+      { name: "Write the new homepage copy", project: 1, status: "In progress", priority: "High", due: 3 },
+      { name: "Review the site map", project: 1, status: "Not started", priority: "Medium", due: 10 },
+      { name: "Collect each team's goals", project: 2, status: "Not started", priority: "Medium", due: 24 },
+      { name: "Book the planning workshop", project: 2, status: "Not started", priority: "Low", due: 18 },
+      { name: "Draft the onboarding checklist", project: 3, status: "Done", priority: "Medium", due: -20 },
+      { name: "Retire the old wiki page", project: 3, status: "Cancelled", priority: "Low", due: -12 },
+    ]
+    tasks.forEach((tk, i) => {
+      addRow[core.ds("tasks")]!({
+        resourceId: row("tasks", i + 1),
+        properties: {
+          Name: notion.text(tk.name),
+          Team: teamOf(tk.project - 1),
+          Status: notion.status(tk.status),
+          Priority: notion.select(tk.priority),
+          Due: notion.date(day(tk.due)),
+          Project: notion.relation([row("projects", tk.project)]),
+          ...extraValues("tasks", i),
+        },
+      })
+    })
+
+    const meetings = [
+      { name: "Website refresh kick-off", type: "Team", date: -13, project: 1, actions: [1, 2] },
+      { name: "Planning prep", type: "1:1", date: -2, project: 2, actions: [3, 4] },
+      { name: "Monthly all-hands", type: "All-hands", date: -7, project: undefined, actions: [] },
+    ]
+    meetings.forEach((mt, i) => {
+      addRow[core.ds("meetingNotes")]!({
+        resourceId: row("meetingNotes", i + 1),
+        properties: {
+          Name: notion.text(mt.name),
+          Team: teamOf(i),
+          Type: notion.select(mt.type),
+          Date: notion.date(day(mt.date)),
+          ...(mt.project ? { Project: notion.relation([row("projects", mt.project)]) } : {}),
+          ...(mt.actions.length > 0
+            ? { "Action Items": notion.relation(mt.actions.map(n => row("tasks", n))) }
+            : {}),
+          ...extraValues("meetingNotes", i),
+        },
+        content: "# Notes\n\n- Example notes. Replace with your own.\n\n# Decisions\n\n- Example decision.\n",
+      })
+    })
+
+    const docs = [
+      { name: "Expenses policy", type: "Policy", reviewed: -30, project: undefined },
+      { name: "How we run projects", type: "Guide", reviewed: -5, project: 1 },
+      { name: "Brand guidelines", type: "Reference", reviewed: -90, project: 1 },
+    ]
+    docs.forEach((dc, i) => {
+      addRow[core.ds("docs")]!({
+        resourceId: row("docs", i + 1),
+        properties: {
+          Name: notion.text(dc.name),
+          Team: teamOf(i),
+          Type: notion.select(dc.type),
+          "Last reviewed": notion.date(day(dc.reviewed)),
+          ...(dc.project ? { Project: notion.relation([row("projects", dc.project)]) } : {}),
+          ...extraValues("docs", i),
+        },
+        content: "Example content. Replace with your own.\n",
+      })
+    })
+
+    for (const d of spec.teamDatabases) {
+      for (const i of [0, 1]) {
+        addRow[teamDb.ds(d.key)]!({
+          resourceId: `${prefix}-s-tdb-${d.key}-${i + 1}`,
+          properties: {
+            Name: notion.text(`Example ${i + 1}`),
+            ...Object.fromEntries(
+              d.properties
+                .map(prop => [prop.name, sampleValue(prop, i)] as const)
+                .filter(([, value]) => value !== undefined)
+            ),
+          },
+        })
+      }
+    }
   }
 }
 

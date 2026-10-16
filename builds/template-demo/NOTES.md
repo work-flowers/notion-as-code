@@ -122,6 +122,33 @@ resources created and all 57 resource IDs unchanged. `session.json` is now in
 | Team views (8) | ✅ each reads `filter: {multi_select: {contains: [<team>]}}` with `quick_filters: null`: a saved filter, not a quick filter. The server drops the one-member `and` wrapper (finding 30) |
 | My projects / My tasks / My meetings | ⚠️ still `filter: null, quick_filters: null`, as on the SDK runner. Only the UI can confirm them |
 
+## Deploy #5 (2026-10-16): more tabs, mirrored team tabs, sample records
+
+Template changes: Projects gains **All projects** and **Active projects**
+(Status is In progress), Tasks gains **Open tasks** (Status is not Done or
+Cancelled), Docs **By type** becomes a table grouped by Type, and every team
+page shows all of its database's tabs, each filtered to the team as a saved
+filter. The spec gets `sampleRecords: true`: 3 projects, 6 tasks, 3 meeting
+notes, 3 docs and 2 vendors, dated around the sign-off date, with relation
+values on the "many" side only. One project is tagged with both teams.
+
+Regenerated with `--force` (still no rows), then deployed with Dennis's
+go-ahead. One run, no errors: 17 pages created and 33 view tabs mapped.
+
+| Check | Result |
+| --- | --- |
+| Company tabs | ✅ Projects: Board, Timeline, All projects, Active projects, My projects. Tasks: Board, All tasks, Open tasks, My tasks. Meeting Notes: By date, Calendar, My meetings. Docs: All docs, By type |
+| Docs By type | ❌ still a **board** on the company database: a re-deploy can't change a view's type (finding 31). The team By type tabs are new, so they're tables |
+| Team tabs (28) | ✅ the same tabs on every team page, each with a saved filter for its team, combined with the tab's own filter in an `and` group |
+| Sample rows | ✅ 3 / 6 / 3 / 3 / 2, with Team values as written. A Team contains Marketing query returns the cross-team project |
+| Relations | ✅ every two-way value reads from both sides, including Tasks → Project (finding 32). Action Items and Vendors → Projects as written |
+| My … tabs | ⚠️ the `me` filter doesn't read back (company tabs read `null`; team tabs show only the Team member), so check in the UI |
+
+**This build now has rows**, so it's past the point where it can be
+regenerated or re-deployed: `--force` refuses, and a re-deploy would clear the
+sample relation values (finding 18). Test further template changes in a new
+build with its own prefix.
+
 ## Post-deploy manual steps
 
 1. ✅ In Settings → Teamspaces, the company teamspace is **Default** and the
@@ -131,8 +158,12 @@ resources created and all 57 resource IDs unchanged. `session.json` is now in
 2. ~~Save each team view's quick filter.~~ Done by the script since deploy #4.
    Check in the UI that the filter bar shows no removable "Team" pill.
 3. Check that My projects, My tasks and My meetings each show a "… contains
-   Me" filter.
-4. Members and permissions by hand (finding 7).
+   Me" filter, on the company databases and on the team pages.
+4. Change the company Docs **By type** view's layout to **Table** (finding 31).
+   Changing the layout in the UI keeps the view's ID.
+5. Check the tab order on each database matches the script. The API can't
+   read it.
+6. Members and permissions by hand (finding 7).
 
 **Don't re-deploy.** A re-deploy clears dual-relation values on existing rows
 (finding 18), and the generator refuses to regenerate a deployed build.
