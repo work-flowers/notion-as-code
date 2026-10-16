@@ -134,15 +134,18 @@ Notion as Code can't do these (see the playbook's Notion as Code section and
 5. **Check the board column order** is Not started, In progress, Done,
    Cancelled. The DSL can't set it; if it's wrong, set the group sort to
    ascending in the view's Group settings.
-6. **Add relative-date views** such as "due this week" by hand (finding 4).
-7. **Set up database templates** for Meeting Notes, Tasks and so on. They
+6. **Check the Projects Timeline opens on today.** A timeline saves its
+   scroll position, the DSL can't set it, and one deploy came out centred
+   months ahead of every project. Click Today and it's saved.
+7. **Add relative-date views** such as "due this week" by hand (finding 4).
+8. **Set up database templates** for Meeting Notes, Tasks and so on. They
    aren't in the scripting language.
-8. **Build Home-page charts and dashboards** (finding 8), **buttons and
+9. **Build Home-page charts and dashboards** (finding 8), **buttons and
    automations** (finding 9), and **number formats** such as percent
    (finding 11) where the spec asks for them.
-9. **Apply permissions and teamspace membership** in phase 4, from the
+10. **Apply permissions and teamspace membership** in phase 4, from the
    permissions plan (finding 7).
-10. At handover, each user sets the company Meeting Notes database as their
+11. At handover, each user sets the company Meeting Notes database as their
    default destination for Notion AI meeting notes. It's a per-user setting.
 
 ## After deploy

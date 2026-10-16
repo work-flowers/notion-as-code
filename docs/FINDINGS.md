@@ -478,6 +478,13 @@ Also confirmed on this run:
   `properties` changes, and a property left out of `properties` comes back
   hidden, including the title. The DSL has `statusBy: "option"` but no
   group sort.
+- **A timeline's scroll position is saved on the view, and the DSL can't set
+  it.** The company Projects Timeline read back
+  `preference: {zoom_level: "month", center_timestamp: …}` centred on
+  2 January 2027, where no sample project falls, so it looked empty. The
+  team Timelines had no `preference`. `PATCH /v1/views/{id}` can set
+  `configuration.preference.center_timestamp`. Where the January centre came
+  from is unknown.
 - **Re-deploying adds tabs to an existing linked database.** Each team's
   linked databases kept their first tab's ID (renamed from the team name to
   "Board", "By date" and so on) and gained the new tabs.

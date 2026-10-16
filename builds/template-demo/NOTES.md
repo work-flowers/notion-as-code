@@ -166,6 +166,12 @@ no longer matches the workspace on these points:
   Project (Tasks), plus Team on the DemoCo HQ boards only: on a team page
   every card has that team, so it's left off. Team filters were unchanged by
   the patch.
+- **Company Projects Timeline re-centred on today.** It read
+  `preference: {zoom_level: "month", center_timestamp: <2 Jan 2027>}`. At
+  month zoom that shows about mid-December to mid-January, after every sample
+  project ends, so the timeline looked empty. The script sets no preference
+  (the DSL has none), and the team Timelines had none. Patched to centre on
+  2026-10-16.
 - **Emoji icons** on the three sample projects (🌐 Website refresh,
   🗓️ Quarterly planning, 🧭 Team onboarding guide), via `PATCH /v1/pages`.
 
