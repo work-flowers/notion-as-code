@@ -103,6 +103,27 @@ errors, and no mapping added or changed.
 | Team views | ✅ tabs named Operations / Marketing, quick filters `contains ["Operations"]` / `["Marketing"]` |
 | Teamspace names | ⚠️ not readable through the API; check in the UI (finding 24 left open whether a re-deploy renames a teamspace) |
 
+## Moved to the `ntn` engine (2026-10-16), not yet re-deployed
+
+Regenerated with `npm run new-build -- template-demo --prefix td --force`
+(every database still empty) after the template moved to `ntn` (finding 30).
+`build.json` now has `"engine": "ntn"`, and each team view wraps its Team
+filter in a one-member `and` group so it deploys as a saved filter
+(finding 27). The resourceIds are unchanged: the SDK and `ntn` compiles both
+claim the same 93, including every mapping in `session.json`. `check`,
+`typecheck` and `--dry` pass (43 intents).
+
+**Not re-deployed.** The live build is still the SDK runner's deploy #3, and
+`session.json` is still in the SDK shape. The next `npm run build --
+template-demo` goes through `ntn`, which rewrites `session.json` (finding 26),
+so after that the build can't go back to the SDK runner. Deploy only with
+Dennis's go-ahead. Then check:
+
+- each of the 8 team views reads its filter under `filter`, with
+  `quick_filters: null`, and shows no removable pill in the UI;
+- My projects, My tasks and My meetings still filter on `me`, and what
+  `GET /v1/views/{id}` returns for them on `ntn`.
+
 ## Post-deploy manual steps
 
 1. ✅ In Settings → Teamspaces, the company teamspace is **Default** and the
@@ -110,6 +131,7 @@ errors, and no mapping added or changed.
    After deploy #3, also check they're named DemoCo HQ, Operations and
    Marketing.
 2. Save each team view's quick filter as a saved filter (finding 21): 8 views.
+   After an `ntn` re-deploy, only for views that still show a removable pill.
 3. Check that My projects, My tasks and My meetings each show a "… contains
    Me" filter.
 4. Members and permissions by hand (finding 7).

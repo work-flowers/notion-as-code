@@ -385,6 +385,36 @@ Also confirmed on this run:
   deleted in the UI. Child databases still read `in_trash: false` afterwards,
   so the flag isn't inherited in API reads.
 
+## Moving the core template to the `ntn` engine, 2026-10-16 (30)
+
+30. **The 2026-10-06 DSL changes the filter shapes, and makes its types
+    non-global.** Porting the core template from the SDK runner to the `ntn`
+    engine, typecheck rejected three things the SDK branch accepts:
+
+    - Every property filter needs `type: "property"` (the discriminant for
+      `type: "advanced"` groups).
+    - Select, multi-select and status filters take an array:
+      `value: ["Operations"]`, not `value: "Operations"`.
+    - A `me` person filter is a one-element array:
+      `value: [{ type: "relative", value: "me" }]`.
+
+    The template's `types.d.ts` also exports its types instead of declaring
+    them globally, so a build script can't name `PropertySchemaDefinition` or
+    `ViewSchema` without an import, which build scripts can't have (finding
+    29). `vendor/ntn-template/globals.d.ts` now re-declares those two as
+    globals for the typecheck. The runtime doesn't need them.
+
+    So a script written for one engine doesn't type-check on the other.
+    Generated builds now get `"engine": "ntn"`, and their team views wrap the
+    Team filter in a one-member `and` group, so it should deploy as the saved
+    filter (finding 27). The compiled resourceIds are identical to the SDK
+    build's (`template-demo`: 93 and 93, every `session.json` mapping still
+    claimed). **Not yet verified on the server:** whether the one-member group
+    reads back under `filter`, whether a viewer can clear it, and whether the
+    `me` filters read back on `ntn`. That needs `template-demo` re-deployed on
+    `ntn`, which can't be undone (finding 26), so it waits for Dennis's
+    go-ahead.
+
 ## What works
 
 Everything else deployed faithfully on the knoxx-rnd first run: two-way

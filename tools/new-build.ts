@@ -10,8 +10,12 @@
  *   spec.ts       the client's spec (input)
  *   build.ts      spec types + spec + template, self-contained (build scripts
  *                 can't import other files)
- *   build.json    manifest, status not-deployed
+ *   build.json    manifest, status not-deployed, "engine": "ntn"
  *   session.json  seeded with the workspace anchor only
+ *
+ * Builds run on the ntn engine (finding 25): they compile and type-check
+ * against vendor/ntn-template and deploy through `ntn notion-as-code apply`.
+ * The template's team-view filters rely on it (finding 27, 30).
  *
  * --prefix starts every resourceId (e.g. "acme" → "acme-projects-db"). Keep it
  * short and unique per workspace, and never change it after a deploy.
@@ -66,12 +70,27 @@ function copySpec(from: string, to: string) {
   fs.writeFileSync(to, source)
 }
 
+/**
+ * A session file's resource pointers, in either shape: the SDK runner's
+ * resourceIdToPointerMappings (`table`) or ntn's resourceIdToResourcePointers
+ * (`type`, finding 26).
+ */
+function sessionPointers(sessionPath: string): Record<string, { kind: string; id: string }> {
+  const session = JSON.parse(fs.readFileSync(sessionPath, "utf8"))
+  const raw = session.resourceIdToPointerMappings ?? session.resourceIdToResourcePointers ?? {}
+  return Object.fromEntries(
+    Object.entries<any>(raw).map(([resourceId, pointer]) => [
+      resourceId,
+      { kind: pointer.table ?? pointer.type, id: pointer.id },
+    ])
+  )
+}
+
 /** Data sources in a session file that already hold rows. */
 async function dataSourcesWithRows(sessionPath: string, token: string): Promise<string[]> {
-  const session = JSON.parse(fs.readFileSync(sessionPath, "utf8"))
   const withRows: string[] = []
-  for (const [resourceId, pointer] of Object.entries<any>(session.resourceIdToPointerMappings)) {
-    if (pointer.table !== "collection") continue
+  for (const [resourceId, pointer] of Object.entries(sessionPointers(sessionPath))) {
+    if (pointer.kind !== "collection") continue
     const res = await fetch(`https://api.notion.com/v1/data_sources/${pointer.id}/query`, {
       method: "POST",
       headers: {
@@ -113,9 +132,7 @@ async function main() {
   const force = args.includes("--force")
   const deployed =
     (existing && existing.status !== "not-deployed") ||
-    (fs.existsSync(sessionPath) &&
-      Object.keys(JSON.parse(fs.readFileSync(sessionPath, "utf8")).resourceIdToPointerMappings ?? {})
-        .length > 1)
+    (fs.existsSync(sessionPath) && Object.keys(sessionPointers(sessionPath)).length > 1)
   if (deployed) {
     if (!force) {
       fail(`builds/${name} is deployed. Its script is a record now; don't regenerate it.`)
@@ -207,6 +224,7 @@ export {}
     script: "build.ts",
     session: "session.json",
     spec: "spec.ts",
+    engine: "ntn",
     prefix,
     tokenRef: existing?.tokenRef ?? sibling?.manifest.tokenRef,
     opAccount: existing?.opAccount ?? sibling?.manifest.opAccount,

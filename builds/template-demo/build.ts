@@ -443,7 +443,7 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           name: "My projects",
           type: "table",
           dataSourceResourceId: core.ds("projects"),
-          filters: [{ propertyId: p("projects", "owner"), propertyType: "person", operator: "person_contains", value: { type: "relative", value: "me" } }],
+          filters: [{ type: "property", propertyId: p("projects", "owner"), propertyType: "person", operator: "person_contains", value: [{ type: "relative", value: "me" }] }],
           sorts: [{ propertyId: p("projects", "dates"), direction: "ascending" }],
         }),
       ],
@@ -491,7 +491,7 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           name: "My tasks",
           type: "table",
           dataSourceResourceId: core.ds("tasks"),
-          filters: [{ propertyId: p("tasks", "assignee"), propertyType: "person", operator: "person_contains", value: { type: "relative", value: "me" } }],
+          filters: [{ type: "property", propertyId: p("tasks", "assignee"), propertyType: "person", operator: "person_contains", value: [{ type: "relative", value: "me" }] }],
           sorts: [{ propertyId: p("tasks", "due"), direction: "ascending" }],
         }),
       ],
@@ -554,7 +554,7 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           name: "My meetings",
           type: "table",
           dataSourceResourceId: core.ds("meetingNotes"),
-          filters: [{ propertyId: p("meetingNotes", "attendees"), propertyType: "person", operator: "person_contains", value: { type: "relative", value: "me" } }],
+          filters: [{ type: "property", propertyId: p("meetingNotes", "attendees"), propertyType: "person", operator: "person_contains", value: [{ type: "relative", value: "me" }] }],
           sorts: [{ propertyId: p("meetingNotes", "date"), direction: "descending" }],
         }),
       ],
@@ -735,8 +735,9 @@ ${
         content: `<database url="{{${team.linked(t.key, def.db)}}}" inline="true">${md(title)}</database>\n`,
       })
 
-      // Views-only linked database on the company data source. The filter
-      // lands as a quick filter (finding 21): save it by hand after deploy.
+      // Views-only linked database on the company data source. A lone filter
+      // lands as a quick filter that viewers can clear (finding 21); wrapped
+      // in a one-member `and` group it deploys as the saved filter (finding 27).
       notion.database({
         resourceId: team.linked(t.key, def.db),
         parent: at(team.page(t.key, def.db)),
@@ -748,10 +749,17 @@ ${
             dataSourceResourceId: core.ds(def.db),
             filters: [
               {
-                propertyId: core.prop(def.db, "team"),
-                propertyType: "multi_select",
-                operator: "enum_contains",
-                value: t.name,
+                type: "advanced",
+                operator: "and",
+                filters: [
+                  {
+                    type: "property",
+                    propertyId: core.prop(def.db, "team"),
+                    propertyType: "multi_select",
+                    operator: "enum_contains",
+                    value: [t.name],
+                  },
+                ],
               },
             ],
             ...def.teamView,
