@@ -203,3 +203,10 @@ Not started first is untested.
 
 **Don't re-deploy.** A re-deploy clears dual-relation values on existing rows
 (finding 18), and the generator refuses to regenerate a deployed build.
+
+## Removed (2026-10-16)
+
+Replaced by `builds/democo`, a fresh build of the same spec, so the template
+could be deployed with page layouts (which need a re-deploy, and this build
+had rows). Dennis deleted the DemoCo HQ, Operations and Marketing teamspaces
+by hand. The script and `session.json` stay as the record of deploys #1–5.
