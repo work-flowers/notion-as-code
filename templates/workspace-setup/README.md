@@ -6,7 +6,9 @@ build in `builds/<client>/` that deploys:
 
 - An all-company teamspace with `default` access, holding a Home page and one
   page per core database: Projects, Tasks, Meeting Notes, Docs.
-- The playbook's standard schema and default views on those databases. Every
+- The playbook's standard schema and default views on those databases, plus
+  "My projects", "My tasks" and "My meetings" tabs that filter on the viewer
+  (`me`). Every
   database has **Team**, a multi-select with one option per team, plus the
   standard relations: Projects ↔ Tasks, Projects ↔ Meeting Notes, Projects ↔
   Docs, and Meeting Notes → Tasks (`Action Items`).
@@ -16,8 +18,7 @@ build in `builds/<client>/` that deploys:
 - The spec's extra core properties and team databases. Team databases are
   nested in their team's Home page.
 
-There are no permissions, no sample rows and no views that depend on the
-current user or a relative date. The design lives in the playbook's Standard
+There are no permissions, no sample rows and no relative-date views. The design lives in the playbook's Standard
 schema section:
 [Playbook: New Notion Workspace Setup](https://app.notion.com/p/3fb91b0711ac81c59c44eea9bfbc608c).
 
@@ -73,7 +74,11 @@ schema section:
 
 Until the first deploy you can edit `spec.ts` and regenerate as often as you
 like. After it, the generator refuses to regenerate: `build.ts` is the record
-of what was deployed.
+of what was deployed. The exception is `--force`, which regenerates a deployed
+build only if every one of its databases is still empty (it checks through the
+API), and keeps `session.json`. Use it to pick up a template change before any
+rows exist, then re-deploy. Once rows exist, a re-deploy would clear their
+relation values (finding 18).
 
 **Why generate, not import:** a build script can't import another file
 (finding 25), so `build.ts` carries its own copy of the spec types, the spec
@@ -91,16 +96,18 @@ Notion as Code can't do these (see the playbook's Notion as Code section and
 2. **Delete the pre-installed default teamspace** if it's empty (finding 23).
 3. **Save the team views' filters.** Script filters land as quick filters that
    any viewer can clear (finding 21). There's one per team per core database.
-4. **Add the views that can't be scripted:** My tasks, My projects, My
-   meetings, and relative-date views such as "due this week" (finding 4).
-5. **Set up database templates** for Meeting Notes, Tasks and so on. They
+4. **Check the "My" tabs** (My projects, My tasks, My meetings) show a
+   "… contains Me" filter. The API reads a `me` filter back as `null`, so the
+   UI is the only check.
+5. **Add relative-date views** such as "due this week" by hand (finding 4).
+6. **Set up database templates** for Meeting Notes, Tasks and so on. They
    aren't in the scripting language.
-6. **Build Home-page charts and dashboards** (finding 8), **buttons and
+7. **Build Home-page charts and dashboards** (finding 8), **buttons and
    automations** (finding 9), and **number formats** such as percent
    (finding 11) where the spec asks for them.
-7. **Apply permissions and teamspace membership** in phase 4, from the
+8. **Apply permissions and teamspace membership** in phase 4, from the
    permissions plan (finding 7).
-8. At handover, each user sets the company Meeting Notes database as their
+9. At handover, each user sets the company Meeting Notes database as their
    default destination for Notion AI meeting notes. It's a per-user setting.
 
 ## After deploy

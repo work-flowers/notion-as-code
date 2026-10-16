@@ -19,10 +19,15 @@
  * Regenerating is allowed until the first deploy. After that the generator
  * refuses: a deployed build's script is a record, and the client workspace is
  * retired from Notion as Code at the cut-off (docs/GUARDRAILS.md).
+ *
+ * --force regenerates a deployed build, but only while every one of its
+ * databases is empty (checked through the API), because a re-deploy clears
+ * relation values on existing rows (finding 18). It keeps session.json and the
+ * deploy fields in build.json. Never for a retired or removed build.
  */
 import * as fs from "fs"
 import * as path from "path"
-import { BUILDS_DIR, BuildManifest, loadAllBuilds, REPO_ROOT } from "./builds"
+import { BUILDS_DIR, BuildManifest, loadAllBuilds, readToken, REPO_ROOT } from "./builds"
 import type { WorkspaceSpec } from "../templates/workspace-setup/spec"
 import { validateSpec } from "../templates/workspace-setup/validate"
 
@@ -61,6 +66,28 @@ function copySpec(from: string, to: string) {
   fs.writeFileSync(to, source)
 }
 
+/** Data sources in a session file that already hold rows. */
+async function dataSourcesWithRows(sessionPath: string, token: string): Promise<string[]> {
+  const session = JSON.parse(fs.readFileSync(sessionPath, "utf8"))
+  const withRows: string[] = []
+  for (const [resourceId, pointer] of Object.entries<any>(session.resourceIdToPointerMappings)) {
+    if (pointer.table !== "collection") continue
+    const res = await fetch(`https://api.notion.com/v1/data_sources/${pointer.id}/query`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Notion-Version": "2026-03-11",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ page_size: 1 }),
+    })
+    const body = await res.json()
+    if (!res.ok) throw new Error(`Couldn't query ${resourceId}: ${body.message}`)
+    if (body.results.length > 0) withRows.push(resourceId)
+  }
+  return withRows
+}
+
 function teamspaceSummary(spec: WorkspaceSpec): string {
   return [
     `${spec.companyTeamspace.name} (default)`,
@@ -82,15 +109,29 @@ async function main() {
     ? (JSON.parse(fs.readFileSync(manifestPath, "utf8")) as BuildManifest & { prefix?: string })
     : undefined
 
-  // Never regenerate over a deployed build.
-  if (existing && existing.status !== "not-deployed") {
-    fail(`builds/${name} is ${existing.status}. Its script is a record now; don't regenerate it.`)
-  }
-  if (fs.existsSync(sessionPath)) {
-    const session = JSON.parse(fs.readFileSync(sessionPath, "utf8"))
-    if (Object.keys(session.resourceIdToPointerMappings ?? {}).length > 1) {
-      fail(`builds/${name}/session.json already maps deployed resources. Refusing to regenerate.`)
+  // Never regenerate over a deployed build, unless --force and it's empty.
+  const force = args.includes("--force")
+  const deployed =
+    (existing && existing.status !== "not-deployed") ||
+    (fs.existsSync(sessionPath) &&
+      Object.keys(JSON.parse(fs.readFileSync(sessionPath, "utf8")).resourceIdToPointerMappings ?? {})
+        .length > 1)
+  if (deployed) {
+    if (!force) {
+      fail(`builds/${name} is deployed. Its script is a record now; don't regenerate it.`)
     }
+    if (existing?.status === "retired" || existing?.status === "removed") {
+      fail(`builds/${name} is ${existing.status}. --force doesn't apply.`)
+    }
+    const token = readToken(existing?.tokenRef, existing?.opAccount)
+    const withRows = await dataSourcesWithRows(sessionPath, token)
+    if (withRows.length > 0) {
+      fail(
+        `--force refused: ${withRows.join(", ")} already hold rows, and a re-deploy ` +
+          `would clear their relation values (finding 18).`
+      )
+    }
+    console.log(`--force: builds/${name} is deployed but every database is empty; regenerating.`)
   }
 
   const prefix = flag(args, "prefix") ?? existing?.prefix
@@ -170,12 +211,18 @@ export {}
     tokenRef: existing?.tokenRef ?? sibling?.manifest.tokenRef,
     opAccount: existing?.opAccount ?? sibling?.manifest.opAccount,
     autoIncrementPrefixes: [],
-    status: "not-deployed",
-    deployedAt: null,
+    status: deployed ? existing!.status : "not-deployed",
+    deployedAt: deployed ? existing!.deployedAt : null,
     teamspace: teamspaceSummary(spec),
-    hubUrl: null,
+    hubUrl: deployed ? existing!.hubUrl : null,
   }
   fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
+
+  if (deployed) {
+    console.log(`✓ builds/${name} regenerated; session.json kept`)
+    console.log(`\nNext:  npm run check -- ${name} && npm run typecheck -- ${name} && npm run build -- ${name} --dry`)
+    return
+  }
 
   const session = {
     resourceIdToPointerMappings: {

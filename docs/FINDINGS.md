@@ -274,6 +274,13 @@ Also confirmed on this run:
   relation values, not in the relation schema it creates.
 - **Timeline and calendar views deploy** from `timelineBy` and `calendarBy`
   (Projects Timeline, Meeting Notes Calendar).
+- **"My" views can be scripted.** A person filter with
+  `value: { type: "relative", value: "me" }` deploys (My projects, My tasks,
+  My meetings), but it reads back `null` in both `filter` and `quick_filters`.
+  So only the UI shows whether it landed, and whether as a saved filter or a
+  quick filter (finding 21).
+- **A re-deploy that only adds views is clean on an empty build.** The second
+  template-demo run added 3 view mappings and changed none.
 - **A teamspace's top-level pages can be trashed through the public API**
   (`PATCH /v1/pages/{id}` with `in_trash: true`), which is how `setup-core`
   and `default-teamspace-probe` were removed. Teamspaces themselves can only be

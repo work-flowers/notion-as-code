@@ -269,6 +269,21 @@
       "id": "3fb6b878-1c06-815a-ae32-000c5e41897a",
       "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
       "table": "collection_view"
+    },
+    "td-meetings-view-mine": {
+      "id": "3fb6b878-1c06-8118-920a-000cf3aae34b",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "td-projects-view-mine": {
+      "id": "3fb6b878-1c06-81f8-8375-000c586115c7",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "td-tasks-view-mine": {
+      "id": "3fb6b878-1c06-81a3-a5f5-000c06086737",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
     }
   },
   "resourceIdToPropertyIdMappings": {

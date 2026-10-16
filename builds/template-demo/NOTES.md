@@ -40,7 +40,9 @@ what was deployed.
   (dual), Meeting Notes → Tasks `Action Items` (one-way). Spec-added relations
   (Vendors → Projects) are one-way.
 - Spec additions: Projects gets Budget (number) and Client-facing (checkbox).
-- No sample rows, no permissions, no "My …" or relative-date views.
+- "My projects" (Owner), "My tasks" (Assignee) and "My meetings" (Attendees)
+  tabs filter on the viewer, `me`. Added in deploy #2.
+- No sample rows, no permissions, no relative-date views.
 
 ## Compile results (2026-10-16)
 
@@ -69,14 +71,29 @@ through the API, which were trashed afterwards, so the build has no rows.
 | Views exist | ✅ Projects: Board, Timeline. Tasks: Board, All tasks. Meeting Notes: By date, Calendar. Docs: All docs, By type. Vendors: All vendors. Plus one linked view per team per core database (8), named after the team |
 | Placement | ✅ core databases inside their Company pages, team linked views inside the "TD … " pages, Vendors inside TD Operations Home |
 
+## Deploy #2 (2026-10-16): "My" tabs
+
+The template first left the "My" views as a manual step, on the belief that
+scripts can't filter on the current user. They can: the DSL's person filter
+takes `{ type: "relative", value: "me" }`, as `crm` already used. The template
+now adds My projects, My tasks and My meetings.
+
+Regenerated with `npm run new-build -- template-demo --prefix td --force`,
+which first checked that every database was empty, then re-deployed. One run,
+no errors: 3 new view mappings, and no existing mapping changed.
+
+| Check | Result |
+| --- | --- |
+| The three tabs exist on the right databases, with their sorts | ✅ |
+| Their `me` filters | ⚠️ read back `null` in both `filter` and `quick_filters`, as for crm's My Emails / My Meetings. Only the UI can confirm them |
+
 ## Post-deploy manual steps
 
-1. In Settings → Teamspaces, confirm Template Demo Company is **Default** and
-   TD Operations / TD Marketing are **Closed**. The API can't read access
-   levels.
+1. ✅ In Settings → Teamspaces, Template Demo Company is **Default** and
+   TD Operations / TD Marketing are **Closed** (confirmed by Dennis).
 2. Save each team view's quick filter as a saved filter (finding 21): 8 views.
-3. Add the "My tasks" / "My projects" / "My meetings" views and any
-   relative-date views by hand. They can't be scripted.
+3. Check that My projects, My tasks and My meetings each show a "… contains
+   Me" filter.
 4. Members and permissions by hand (finding 7).
 
 **Don't re-deploy.** A re-deploy clears dual-relation values on existing rows

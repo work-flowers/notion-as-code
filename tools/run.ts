@@ -11,34 +11,16 @@
  * `tokenRef` via the 1Password CLI. It is never printed and never passed on the
  * command line — only through the child process environment.
  */
-import { execFileSync, spawnSync } from "child_process"
+import { spawnSync } from "child_process"
 import {
   assertSessionMatchesManifest,
   findPrefixCollisions,
   listBuildNames,
   loadAllBuilds,
   loadBuild,
+  readToken,
   SDK_DIR,
 } from "./builds"
-
-function readToken(tokenRef?: string, opAccount?: string): string {
-  const fromEnv = process.env["NOTION_TOKEN"]
-  if (fromEnv) {
-    console.log("token: $NOTION_TOKEN (already in the environment)")
-    return fromEnv
-  }
-  if (!tokenRef) {
-    throw new Error(
-      "No $NOTION_TOKEN and no tokenRef in build.json. Export the token or add a tokenRef."
-    )
-  }
-  console.log(`token: reading ${tokenRef} from 1Password`)
-  const args = ["read", tokenRef]
-  if (opAccount) args.push("--account", opAccount)
-  const token = execFileSync("op", args, { encoding: "utf8" }).trim()
-  if (!token) throw new Error(`1Password returned an empty value for ${tokenRef}`)
-  return token
-}
 
 function main() {
   const args = process.argv.slice(2)

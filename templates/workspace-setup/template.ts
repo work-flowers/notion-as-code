@@ -141,7 +141,10 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
     description: string
     blurb: string
     properties: PropertySchemaDefinition[]
-    /** Default tabs on the company database. The first one is the team views' shape too. */
+    /**
+     * Default tabs on the company database, then its "My …" tab (a person filter on
+     * the viewer, `me`). The team views copy the first tab's shape.
+     */
     views: Array<(viewId: (key: string) => string) => ViewSchema>
     teamView: TeamViewShape
   }
@@ -199,6 +202,14 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           dataSourceResourceId: core.ds("projects"),
           timelineBy: p("projects", "dates"),
         }),
+        v => ({
+          resourceId: v("mine"),
+          name: "My projects",
+          type: "table",
+          dataSourceResourceId: core.ds("projects"),
+          filters: [{ propertyId: p("projects", "owner"), propertyType: "person", operator: "person_contains", value: { type: "relative", value: "me" } }],
+          sorts: [{ propertyId: p("projects", "dates"), direction: "ascending" }],
+        }),
       ],
       teamView: { type: "board", groupBy: { property: p("projects", "status"), type: "status" } },
     },
@@ -237,6 +248,14 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           name: "All tasks",
           type: "table",
           dataSourceResourceId: core.ds("tasks"),
+          sorts: [{ propertyId: p("tasks", "due"), direction: "ascending" }],
+        }),
+        v => ({
+          resourceId: v("mine"),
+          name: "My tasks",
+          type: "table",
+          dataSourceResourceId: core.ds("tasks"),
+          filters: [{ propertyId: p("tasks", "assignee"), propertyType: "person", operator: "person_contains", value: { type: "relative", value: "me" } }],
           sorts: [{ propertyId: p("tasks", "due"), direction: "ascending" }],
         }),
       ],
@@ -293,6 +312,14 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           type: "calendar",
           dataSourceResourceId: core.ds("meetingNotes"),
           calendarBy: p("meetingNotes", "date"),
+        }),
+        v => ({
+          resourceId: v("mine"),
+          name: "My meetings",
+          type: "table",
+          dataSourceResourceId: core.ds("meetingNotes"),
+          filters: [{ propertyId: p("meetingNotes", "attendees"), propertyType: "person", operator: "person_contains", value: { type: "relative", value: "me" } }],
+          sorts: [{ propertyId: p("meetingNotes", "date"), direction: "descending" }],
         }),
       ],
       teamView: {
