@@ -1,0 +1,177 @@
+{
+  "resourceIdToResourcePointers": {
+    "drp-demo-space": {
+      "id": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "space"
+    },
+    "drp-hub": {
+      "id": "3fb6b878-1c06-8134-9eb7-ca86ba438138",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "drp-pj-name": {
+      "collectionId": "3fb6b878-1c06-8112-8727-000bff71a587",
+      "id": "title",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "drp-pj-summary": {
+      "collectionId": "3fb6b878-1c06-8112-8727-000bff71a587",
+      "id": "?m;~",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "drp-project-alpha": {
+      "id": "3fb6b878-1c06-8142-98cf-f27c1dd722d3",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "drp-project-beta": {
+      "id": "3fb6b878-1c06-81f9-b92f-f704c9a81772",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "drp-project-tasks-tab-view": {
+      "id": "3fb6b878-1c06-8174-9cd6-000ce6678e79",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "drp-projects-all-view": {
+      "id": "3fb6b878-1c06-81af-b449-000c63e3253b",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "drp-projects-db": {
+      "id": "3fb6b878-1c06-8155-8135-f7b67871ba75",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "drp-projects-ds": {
+      "id": "3fb6b878-1c06-8112-8727-000bff71a587",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection"
+    },
+    "drp-projects-ds.page-layout": {
+      "id": "3fb6b878-1c06-819f-a3a6-006e5b61873e",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "layout"
+    },
+    "drp-projects-ds.page-layout.content-view": {
+      "id": "3fb6b878-1c06-8179-b923-000ca95f9b5e",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "drp-projects-ds.page-layout.views-main": {
+      "id": "3fb6b878-1c06-81f1-930e-c7737fb6ac26",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "drp-task-due-next-week": {
+      "id": "3fb6b878-1c06-81ca-9da8-e8c934b08437",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "drp-task-due-today": {
+      "id": "3fb6b878-1c06-8112-a210-c11dada24ccc",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "drp-task-overdue": {
+      "id": "3fb6b878-1c06-8190-9f37-c5c800f1dd51",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "drp-task-range-into-next-month": {
+      "id": "3fb6b878-1c06-8151-b2fe-da7d9e8461f2",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "drp-tasks-all-view": {
+      "id": "3fb6b878-1c06-8190-80c0-000cc584e6ed",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "drp-tasks-and-nested-view": {
+      "id": "3fb6b878-1c06-8151-a6f0-000c1cd44f4f",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "drp-tasks-db": {
+      "id": "3fb6b878-1c06-8109-822f-da088906c2f7",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "block"
+    },
+    "drp-tasks-ds": {
+      "id": "3fb6b878-1c06-8154-b3d3-000bc15e133f",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection"
+    },
+    "drp-tasks-ends-this-month-view": {
+      "id": "3fb6b878-1c06-8183-a7de-000c337db208",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "drp-tasks-feed-view": {
+      "id": "3fb6b878-1c06-81e4-a6d1-000cab29410e",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "drp-tasks-next-2w-view": {
+      "id": "3fb6b878-1c06-8197-a37c-000cdcf1250d",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "drp-tasks-or-view": {
+      "id": "3fb6b878-1c06-81cd-9c03-000c3b839ad3",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "drp-tasks-today-view": {
+      "id": "3fb6b878-1c06-819b-8ce4-000c1c617f32",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_view"
+    },
+    "drp-teamspace": {
+      "id": "3fb6b878-1c06-81cd-a8d7-00420abb23e2",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "team"
+    },
+    "drp-tk-due": {
+      "collectionId": "3fb6b878-1c06-8154-b3d3-000bc15e133f",
+      "id": "]x=q",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "drp-tk-name": {
+      "collectionId": "3fb6b878-1c06-8154-b3d3-000bc15e133f",
+      "id": "title",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "drp-tk-project-rel": {
+      "collectionId": "3fb6b878-1c06-8154-b3d3-000bc15e133f",
+      "id": ";SVh",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    },
+    "drp-tk-status": {
+      "collectionId": "3fb6b878-1c06-8154-b3d3-000bc15e133f",
+      "id": "vMr~",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "type": "collection_property"
+    }
+  },
+  "meta": {
+    "workspaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+    "lastAppliedAtMs": 1792134272228,
+    "lastScript": "/private/var/folders/kv/pcf5ssk502gbmhj49kyz5qmw0000gn/T/nac-apply-Hw6kZw/intents.json",
+    "createdRecordCounts": {
+      "custom_agent": 0,
+      "database": 2,
+      "page": 7,
+      "space": 0,
+      "teamspace": 1
+    }
+  }
+}

@@ -35,6 +35,7 @@ Auth: **Personal Access Token**, attached to this workspace, stored at
 | `setup-core` | Company (open), Operations (closed), Marketing (closed) | removed 2026-10-16 | — |
 | `template-demo` | DemoCo HQ (default), Operations (closed), Marketing (closed) | deployed 2026-10-16 | — |
 | `default-teamspace-probe` | Default Probe A (default), Default Probe B (open) | removed 2026-10-16 | — |
+| `dsl-recheck-probe` | DSL Recheck Probe (open) | deployed 2026-10-16 | — |
 
 ## Prefix checks
 
