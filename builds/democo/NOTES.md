@@ -39,3 +39,16 @@ Checked through the API and in the app (Dennis signed the in-app browser in):
    after this deploy).
 
 This build has rows, so don't re-deploy it (finding 18).
+
+## Deploy #2 (2026-10-16): re-deploy test
+
+Fixed through the API first: the six boards' column sort (ascending) and the
+related tabs' extra columns. Then regenerated with the new pins (Team on every
+layout, Project on Tasks) using `--force --allow-rows`, and re-deployed to
+test finding 18 on `ntn`. One run, no errors, nothing created, layouts
+updated (the task page now pins Project). But both Meeting Notes relations
+were cleared on every meeting, along with the Tasks → Meeting back-links
+(finding 33). Tasks, Docs and Vendors kept theirs.
+
+So this build's sample data is now incomplete, and it gets replaced by a
+fresh deploy.

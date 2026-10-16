@@ -492,6 +492,32 @@ Also confirmed on this run:
   linked databases kept their first tab's ID (renamed from the team name to
   "Board", "By date" and so on) and gained the new tabs.
 
+## From re-deploying democo on `ntn`, 2026-10-16 (33)
+
+`democo` (fresh deploy of the core template with page layouts and sample
+rows) was re-deployed unchanged except for layout pins and tab columns, to
+test finding 18 on `ntn`. Regenerated with `new-build --force --allow-rows`.
+One run, no errors: 0 resources created, every ID kept, and the layout
+changes applied.
+
+33. **On `ntn`, a re-deploy still clears some relation values on existing
+    rows, but not all.** Every value the script writes was compared before
+    and after:
+
+    | Relation, written on | After the re-deploy |
+    | --- | --- |
+    | Tasks → Project (two-way, `limit: 1`) | ✅ kept on all 6 |
+    | Docs → Project (two-way) | ✅ kept on both |
+    | Vendors → Projects (one-way) | ✅ kept on both |
+    | Meeting Notes → Project (two-way) | ❌ cleared on both |
+    | Meeting Notes → Action Items (two-way) | ❌ cleared on both, with the Tasks → Meeting back-links |
+
+    The rows that lost values are the only ones the script writes two
+    relations on. That may be the trigger, but it's one run, so untested. On
+    the SDK runner (finding 18) every two-way value was cleared. So
+    re-deploying a build with rows is still unsafe on `ntn`. The guard in
+    `new-build --force` stays, and `--allow-rows` is for demo tests only.
+
 ## What works
 
 Everything else deployed faithfully on the knoxx-rnd first run: two-way

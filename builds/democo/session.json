@@ -764,14 +764,14 @@
   },
   "meta": {
     "workspaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
-    "lastAppliedAtMs": 1792140226733,
-    "lastScript": "/private/var/folders/kv/pcf5ssk502gbmhj49kyz5qmw0000gn/T/nac-apply-HgMbzX/intents.json",
+    "lastAppliedAtMs": 1792141229385,
+    "lastScript": "/private/var/folders/kv/pcf5ssk502gbmhj49kyz5qmw0000gn/T/nac-apply-LY3txY/intents.json",
     "createdRecordCounts": {
       "custom_agent": 0,
-      "database": 13,
-      "page": 32,
+      "database": 0,
+      "page": 0,
       "space": 0,
-      "teamspace": 3
+      "teamspace": 0
     }
   }
 }

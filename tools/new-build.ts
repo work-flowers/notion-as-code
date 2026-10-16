@@ -28,6 +28,9 @@
  * databases is empty (checked through the API), because a re-deploy clears
  * relation values on existing rows (finding 18). It keeps session.json and the
  * deploy fields in build.json. Never for a retired or removed build.
+ *
+ * --allow-rows (with --force) skips the empty check. It's for testing
+ * re-deploys on a demo build, never for a client workspace.
  */
 import * as fs from "fs"
 import * as path from "path"
@@ -142,13 +145,18 @@ async function main() {
     }
     const token = readToken(existing?.tokenRef, existing?.opAccount)
     const withRows = await dataSourcesWithRows(sessionPath, token)
-    if (withRows.length > 0) {
+    if (withRows.length > 0 && !args.includes("--allow-rows")) {
       fail(
         `--force refused: ${withRows.join(", ")} already hold rows, and a re-deploy ` +
-          `would clear their relation values (finding 18).`
+          `would clear their relation values (finding 18). Add --allow-rows only to ` +
+          `test that on a demo build.`
       )
     }
-    console.log(`--force: builds/${name} is deployed but every database is empty; regenerating.`)
+    console.log(
+      withRows.length > 0
+        ? `--force --allow-rows: ${withRows.join(", ")} hold rows. A re-deploy may clear their relation values.`
+        : `--force: builds/${name} is deployed but every database is empty; regenerating.`
+    )
   }
 
   const prefix = flag(args, "prefix") ?? existing?.prefix
