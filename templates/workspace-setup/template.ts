@@ -422,6 +422,67 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
     ({ type: "notion_icon", description: def.icon, color: "gray" }) as const
 
   // -------------------------------------------------------------------------
+  // Projects page layout: key properties pinned under the title, then tabs of
+  // the project's own tasks, meeting notes and docs
+  // -------------------------------------------------------------------------
+
+  /**
+   * A tab on every project page, listing that database's rows whose Project is
+   * the page being viewed (`this_page`). The server needs the view declared on
+   * its own database; `ephemeral` keeps it out of that database's own tabs.
+   */
+  const projectTabs: Array<{ db: CoreDatabase; name: string; sorts: Sort[]; show: string[] }> = [
+    {
+      db: "tasks",
+      name: "Tasks",
+      sorts: [{ propertyId: p("tasks", "due"), direction: "ascending" }],
+      show: [p("tasks", "name"), p("tasks", "status"), p("tasks", "assignee"), p("tasks", "due"), p("tasks", "priority")],
+    },
+    {
+      db: "meetingNotes",
+      name: "Meeting Notes",
+      sorts: [{ propertyId: p("meetingNotes", "date"), direction: "descending" }],
+      show: [p("meetingNotes", "name"), p("meetingNotes", "date"), p("meetingNotes", "type"), p("meetingNotes", "attendees")],
+    },
+    {
+      db: "docs",
+      name: "Docs",
+      sorts: [{ propertyId: p("docs", "name"), direction: "ascending" }],
+      show: [p("docs", "name"), p("docs", "type"), p("docs", "owner"), p("docs", "last-reviewed")],
+    },
+  ]
+  const projectTabView = (db: CoreDatabase) => core.view(db, "project-tab")
+
+  const projectsLayout: DatabasePageLayout = {
+    pinnedProperties: [
+      p("projects", "status"),
+      p("projects", "priority"),
+      p("projects", "owner"),
+      p("projects", "dates"),
+      p("projects", "team"),
+    ],
+    main: [
+      {
+        type: "properties",
+        properties: [
+          { property: p("projects", "summary") },
+          ...(spec.coreDatabases.projects?.addProperties ?? []).map(prop => ({
+            property: core.extraProp("projects", prop.key),
+          })),
+          // The tabs below list these, so the property panel doesn't repeat them.
+          { property: p("projects", "tasks"), visibility: "hide" as const },
+          { property: p("projects", "meetings"), visibility: "hide" as const },
+          { property: p("projects", "docs"), visibility: "hide" as const },
+        ],
+      },
+    ],
+    tabs: [
+      { type: "content", name: "Overview" },
+      ...projectTabs.map(tab => ({ type: "view" as const, resourceId: projectTabView(tab.db) })),
+    ],
+  }
+
+  // -------------------------------------------------------------------------
   // Company teamspace: Home + one page per core database
   // -------------------------------------------------------------------------
 
@@ -478,6 +539,7 @@ ${teamLinks.length > 0 ? `\n# Teams\n\n${teamLinks.join("\n")}\n` : ""}`,
           resourceId: core.ds(def.db),
           name: def.title,
           properties: [...def.properties, ...extras(def.db)],
+          ...(def.db === "projects" ? { pageLayout: projectsLayout } : {}),
         },
       ],
     })
@@ -491,6 +553,29 @@ ${teamLinks.length > 0 ? `\n# Teams\n\n${teamLinks.join("\n")}\n` : ""}`,
         resourceId: core.view(def.db, key),
         dataSourceResourceId: core.ds(def.db),
         filters: saved(filters ?? []),
+      })
+    }
+
+    const projectTab = projectTabs.find(tab => tab.db === def.db)
+    if (projectTab) {
+      database.addView({
+        resourceId: projectTabView(def.db),
+        name: projectTab.name,
+        icon: coreIcon(def),
+        type: "table",
+        dataSourceResourceId: core.ds(def.db),
+        ephemeral: true,
+        filters: saved([
+          {
+            type: "property",
+            propertyId: core.prop(def.db, "project"),
+            propertyType: "relation",
+            operator: "relation_contains",
+            value: { type: "relative", value: "this_page" },
+          },
+        ]),
+        sorts: projectTab.sorts,
+        properties: projectTab.show.map(property => ({ property, visible: true })),
       })
     }
   }
