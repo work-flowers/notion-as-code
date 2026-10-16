@@ -134,9 +134,10 @@ Notion as Code can't do these (see the playbook's Notion as Code section and
 5. **Check the board column order** is Not started, In progress, Done,
    Cancelled. The DSL can't set it; if it's wrong, set the group sort to
    ascending in the view's Group settings.
-6. **Check the Projects Timeline opens on today.** A timeline saves its
-   scroll position, the DSL can't set it, and one deploy came out centred
-   months ahead of every project. Click Today and it's saved.
+6. **Check the Projects Timelines show their rows** (company and team
+   pages). One deploy's showed none until patched (see FINDINGS, template
+   refinements section). Click Today too: a timeline saves its scroll
+   position, and the DSL can't set it.
 7. **Add relative-date views** such as "due this week" by hand (finding 4).
 8. **Set up database templates** for Meeting Notes, Tasks and so on. They
    aren't in the scripting language.

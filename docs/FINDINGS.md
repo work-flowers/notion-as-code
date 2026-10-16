@@ -478,13 +478,16 @@ Also confirmed on this run:
   `properties` changes, and a property left out of `properties` comes back
   hidden, including the title. The DSL has `statusBy: "option"` but no
   group sort.
-- **A timeline's scroll position is saved on the view, and the DSL can't set
-  it.** The company Projects Timeline read back
-  `preference: {zoom_level: "month", center_timestamp: …}` centred on
-  2 January 2027, where no sample project falls, so it looked empty. The
-  team Timelines had no `preference`. `PATCH /v1/views/{id}` can set
-  `configuration.preference.center_timestamp`. Where the January centre came
-  from is unknown.
+- **A script-deployed timeline showed no rows until patched.** The company
+  Projects Timeline showed nothing in the app, not even in its side table,
+  though the rows had dates. Its config read back centred on
+  2 January 2027 and, after the first patch, with
+  `table_properties: [{property_id: "name"}]`, a property that doesn't
+  exist. Re-centring (`preference.center_timestamp`) and setting
+  `table_properties` to the real title and Dates IDs, then refreshing the
+  app, fixed it. The cause isn't pinned down. A timeline created through the
+  API on the same database worked straight away. The DSL has `tableProperties`
+  but no centre or zoom.
 - **Re-deploying adds tabs to an existing linked database.** Each team's
   linked databases kept their first tab's ID (renamed from the team name to
   "Board", "By date" and so on) and gained the new tabs.
