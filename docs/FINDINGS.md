@@ -3,7 +3,7 @@
 Feedback-tracker candidates, accumulated across builds. **Numbers are stable —
 append, never renumber** (they get cited in feedback to Notion). Findings 1–7
 come from the **knoxx-rnd** deploy (2026-07-24); 8–16 from modelling the live
-**crm** build as code; 21–23 from **setup-core** and **default-teamspace-probe** in the demo workspace.
+**crm** build as code; 21–24 from **setup-core** and **default-teamspace-probe** in the demo workspace.
 
 ## Bugs and hard limits (1–6)
 
@@ -184,7 +184,7 @@ Also confirmed on these runs:
     names instead of mention chips. Untested: whether `<mention-page>`,
     `<mention-data-source>` and `<mention-agent>` are rejected too.
 
-## From the setup-core first deploy of 2026-10-16 (21–23)
+## From the setup-core and default-teamspace-probe deploys of 2026-10-16 (21–24)
 
 First build in the workFlowers Demo workspace. One run created 69 resources and 27
 properties, no errors.
@@ -210,21 +210,25 @@ properties, no errors.
     cause, and crm's one-sided `Deals → Company` had no one-way relation
     pointing at Deals.
 
-23. **A re-deploy silently ignores a teamspace access-level change.** In
-    `default-teamspace-probe`, a teamspace created `open` and re-deployed with
-    `accessLevel: "default"` still shows **Open** in Settings → Teamspaces.
-    The run succeeded, reported nothing, and left every mapping unchanged. A
-    teamspace created `default` from the start does show **Default**. So
-    access level only applies on create, and the script silently drifts from
-    the workspace after any later change. It's unclear whether other
-    teamspace fields (name, icon, description) update on re-deploy. Scripts
-    also can't touch the workspace's existing default teamspace, because they
-    can only reference resources they create.
+23. **✅ A script can create the all-company default teamspace, alongside the
+    one the workspace ships with.** A teamspace created with
+    `accessLevel: "default"` shows as **Default** in Settings → Teamspaces,
+    even though the workspace already has the default teamspace Notion
+    pre-installs. Notion keeps both as defaults, with no conflict and no
+    error. The script can't remove or demote the pre-installed one, because it
+    can only reference resources it creates, but an admin can delete it by hand
+    if it's empty. So a provisioning script *can* own the all-company
+    teamspace, and the cleanup is one manual step.
+24. **A re-deploy silently ignores a teamspace access-level change.** A
+    teamspace created `open` and re-deployed with `accessLevel: "default"`
+    still shows **Open**. The run succeeded, reported nothing, and left every
+    mapping unchanged. So access level only applies on create: choose
+    `default` on a teamspace's first deploy, or change it by hand and update
+    the script to match. It's unclear whether other teamspace fields (name,
+    icon, description) update on re-deploy.
 
 Also confirmed on this run:
 
-- **`accessLevel: "default"` works on create.** A teamspace created with it
-  shows as Default in Settings → Teamspaces.
 - **One script can create several teamspaces at different access levels.**
   Company (`open`), Operations and Marketing (`closed`) all came from one
   deploy. The access levels aren't readable through the public API (pages
