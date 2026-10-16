@@ -81,7 +81,7 @@ rows exist, then re-deploy. Once rows exist, a re-deploy would clear their
 relation values (finding 18).
 
 **Why generate, not import:** a build script can't import another file
-(finding 25), so `build.ts` carries its own copy of the spec types, the spec
+(finding 29), so `build.ts` carries its own copy of the spec types, the spec
 and the template. Don't edit it by hand. Change the template, or the spec
 before the first deploy, and regenerate.
 
