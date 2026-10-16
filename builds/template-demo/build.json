@@ -1,0 +1,17 @@
+{
+  "name": "template-demo",
+  "title": "Template Demo workspace (core template)",
+  "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+  "spaceAnchorResourceId": "td-space",
+  "script": "build.ts",
+  "session": "session.json",
+  "spec": "spec.ts",
+  "prefix": "td",
+  "tokenRef": "op://Employee/notion-as-code-demo/credential",
+  "opAccount": "work-flowers",
+  "autoIncrementPrefixes": [],
+  "status": "deployed",
+  "deployedAt": "2026-10-16",
+  "teamspace": "Template Demo Company (default), TD Operations (closed), TD Marketing (closed)",
+  "hubUrl": "https://app.notion.com/p/3fb6b8781c068141ace9d4964611c466"
+}

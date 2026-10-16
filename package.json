@@ -4,6 +4,7 @@
   "description": "Test bed for Notion's Notion as Code alpha. Uses the tsx binary from the notion-sdk-js checkout, so no install is needed at the repo root.",
   "scripts": {
     "build": "notion-sdk-js/node_modules/.bin/tsx tools/run.ts",
+    "new-build": "notion-sdk-js/node_modules/.bin/tsx tools/new-build.ts",
     "check": "notion-sdk-js/node_modules/.bin/tsx tools/compile-check.ts",
     "pull": "notion-sdk-js/node_modules/.bin/tsx tools/pull-schema.ts",
     "typecheck": "notion-sdk-js/node_modules/.bin/tsx tools/typecheck.ts"

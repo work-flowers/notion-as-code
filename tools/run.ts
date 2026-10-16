@@ -52,7 +52,9 @@ function main() {
       const deployed =
         manifest.status === "deployed"
           ? `deployed ${manifest.deployedAt}`
-          : "not deployed"
+          : manifest.status === "removed"
+            ? `removed ${manifest.removedAt}`
+            : manifest.status.replace("-", " ")
       console.log(`  ${manifest.name.padEnd(12)} ${deployed.padEnd(22)} ${manifest.title}`)
     }
     console.log("\nRun one with:  npm run build -- <name> [--dry]")
@@ -63,6 +65,12 @@ function main() {
   const { manifest } = build
 
   // Safety gates before anything reaches Notion.
+  if (!dryRun && (manifest.status === "retired" || manifest.status === "removed")) {
+    throw new Error(
+      `${manifest.name} is ${manifest.status}. Its script is a record now; ` +
+        `don't deploy it (docs/GUARDRAILS.md).`
+    )
+  }
   assertSessionMatchesManifest(build)
   const prefixCollisions = findPrefixCollisions(loadAllBuilds())
   if (prefixCollisions.length > 0) {

@@ -14,7 +14,12 @@
  * Keys (`key`) become resourceId fragments. Never change a key after the first
  * deploy: the next run would duplicate the resource (see AGENTS.md). In practice
  * the script is retired at the cut-off anyway (docs/GUARDRAILS.md).
+ *
+ * tools/new-build.ts copies everything between the <spec-types> markers into
+ * each generated build.ts (minus `export`), so keep the types self-contained.
  */
+
+// <spec-types>
 
 /** Doc §1. Engagement details the build needs. */
 export interface EngagementSpec {
@@ -27,9 +32,25 @@ export interface EngagementSpec {
   signedOffOn: string
 }
 
+/** Notion's option colours (select, multi-select, status). */
+export type OptionColor =
+  | "default"
+  | "gray"
+  | "brown"
+  | "orange"
+  | "yellow"
+  | "green"
+  | "blue"
+  | "purple"
+  | "pink"
+  | "red"
+
+/** Notion's icon colours. */
+export type IconColor = Exclude<OptionColor, "default"> | "lightgray"
+
 export type Icon =
   | { type: "emoji"; emoji: string }
-  | { type: "notion_icon"; description: string; color?: string }
+  | { type: "notion_icon"; description: string; color?: IconColor }
 
 /** Doc §3. The all-company teamspace is always created with `default` access. */
 export interface CompanyTeamspaceSpec {
@@ -49,7 +70,7 @@ export interface TeamSpec {
   access: TeamAccess
   icon: Icon
   /** Notion colour for the Team option. */
-  color?: string
+  color?: OptionColor
 }
 
 export type CoreDatabase = "meetingNotes" | "projects" | "tasks" | "docs"
@@ -79,9 +100,13 @@ export interface PropertySpec {
   key: string
   name: string
   type: SpecPropertyType
-  /** Required for select, multi_select and status. */
+  /**
+   * Required for select, multi_select and status. For status, list at least
+   * three in workflow order: the first is the default ("to do" group), the
+   * last is the "complete" group, the rest are "in progress".
+   */
   options?: string[]
-  /** Required for relation: a core database or a team database key. */
+  /** Required for relation: a core database or a team database key. Relations are one-way. */
   relationTo?: CoreDatabase | { teamDatabase: string }
   description?: string
 }
@@ -124,6 +149,8 @@ export interface WorkspaceSpec {
   homePages: HomePagesSpec
   addOns: AddOnsSpec
 }
+
+// </spec-types>
 
 /** Identity helper so a spec file gets checked against WorkspaceSpec. */
 export function defineSpec(spec: WorkspaceSpec): WorkspaceSpec {

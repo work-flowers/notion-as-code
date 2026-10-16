@@ -39,6 +39,8 @@ function main() {
         "bundler",
         DSL_TYPES,
         build.scriptPath,
+        // A generated build's spec is checked against WorkspaceSpec too.
+        ...(build.manifest.spec ? [path.join(build.dir, build.manifest.spec)] : []),
       ],
       { stdio: "inherit" }
     )

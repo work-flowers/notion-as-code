@@ -24,11 +24,15 @@ export type BuildManifest = {
   tokenRef?: string
   opAccount?: string
   autoIncrementPrefixes?: string[]
-  status: "deployed" | "not-deployed"
+  status: "deployed" | "not-deployed" | "retired" | "removed"
   deployedAt?: string | null
+  removedAt?: string | null
   teamspace?: string
   hubUrl?: string | null
   modelledFrom?: string
+  /** Generated builds (tools/new-build.ts): the WorkspaceSpec file and resourceId prefix. */
+  spec?: string
+  prefix?: string
 }
 
 export type Build = {
