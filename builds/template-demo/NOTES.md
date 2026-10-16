@@ -192,8 +192,9 @@ Not started first is untested.
    Check in the UI that the filter bar shows no removable "Team" pill.
 3. Check that My projects, My tasks and My meetings each show a "… contains
    Me" filter, on the company databases and on the team pages.
-4. Change the company Docs **By type** view's layout to **Table** (finding 31).
-   Changing the layout in the UI keeps the view's ID.
+4. ✅ Company Docs **By type** changed from Board to **Table** in the UI
+   (finding 31). Same view ID, still grouped by Type, and the board's
+   sub-group by Type is gone.
 5. Check the tab order on each database matches the script. The API can't
    read it. Projects shows My projects before All projects and Active
    projects, because My projects was created in an earlier deploy: drag it to
