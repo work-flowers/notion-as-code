@@ -5,9 +5,9 @@ Anything listed here is taken; check before adding a build.
 
 ## work.flowers primary — `9607e18f-5d82-4842-8b96-ca0d32e66011`
 
-The only workspace the Notion as Code alpha is enabled on (no demo workspace
-access), which is why every build is fenced into a private teamspace — see
-[GUARDRAILS.md](GUARDRAILS.md).
+The first workspace the Notion as Code alpha was enabled on, and still the
+real one, which is why every build here is fenced into a private teamspace —
+see [GUARDRAILS.md](GUARDRAILS.md).
 
 Auth: **Personal Access Token** (not an integration bot token), attached to this
 workspace, stored at `op://Employee/notion-as-code/credential`
@@ -20,6 +20,21 @@ workspace, stored at `op://Employee/notion-as-code/credential`
 
 Also in use by **production** databases in this workspace (do not reuse):
 `COM` (Companies), `DEAL` (Deals).
+
+## workFlowers Demo — `a426b878-1c06-81cd-8ffa-0003fa91e0c8`
+
+A dedicated demo workspace. Builds here **may use non-private teamspaces**
+(open, closed or default); every other guardrail still applies.
+
+Auth: **Personal Access Token**, attached to this workspace, stored at
+`op://Employee/notion-as-code-demo/credential` (1Password account
+`work-flowers`).
+
+| Build | Teamspaces | Status | Auto-increment prefixes |
+| --- | --- | --- | --- |
+| `setup-core` | Company (open), Operations (closed), Marketing (closed) | deployed 2026-10-16 | — |
+
+## Prefix checks
 
 `npm run check` enforces that no two builds in the same workspace claim the same
 prefix, but it cannot see production databases — those are the manual half of

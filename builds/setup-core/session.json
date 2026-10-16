@@ -1,0 +1,383 @@
+{
+  "resourceIdToPointerMappings": {
+    "sc-demo-space": {
+      "id": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "space"
+    },
+    "sc-company-home": {
+      "id": "3fb6b878-1c06-8138-ba53-c3c707df4e92",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-company-teamspace": {
+      "id": "3fb6b878-1c06-8116-a0cb-0042097f0d5e",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "team"
+    },
+    "sc-dc-brand": {
+      "id": "3fb6b878-1c06-81b0-a704-cc0e916762f0",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-dc-campaign-spec": {
+      "id": "3fb6b878-1c06-81fa-8f57-ee23ba7807a8",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-dc-receiving": {
+      "id": "3fb6b878-1c06-81d8-9302-ca8f1ae15c03",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-docs-all-view": {
+      "id": "3fb6b878-1c06-812f-8ae1-000cf42d0dec",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-docs-db": {
+      "id": "3fb6b878-1c06-81c8-b0c5-ffd6ae044e34",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-docs-ds": {
+      "id": "3fb6b878-1c06-8111-8f44-000bc4e062ea",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection"
+    },
+    "sc-docs-page": {
+      "id": "3fb6b878-1c06-81bb-abb9-e9c351a85e88",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-meetings-all-view": {
+      "id": "3fb6b878-1c06-81ac-b1f1-000c5888cc9e",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-meetings-db": {
+      "id": "3fb6b878-1c06-8151-8e17-e0175b24de16",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-meetings-ds": {
+      "id": "3fb6b878-1c06-81b7-8cbe-000b229d4c14",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection"
+    },
+    "sc-meetings-page": {
+      "id": "3fb6b878-1c06-81b0-b863-d69a2f1d7620",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-mkt-docs-linked": {
+      "id": "3fb6b878-1c06-81b6-8c42-ffb26975f9ca",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-mkt-docs-page": {
+      "id": "3fb6b878-1c06-81c5-afe4-f2e6f2c0348b",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-mkt-docs-view": {
+      "id": "3fb6b878-1c06-81ce-a018-000c55f0f32b",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-mkt-home": {
+      "id": "3fb6b878-1c06-8149-8fc7-e4ff30a35fa1",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-mkt-meetings-linked": {
+      "id": "3fb6b878-1c06-815f-a14e-f39c246908b9",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-mkt-meetings-page": {
+      "id": "3fb6b878-1c06-81b5-adfb-da30583aac5a",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-mkt-meetings-view": {
+      "id": "3fb6b878-1c06-81e8-b1ba-000cccadffe1",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-mkt-projects-linked": {
+      "id": "3fb6b878-1c06-810e-8034-f0b3cf1564c4",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-mkt-projects-page": {
+      "id": "3fb6b878-1c06-8177-a7dc-e5191cae9639",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-mkt-projects-view": {
+      "id": "3fb6b878-1c06-8140-9095-000cb74c6e86",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-mkt-tasks-linked": {
+      "id": "3fb6b878-1c06-8181-8ee9-c7e1d7ca3253",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-mkt-tasks-page": {
+      "id": "3fb6b878-1c06-81eb-b369-c46bf02a01b3",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-mkt-tasks-view": {
+      "id": "3fb6b878-1c06-818e-aed6-000c2fab5d7b",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-mkt-teamspace": {
+      "id": "3fb6b878-1c06-81f0-b8a9-00428f26ab26",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "team"
+    },
+    "sc-mt-campaign-planning": {
+      "id": "3fb6b878-1c06-8180-88ed-f5f34d907400",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-mt-ops-standup": {
+      "id": "3fb6b878-1c06-81b9-b110-d7f9e666ca28",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-mt-warehouse-kickoff": {
+      "id": "3fb6b878-1c06-81fc-ba68-e2d659ca5dd2",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-ops-docs-linked": {
+      "id": "3fb6b878-1c06-81ac-b0ea-d34ea02da9ed",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-ops-docs-page": {
+      "id": "3fb6b878-1c06-81fc-b051-ead2774dba4b",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-ops-docs-view": {
+      "id": "3fb6b878-1c06-81ed-a305-000c9225d01b",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-ops-home": {
+      "id": "3fb6b878-1c06-81e3-aafc-d3c22ee254c1",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-ops-meetings-linked": {
+      "id": "3fb6b878-1c06-81ec-b1c4-f6abab9d411a",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-ops-meetings-page": {
+      "id": "3fb6b878-1c06-813e-91e3-c8f12cd3df1b",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-ops-meetings-view": {
+      "id": "3fb6b878-1c06-8145-9f2f-000c1e498a95",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-ops-projects-linked": {
+      "id": "3fb6b878-1c06-8128-bd05-c7e7fb45f46f",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-ops-projects-page": {
+      "id": "3fb6b878-1c06-8148-99c6-d792756ba5e5",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-ops-projects-view": {
+      "id": "3fb6b878-1c06-81e8-9f2c-000c3f31750c",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-ops-tasks-linked": {
+      "id": "3fb6b878-1c06-81ad-a9a5-d28c12dd0b96",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-ops-tasks-page": {
+      "id": "3fb6b878-1c06-8182-a653-f837601092af",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-ops-tasks-view": {
+      "id": "3fb6b878-1c06-81c2-988d-000c889bfda5",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-ops-teamspace": {
+      "id": "3fb6b878-1c06-81fb-9385-00424f819b64",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "team"
+    },
+    "sc-ops-vendors-db": {
+      "id": "3fb6b878-1c06-816d-bf0f-dd812fc98789",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-pj-q4-campaign": {
+      "id": "3fb6b878-1c06-8130-9079-f41fff113a3e",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-pj-vendor-review": {
+      "id": "3fb6b878-1c06-813d-b6ff-e098e8f55850",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-pj-warehouse": {
+      "id": "3fb6b878-1c06-81f0-91e7-ed26c00f32d2",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-projects-all-view": {
+      "id": "3fb6b878-1c06-8172-84d1-000cf0fe4cc0",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-projects-by-team-view": {
+      "id": "3fb6b878-1c06-8116-89e9-000cad27aa86",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-projects-db": {
+      "id": "3fb6b878-1c06-81c3-a6db-c1db5f1885e7",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-projects-ds": {
+      "id": "3fb6b878-1c06-8181-961b-000be2c93e4c",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection"
+    },
+    "sc-projects-page": {
+      "id": "3fb6b878-1c06-8132-82d2-ffff73a42f01",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-tasks-all-view": {
+      "id": "3fb6b878-1c06-8175-bced-000c8b4747ca",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-tasks-board-view": {
+      "id": "3fb6b878-1c06-815e-99cf-000c8730d0b3",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-tasks-db": {
+      "id": "3fb6b878-1c06-81b6-b362-f8cd04c5c270",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-tasks-ds": {
+      "id": "3fb6b878-1c06-8165-a550-000b9c06128e",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection"
+    },
+    "sc-tasks-page": {
+      "id": "3fb6b878-1c06-814c-befb-cbe8369496fc",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-tk-brief": {
+      "id": "3fb6b878-1c06-8171-bbc1-e88c08e70975",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-tk-creative": {
+      "id": "3fb6b878-1c06-8161-8ac8-c3259eb89740",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-tk-email": {
+      "id": "3fb6b878-1c06-8117-8852-fe166454e295",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-tk-measure": {
+      "id": "3fb6b878-1c06-81c3-a7f0-c14238620314",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-tk-scorecard": {
+      "id": "3fb6b878-1c06-81e4-bc3a-e9488b048b71",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-tk-slotting": {
+      "id": "3fb6b878-1c06-815d-94e9-e445e61a8f88",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-vd-cleanspace": {
+      "id": "3fb6b878-1c06-8169-9c85-c65e5ea817ba",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-vd-northline": {
+      "id": "3fb6b878-1c06-81ea-95ef-f0dab81da863",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-vd-stocktrack": {
+      "id": "3fb6b878-1c06-8136-af14-f2075e8ae98b",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "sc-vendors-all-view": {
+      "id": "3fb6b878-1c06-814a-8ea2-000c7ed5661b",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection_view"
+    },
+    "sc-vendors-ds": {
+      "id": "3fb6b878-1c06-8141-a7f8-000bec867724",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "collection"
+    }
+  },
+  "resourceIdToPropertyIdMappings": {
+    "sc-dc-name": "title",
+    "sc-dc-project-rel": "jZHE",
+    "sc-dc-team": "?}@s",
+    "sc-dc-type": "nJ\\^",
+    "sc-mt-date": "wWP|",
+    "sc-mt-name": "title",
+    "sc-mt-project-rel": "Fl<m",
+    "sc-mt-tasks-rel": "RjLS",
+    "sc-mt-team": "t;hW",
+    "sc-mt-type": "cztZ",
+    "sc-pj-dates": "sPrA",
+    "sc-pj-docs-rel": "[ntP",
+    "sc-pj-meetings-rel": "I}iD",
+    "sc-pj-name": "title",
+    "sc-pj-status": "iMqa",
+    "sc-pj-summary": ">[ec",
+    "sc-pj-tasks-rel": "qh:g",
+    "sc-pj-team": "l<U}",
+    "sc-tk-due": "^JBQ",
+    "sc-tk-name": "title",
+    "sc-tk-project-rel": "aP{N",
+    "sc-tk-status": "ZIwu",
+    "sc-tk-team": "v;\\Z",
+    "sc-vd-category": "ytWY",
+    "sc-vd-name": "title",
+    "sc-vd-renewal": "Fwm]",
+    "sc-vd-website": "uLCy"
+  }
+}

@@ -4,7 +4,9 @@ The alpha docs recommend a throwaway workspace. We're opted in only on the
 primary work.flowers workspace, so every build here is fenced:
 
 - **Private teamspace per build.** `accessLevel: "private"` — invisible to other
-  workspace members.
+  workspace members. **Exception:** builds targeting the dedicated workFlowers
+  Demo workspace (see [WORKSPACE.md](WORKSPACE.md)) may use non-private
+  teamspaces. Nothing else below is relaxed there.
 - **Additive-only scripts.** Every resource is net-new and parented under the
   build's own sandbox teamspace. No script may reference an existing Notion ID.
 - **One mapped existing resource: the workspace itself**, used solely as the

@@ -3,7 +3,7 @@
 Feedback-tracker candidates, accumulated across builds. **Numbers are stable —
 append, never renumber** (they get cited in feedback to Notion). Findings 1–7
 come from the **knoxx-rnd** deploy (2026-07-24); 8–16 from modelling the live
-**crm** build as code.
+**crm** build as code; 21–22 from **setup-core** in the demo workspace.
 
 ## Bugs and hard limits (1–6)
 
@@ -184,6 +184,49 @@ Also confirmed on these runs:
     names instead of mention chips. Untested: whether `<mention-page>`,
     `<mention-data-source>` and `<mention-agent>` are rejected too.
 
+## From the setup-core first deploy of 2026-10-16 (21–22)
+
+First build in the workFlowers Demo workspace. One run created 69 resources and 27
+properties, no errors.
+
+21. **View `filters` deploy as quick filters, not as the view's saved filter.**
+    `GET /v1/views/{id}` returns `filter: null` with the script's filter under
+    `quick_filters` instead (e.g. `{"select": {"equals": ["Operations"]}}`). The
+    crm `Closed Won` view from 2026-07-25 reads back the same way, so this isn't
+    new server behaviour, just newly noticed. The rows are still filtered, but
+    as a removable pill in the filter bar, so any viewer can clear it. It also
+    corrects the "reading a build back out" caveat below: a `null` filter
+    doesn't only mean a relative-date or `me` filter. The DSL has no way to ask
+    for a saved (locked) filter.
+22. **Finding 19 reproduces on a clean first deploy.** All 6 `Tasks → Project`
+    values read empty from the Tasks side, while `Projects → Tasks` shows the
+    right counts (2 / 1 / 3) and the schema pairs correctly (`dual_property`,
+    synced IDs match both ways). `Meeting Notes → Project` and `Docs → Project`,
+    written the same way in the same run with the same `limit: 1`, read
+    correctly from both sides, and the compiled intents for the three are
+    identical in shape. With no re-deploy involved, finding 18 is ruled out as
+    the cause. One structural difference: every task row is also the target of
+    the one-way `Meeting Notes → Action Items` relation. That's untested as the
+    cause, and crm's one-sided `Deals → Company` had no one-way relation
+    pointing at Deals.
+
+Also confirmed on this run:
+
+- **One script can create several teamspaces at different access levels.**
+  Company (`open`), Operations and Marketing (`closed`) all came from one
+  deploy. The access levels aren't readable through the public API (pages
+  report `parent: workspace`), so they can only be confirmed in the UI.
+- **A teamspace can hold a linked view of a database in another teamspace.**
+  Each team page's views-only database has a view whose `data_source_id` is
+  the Company data source, filtered to that team (as a quick filter, finding
+  21).
+- **A database can live inside a page in a non-private teamspace.** Vendors
+  is a child of the Operations Home page.
+- **`<mention-page>` is still accepted.** That answers part of the finding-20
+  open question. Both Home pages render their chips as `page` mentions.
+- **One-way relations write fine.** `Action Items` (Meeting Notes → Tasks)
+  holds 2 / 1 / 2 values as written.
+
 ## What works
 
 Everything else deployed faithfully on the knoxx-rnd first run: two-way
@@ -206,12 +249,15 @@ placement.
 - ~~Does the finding-1 formula bug also hit `map`/`sort`/`last` expressions?~~
   **Answered:** yes, identically (crm's Latest Meeting / Latest Email).
 - Is finding 19 (one-sided dual relation) caused by `limit: 1`, or by the same
-  mis-binding as finding 1? Needs a clean isolated run.
+  mis-binding as finding 1? Finding 22 rules out re-deploys and makes `limit`
+  unlikely (the same `limit: 1` worked on two sibling relations in the same
+  run). Untested: whether being the target of a one-way relation matters.
 - Does a re-deploy also clear relation values that were set **by hand in the
   UI**, or only ones the script wrote? (bears on whether finding 18 makes
   re-deploys unusable on live client workspaces)
 - Is finding 20 limited to `<mention-database>`, or are the other mention
-  tags (`page`, `data-source`, `agent`) rejected too? Is the change
+  tags rejected too? `<mention-page>` is accepted (setup-core); `data-source`
+  and `agent` are untested. Is the change
   intentional, and will the spec be updated?
 
 ## Reading an existing build back out of Notion
@@ -229,3 +275,5 @@ curl -s "https://api.notion.com/v1/views/$VIEW_ID"              -H "Authorizatio
 Caveats: `GET /v1/views/{id}` 400s on feed views (35 of the CRM's 87), and
 retrieved filters come back `null` wherever the filter uses a relative date or
 the `me` variable — so "Today" / "My Meetings" views read as unfiltered.
+Script-deployed filters also read `filter: null`, because they land in
+`quick_filters` (finding 21), so check both fields.
