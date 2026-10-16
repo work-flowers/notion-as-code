@@ -15,6 +15,7 @@ sandbox teamspace** in the work.flowers workspace — see
 | [`crm`](builds/crm/NOTES.md) | work.flowers CRM — Contacts / Companies / Deals, Meetings, Emails, views, sample records | deployed 2026-07-25 |
 | [`setup-core`](builds/setup-core/NOTES.md) | Demo workspace: open Company teamspace with core databases, plus Operations / Marketing teamspaces showing filtered views of them | deployed 2026-10-16 |
 | [`default-teamspace-probe`](builds/default-teamspace-probe/NOTES.md) | Demo workspace: a script can create the all-company teamspace as a workspace default, alongside the pre-installed one (on create only) | deployed 2026-10-16 |
+| [`dsl-recheck-probe`](builds/dsl-recheck-probe/NOTES.md) | Demo workspace: checks whether the DSL `ntn` 0.23.20 ships fixes findings 4, 9, 12 and 14, plus feed views and `this_page` page-layout tabs. First build on the `ntn` engine | not deployed |
 
 **Findings so far: [docs/FINDINGS.md](docs/FINDINGS.md)** — the actual output of
 this repo, and what gets fed back to Notion.
@@ -34,7 +35,9 @@ tools/
   compile-check.ts compile to intents, check resourceIds (no Notion call)
   typecheck.ts     tsc a build against the DSL declarations
   pull-schema.ts   extract an existing database's schema + views
+  ntn.ts           the "ntn" engine: compile against vendor/ntn-template
 docs/            FINDINGS.md · GUARDRAILS.md · WORKSPACE.md
+vendor/ntn-template/  DSL types + runtime from notion-as-code-template, for "engine": "ntn" builds
 notion-sdk-js/   Local clone of makenotion/notion-sdk-js @ EXPERIMENTAL__notion-as-code (gitignored)
 ```
 

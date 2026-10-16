@@ -8,6 +8,7 @@
  */
 import { compileNotionAsCodeScriptToIntents } from "../notion-sdk-js/src/EXPERIMENTAL__notion-as-code/utils/compile"
 import { Build, findPrefixCollisions, listBuildNames, loadBuild } from "./builds"
+import { compileWithNtnRuntime } from "./ntn"
 
 type BuildCheck = {
   build: Build
@@ -48,18 +49,25 @@ function collectResourceIds(intents: any[]): {
       // Views declared inline on a (linked) database intent
       for (const view of intent.views ?? []) claim(view.resourceId)
     }
+    if (intent.type === "database_automation") {
+      for (const action of intent.actions ?? []) claim(action.resourceId)
+    }
   }
   return { resourceIds, duplicates, counts }
 }
 
 async function checkBuild(name: string): Promise<BuildCheck> {
   const build = loadBuild(name)
-  const intents = await compileNotionAsCodeScriptToIntents({
-    filePathToScript: build.scriptPath,
-  })
+  const intents =
+    build.manifest.engine === "ntn"
+      ? compileWithNtnRuntime(build.scriptPath)
+      : await compileNotionAsCodeScriptToIntents({
+          filePathToScript: build.scriptPath,
+        })
   const { resourceIds, duplicates, counts } = collectResourceIds(intents)
 
   console.log(`\n▸ ${name} — ${build.manifest.title}`)
+  if (build.manifest.engine === "ntn") console.log(`  engine: ntn (vendor/ntn-template)`)
   console.log(`  intents: ${JSON.stringify(counts)}`)
   console.log(`  unique resourceIds: ${resourceIds.size}`)
   if (duplicates.length > 0) {

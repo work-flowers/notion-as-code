@@ -21,6 +21,16 @@ branch (gitignored, at `notion-sdk-js/`) and deploys through `npm run build`,
 not `ntn notion-as-code apply`. Don't port template conventions (`src/main.ts`,
 `src/lib/`, `dist/intents.json`, `ntn` state) into this repo.
 
+**Exception: the `ntn` engine.** The SDK branch hasn't moved since `3d33935`
+(2026-07-23); the current DSL ships with `ntn` (finding 25). A build whose
+`build.json` sets `"engine": "ntn"` compiles against `vendor/ntn-template` (the
+template's types and runtime, unchanged) and deploys through
+`ntn notion-as-code apply --state <its session.json>`. It still uses this
+repo's conventions: a `build.ts` with the global `notion`, `npm run build`, and
+a committed `session.json`. For those builds the DSL reference is
+`vendor/ntn-template/types.d.ts`, and the Markdown spec is
+`NotionAsCodeMarkdownSpec` in it.
+
 ## Authoring rules
 
 - Scripts are declarative. `notion` is a global that the SDK runner provides,

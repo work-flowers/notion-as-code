@@ -3,7 +3,8 @@
 Feedback-tracker candidates, accumulated across builds. **Numbers are stable —
 append, never renumber** (they get cited in feedback to Notion). Findings 1–7
 come from the **knoxx-rnd** deploy (2026-07-24); 8–16 from modelling the live
-**crm** build as code; 21–24 from **setup-core** and **default-teamspace-probe** in the demo workspace.
+**crm** build as code; 21–24 from **setup-core** and **default-teamspace-probe** in the demo workspace;
+25 from rechecking the DSL that `ntn` 0.23.20 ships (**dsl-recheck-probe**).
 
 ## Bugs and hard limits (1–6)
 
@@ -27,6 +28,9 @@ come from the **knoxx-rnd** deploy (2026-07-24); 8–16 from modelling the live
 4. **No relative-date view filters** — fixed `YYYY-MM-DD` only, so "Today's
    Activities" / "Today's Meetings" can't be built as specced; both builds fall
    back to date-sorted lists.
+   **Recheck 2026-10-16: fixed in the DSL** (`relative`, `relative_to_today`,
+   `exact_range`); server result pending the dsl-recheck-probe deploy
+   (finding 25).
 5. **Person property values can't be set by script** — columns exist, seed rows
    leave them empty. Teamspace membership also can't be configured.
 6. **Auto-increment ID prefixes are workspace-global** — `KIP`/`KIA`/`KIK`/`KIC`
@@ -71,6 +75,9 @@ views, roughly a third cannot be expressed at all.
    Drive Folder, Enrich, Add to Mailing List, Create Harvest Project) plus every
    database automation stays a manual post-deploy pass. Together with finding 7,
    this is what stops one script from fully provisioning a client workspace.
+   **Recheck 2026-10-16: partly fixed.** Database automations are in the DSL
+   (`addAutomation`, one action type: `create_page`); buttons still aren't.
+   Server result pending the dsl-recheck-probe deploy (finding 25).
 10. **No `place` property type** (Companies → Address) — degrades to text.
 11. **No number formats.** `number` takes no `format`, so `number_with_commas`
     (Deal Value) and `percent` (Probability) are lost; a percent property has to
@@ -79,12 +86,16 @@ views, roughly a third cannot be expressed at all.
     pipeline board means "open deals" as *Actual Close is empty*. Approximated
     with three `status_is_not` filters — which also probes whether multiple
     filters AND together (undocumented).
+    **Recheck 2026-10-16: still open.** There's still no `is_empty` operator,
+    but advanced `and` / `or` filter groups are new (finding 25).
 13. **Rollups can't target `unique_id`** either (`RollupTargetPropertyType`
     excludes it, as it does `formula` — finding 2), so Deals → Company ID is
     unbuildable, as are Deals → Slack Channel / Google Drive Folder (formula
     targets).
 14. **No tabs block** in page-content markdown, so the CRM hub's tabbed left
     column (Quick Actions / Databases) becomes callouts + columns.
+    **Recheck 2026-10-16: fixed in the DSL** (`<tabs>` / `<tab icon>`); server
+    result pending the dsl-recheck-probe deploy (finding 25).
 15. **Date values are date-only.** `notion.date(start, end?)` compiles to a
     Notion inline date mention carrying only `start_date` / `end_date` — no
     `start_time`, no `time_zone` — so a calendar-synced database (meetings,
@@ -244,6 +255,43 @@ Also confirmed on this run:
   open question. Both Home pages render their chips as `page` mentions.
 - **One-way relations write fine.** `Action Items` (Meeting Notes → Tasks)
   holds 2 / 1 / 2 values as written.
+
+## Rechecking the DSL that `ntn` 0.23.20 ships, 2026-10-16 (25)
+
+25. **The SDK branch is frozen; the current DSL ships with `ntn`.**
+    `EXPERIMENTAL__notion-as-code` on makenotion/notion-sdk-js is still at
+    `3d33935` (2026-07-23). The current DSL is the one `ntn notion-as-code new`
+    downloads: makenotion/notion-as-code-template @ `80be619` (2026-10-06),
+    whose `src/lib/types.d.ts` says it is vendored from a newer SDK runtime.
+    `ntn` posts to `/v1/infra_as_code` with
+    `Notion-Beta: notion-as-code-2026-07-31`, and its state file uses the same
+    `resourceIdToPointerMappings` / `resourceIdToPropertyIdMappings` shape as our
+    `session.json`. So this repo now has an `ntn` engine: a build with
+    `"engine": "ntn"` compiles against `vendor/ntn-template` and deploys through
+    `ntn notion-as-code apply --state <session.json>`, still via `npm run build`.
+    Diffing the template's types against `3d33935`:
+
+    | Finding | In the 2026-10-06 types | Verdict |
+    | --- | --- | --- |
+    | 4 relative-date filters | `date_is` + `{type: "relative", value: "today"}` (also tomorrow, yesterday, ±1 week, ±1 month); `date_is_relative_to` past / next / this N day–year; `date_is_within` exact ranges; `dateFilterMode: "end_date"` | fixed in the DSL |
+    | 9 automations / buttons | `dataSource.addAutomation()` → `database_automation` intent: triggers `page_added`, `property_updated` (optionally per property), or a recurrence; one action type, `create_page` (optional template); Plus plan or higher. No button anywhere. | automations partly fixed; buttons still open |
+    | 12 `is_empty` / advanced filters | no `is_empty` / `is_not_empty` operator (typecheck rejects it); new `{type: "advanced", operator: "and" \| "or", filters}` groups, nestable | `is_empty` still open; advanced filters fixed in the DSL |
+    | 14 tabs | `<tab icon="…">` in `<tabs>` in the Markdown spec | fixed in the DSL |
+    | feed views | `feed` was already a view type (finding 8); now adds `showAuthorByline` | unchanged in the DSL |
+    | `this_page` per-record layouts | `pageLayout.tabs` takes `{type: "view", resourceId}` tabs; `relation_contains` accepts `{type: "relative", value: "this_page"}` | new |
+
+    Other changes seen in the diff, not probed: `notion.datetime()` with times
+    and time zone (finding 15's gap), `verification` properties, view `groupBy`
+    for most property types, view icons, recurring templates and default
+    templates, custom-agent triggers and access, and a rewritten Markdown spec.
+    The spec now writes mentions as `<mention url="resourceId" type="database">`
+    with bare resource IDs, not `<mention-database url="{{id}}">`, which may
+    be why finding 20's tag is rejected.
+
+    These verdicts are from the types alone. The server can lag the types
+    (finding 20), so each one is confirmed only once
+    [dsl-recheck-probe](../builds/dsl-recheck-probe/NOTES.md) deploys and
+    reads back.
 
 ## What works
 

@@ -21,6 +21,12 @@ export type BuildManifest = {
   spaceAnchorResourceId: string
   script: string
   session: string
+  /**
+   * Which Notion as Code toolchain compiles and deploys this build. "sdk"
+   * (default) is the notion-sdk-js checkout; "ntn" is the vendored template
+   * runtime plus `ntn notion-as-code apply` (see tools/ntn.ts).
+   */
+  engine?: "sdk" | "ntn"
   tokenRef?: string
   opAccount?: string
   autoIncrementPrefixes?: string[]
