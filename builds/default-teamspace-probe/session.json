@@ -1,0 +1,30 @@
+{
+  "resourceIdToPointerMappings": {
+    "dtp-demo-space": {
+      "id": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "space"
+    },
+    "dtp-page-a": {
+      "id": "3fb6b878-1c06-81a3-b554-c44e611b1645",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "dtp-page-b": {
+      "id": "3fb6b878-1c06-81d0-83f2-fd4f1ef2443b",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "block"
+    },
+    "dtp-teamspace-a": {
+      "id": "3fb6b878-1c06-81b2-828d-0042772699c2",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "team"
+    },
+    "dtp-teamspace-b": {
+      "id": "3fb6b878-1c06-81fa-8827-00423c92c08f",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "table": "team"
+    }
+  },
+  "resourceIdToPropertyIdMappings": {}
+}

@@ -13,6 +13,8 @@ sandbox teamspace** in the work.flowers workspace — see
 | --- | --- | --- |
 | [`knoxx-rnd`](builds/knoxx-rnd/NOTES.md) | Knoxx Innovations R&D management & evidence system — Projects / Activities / Knowledge + ATO audit views | deployed 2026-07-24 |
 | [`crm`](builds/crm/NOTES.md) | work.flowers CRM — Contacts / Companies / Deals, Meetings, Emails, views, sample records | deployed 2026-07-25 |
+| [`setup-core`](builds/setup-core/NOTES.md) | Demo workspace: open Company teamspace with core databases, plus Operations / Marketing teamspaces showing filtered views of them | deployed 2026-10-16 |
+| [`default-teamspace-probe`](builds/default-teamspace-probe/NOTES.md) | Demo workspace: a script can create the all-company teamspace as a workspace default, alongside the pre-installed one (on create only) | deployed 2026-10-16 |
 
 **Findings so far: [docs/FINDINGS.md](docs/FINDINGS.md)** — the actual output of
 this repo, and what gets fed back to Notion.

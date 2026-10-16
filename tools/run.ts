@@ -76,7 +76,7 @@ function main() {
 
   console.log(`build:     ${manifest.name} — ${manifest.title}`)
   console.log(`workspace: ${manifest.spaceId}`)
-  console.log(`teamspace: ${manifest.teamspace} (private)`)
+  console.log(`teamspace: ${manifest.teamspace}`)
   console.log(`script:    ${build.scriptPath}`)
   console.log(`session:   ${build.sessionPath} ✓ anchors ${manifest.spaceAnchorResourceId}`)
   console.log(`status:    ${manifest.status}`)

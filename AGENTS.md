@@ -36,7 +36,8 @@ not `ntn notion-as-code apply`. Don't port template conventions (`src/main.ts`,
   must match `spaceAnchorResourceId` in `build.json` and the anchor seeded in
   `session.json`.
 - Additive only. Every resource is net-new and lives under the build's own
-  private teamspace (`accessLevel: "private"`). Never reference an existing
+  private teamspace (`accessLevel: "private"`) — except in the demo workspace,
+  where a build's teamspaces may be non-private (see docs/GUARDRAILS.md). Never reference an existing
   Notion page, database or data source ID.
 - Claim auto-increment ID prefixes in `build.json` (`autoIncrementPrefixes`).
   They are workspace-global.
