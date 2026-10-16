@@ -15,7 +15,7 @@ const CORE_DATABASES: Record<CoreDatabase, string> = {
 /** Names the template already gives each core database. Keep in step with template.ts. */
 const STANDARD_PROPERTY_NAMES: Record<CoreDatabase, string[]> = {
   projects: ["Name", "Team", "Status", "Owner", "Dates", "Priority", "Summary", "Tasks", "Meeting Notes", "Docs"],
-  tasks: ["Name", "Team", "Status", "Assignee", "Due", "Priority", "Project"],
+  tasks: ["Name", "Team", "Status", "Assignee", "Due", "Priority", "Project", "Meeting"],
   meetingNotes: ["Name", "Team", "Date", "Type", "Attendees", "Project", "Action Items"],
   docs: ["Name", "Team", "Type", "Owner", "Last reviewed", "Project"],
 }

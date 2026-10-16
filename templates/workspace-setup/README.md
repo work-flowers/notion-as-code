@@ -21,7 +21,21 @@ build in `builds/<client>/` that deploys:
   that team. "My …" tabs
   filter on the viewer (`me`). Every database has **Team**, a multi-select with one option per team, plus the
   standard relations: Projects ↔ Tasks, Projects ↔ Meeting Notes, Projects ↔
-  Docs, and Meeting Notes → Tasks (`Action Items`).
+  Docs, and Meeting Notes ↔ Tasks (`Action Items`, with `Meeting` on
+  Tasks).
+- Page layouts on the four core databases, following the
+  clean-database-page-layouts principles:
+
+  | Database | Pinned under the title | Own block | Side pane "Details" | Tabs |
+  | --- | --- | --- | --- | --- |
+  | Projects | Status, Owner, Dates, Priority | Summary | Team, spec-added properties; Tasks, Meeting Notes, Docs hidden | Overview, Tasks, Meeting Notes, Docs |
+  | Meeting Notes | Date, Type, Attendees | — | Team, Project; Action Items hidden | Notes, Action Items |
+  | Tasks | Status, Assignee, Due, Priority | — | Team, Project, Meeting | — |
+  | Docs | Type, Owner, Last reviewed | — | Team, Project | — |
+
+  Each related tab is a view on the related database, filtered to rows whose
+  relation contains the page being viewed (`this_page`), and marked
+  `ephemeral` so it isn't one of that database's own tabs.
 - One teamspace per team, at the access level the spec gives it, holding a
   Home page ("<Team> Home") and pages named "<Team> Projects", "<Team> Tasks"
   and so on. Each shows the company database with the same tabs, every one

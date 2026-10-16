@@ -277,6 +277,15 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           targetDataSourcePropertyResourceId: p("projects", "tasks"),
           limit: 1,
         },
+        // Back-link of Meeting Notes → Action Items, so a meeting page can have
+        // an Action Items tab (a Tasks view filtered to this meeting).
+        {
+          resourceId: p("tasks", "meeting"),
+          name: "Meeting",
+          type: "relation",
+          targetDataSourceResourceId: core.ds("meetingNotes"),
+          targetDataSourcePropertyResourceId: p("meetingNotes", "action-items"),
+        },
       ],
       tabs: [
         {
@@ -340,12 +349,12 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
           targetDataSourceResourceId: core.ds("projects"),
           targetDataSourcePropertyResourceId: p("projects", "meetings"),
         },
-        // One-way: Tasks gets no back-link property.
         {
           resourceId: p("meetingNotes", "action-items"),
           name: "Action Items",
           type: "relation",
           targetDataSourceResourceId: core.ds("tasks"),
+          targetDataSourcePropertyResourceId: p("tasks", "meeting"),
         },
       ],
       tabs: [
@@ -422,64 +431,125 @@ function buildWorkspace(spec: WorkspaceSpec, prefix: string, spaceAnchor: string
     ({ type: "notion_icon", description: def.icon, color: "gray" }) as const
 
   // -------------------------------------------------------------------------
-  // Projects page layout: key properties pinned under the title, then tabs of
-  // the project's own tasks, meeting notes and docs
+  // Page layouts (Dennis's clean-database-page-layouts principles): up to four
+  // short pins under the title, long text as its own block in the content
+  // area, everything else in one "Details" side-pane section, collection
+  // relations always hidden there and shown as tabs instead.
   // -------------------------------------------------------------------------
 
   /**
-   * A tab on every project page, listing that database's rows whose Project is
-   * the page being viewed (`this_page`). The server needs the view declared on
-   * its own database; `ephemeral` keeps it out of that database's own tabs.
+   * A tab on every `owner` page, listing `db` rows whose `via` relation points
+   * at the page being viewed (`this_page`). The server needs the view declared
+   * on its own database; `ephemeral` keeps it out of that database's tabs.
    */
-  const projectTabs: Array<{ db: CoreDatabase; name: string; sorts: Sort[]; show: string[] }> = [
+  type RelatedTab = { owner: CoreDatabase; db: CoreDatabase; via: string; key: string; name: string; sorts: Sort[]; show: string[] }
+  const relatedTabs: RelatedTab[] = [
     {
+      owner: "projects",
       db: "tasks",
+      via: "project",
+      key: "project-tab",
       name: "Tasks",
       sorts: [{ propertyId: p("tasks", "due"), direction: "ascending" }],
       show: [p("tasks", "name"), p("tasks", "status"), p("tasks", "assignee"), p("tasks", "due"), p("tasks", "priority")],
     },
     {
+      owner: "projects",
       db: "meetingNotes",
+      via: "project",
+      key: "project-tab",
       name: "Meeting Notes",
       sorts: [{ propertyId: p("meetingNotes", "date"), direction: "descending" }],
       show: [p("meetingNotes", "name"), p("meetingNotes", "date"), p("meetingNotes", "type"), p("meetingNotes", "attendees")],
     },
     {
+      owner: "projects",
       db: "docs",
+      via: "project",
+      key: "project-tab",
       name: "Docs",
       sorts: [{ propertyId: p("docs", "name"), direction: "ascending" }],
       show: [p("docs", "name"), p("docs", "type"), p("docs", "owner"), p("docs", "last-reviewed")],
     },
+    {
+      owner: "meetingNotes",
+      db: "tasks",
+      via: "meeting",
+      key: "meeting-tab",
+      name: "Action Items",
+      sorts: [{ propertyId: p("tasks", "due"), direction: "ascending" }],
+      show: [p("tasks", "name"), p("tasks", "status"), p("tasks", "assignee"), p("tasks", "due"), p("tasks", "priority")],
+    },
   ]
-  const projectTabView = (db: CoreDatabase) => core.view(db, "project-tab")
 
-  const projectsLayout: DatabasePageLayout = {
-    pinnedProperties: [
-      p("projects", "status"),
-      p("projects", "priority"),
-      p("projects", "owner"),
-      p("projects", "dates"),
-      p("projects", "team"),
-    ],
-    main: [
-      {
-        type: "properties",
-        properties: [
-          { property: p("projects", "summary") },
-          ...(spec.coreDatabases.projects?.addProperties ?? []).map(prop => ({
-            property: core.extraProp("projects", prop.key),
-          })),
-          // The tabs below list these, so the property panel doesn't repeat them.
-          { property: p("projects", "tasks"), visibility: "hide" as const },
-          { property: p("projects", "meetings"), visibility: "hide" as const },
-          { property: p("projects", "docs"), visibility: "hide" as const },
-        ],
-      },
-    ],
-    tabs: [
-      { type: "content", name: "Overview" },
-      ...projectTabs.map(tab => ({ type: "view" as const, resourceId: projectTabView(tab.db) })),
-    ],
+  type LayoutDef = {
+    /** Up to four short, decision-useful properties under the title. */
+    pins: string[]
+    /** Long text shown as its own block, inside the Content tab when there are tabs. */
+    blocks?: string[]
+    /** The side pane's "Details" section, in order. Spec-added properties follow. */
+    details: string[]
+    /** Collection relations: always hidden in the side pane, shown as tabs. */
+    collections?: string[]
+    /** Name of the Content tab, when the page has related tabs. */
+    contentTab?: string
+  }
+  const layoutDefs: Record<CoreDatabase, LayoutDef> = {
+    projects: {
+      pins: ["status", "owner", "dates", "priority"],
+      blocks: ["summary"],
+      details: ["team"],
+      collections: ["tasks", "meetings", "docs"],
+      contentTab: "Overview",
+    },
+    meetingNotes: {
+      pins: ["date", "type", "attendees"],
+      details: ["team", "project"],
+      collections: ["action-items"],
+      contentTab: "Notes",
+    },
+    tasks: {
+      pins: ["status", "assignee", "due", "priority"],
+      details: ["team", "project", "meeting"],
+    },
+    docs: {
+      pins: ["type", "owner", "last-reviewed"],
+      details: ["team", "project"],
+    },
+  }
+
+  const pageLayout = (db: CoreDatabase): DatabasePageLayout => {
+    const def = layoutDefs[db]
+    const tabs = relatedTabs.filter(tab => tab.owner === db)
+    return {
+      pinnedProperties: def.pins.map(key => p(db, key)),
+      main: (def.blocks ?? []).map(key => ({ type: "property" as const, property: p(db, key) })),
+      sidebar: [
+        {
+          type: "properties",
+          sections: [
+            {
+              name: "Details",
+              properties: [
+                ...def.details.map(key => ({ property: p(db, key) })),
+                ...(spec.coreDatabases[db]?.addProperties ?? []).map(prop => ({
+                  property: core.extraProp(db, prop.key),
+                })),
+                ...(def.collections ?? []).map(key => ({ property: p(db, key), visibility: "hide" as const })),
+              ],
+            },
+          ],
+        },
+      ],
+      ...(tabs.length > 0
+        ? {
+            tabs: [
+              { type: "content" as const, name: def.contentTab },
+              ...tabs.map(tab => ({ type: "view" as const, resourceId: core.view(tab.db, tab.key) })),
+            ],
+          }
+        : {}),
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -539,7 +609,7 @@ ${teamLinks.length > 0 ? `\n# Teams\n\n${teamLinks.join("\n")}\n` : ""}`,
           resourceId: core.ds(def.db),
           name: def.title,
           properties: [...def.properties, ...extras(def.db)],
-          ...(def.db === "projects" ? { pageLayout: projectsLayout } : {}),
+          pageLayout: pageLayout(def.db),
         },
       ],
     })
@@ -556,11 +626,10 @@ ${teamLinks.length > 0 ? `\n# Teams\n\n${teamLinks.join("\n")}\n` : ""}`,
       })
     }
 
-    const projectTab = projectTabs.find(tab => tab.db === def.db)
-    if (projectTab) {
+    for (const tab of relatedTabs.filter(tab => tab.db === def.db)) {
       database.addView({
-        resourceId: projectTabView(def.db),
-        name: projectTab.name,
+        resourceId: core.view(def.db, tab.key),
+        name: tab.name,
         icon: coreIcon(def),
         type: "table",
         dataSourceResourceId: core.ds(def.db),
@@ -568,14 +637,14 @@ ${teamLinks.length > 0 ? `\n# Teams\n\n${teamLinks.join("\n")}\n` : ""}`,
         filters: saved([
           {
             type: "property",
-            propertyId: core.prop(def.db, "project"),
+            propertyId: core.prop(def.db, tab.via),
             propertyType: "relation",
             operator: "relation_contains",
             value: { type: "relative", value: "this_page" },
           },
         ]),
-        sorts: projectTab.sorts,
-        properties: projectTab.show.map(property => ({ property, visible: true })),
+        sorts: tab.sorts,
+        properties: tab.show.map(property => ({ property, visible: true })),
       })
     }
   }
