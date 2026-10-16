@@ -467,7 +467,7 @@ ${teamLinks.length > 0 ? `\n# Teams\n\n${teamLinks.join("\n")}\n` : ""}`,
     teamspace.addPage({
       resourceId: team.home(t.key),
       icon: t.icon,
-      properties: { title: notion.text("Home") },
+      properties: { title: notion.text(`${t.name} Home`) },
       content: `${paragraphs(intro)}
 
 # Our work

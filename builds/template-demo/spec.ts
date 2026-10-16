@@ -1,6 +1,6 @@
 /**
- * template-demo: the example spec (templates/workspace-setup/example.spec.ts)
- * with names changed so it can't be confused with setup-core in the demo workspace.
+ * template-demo: the example spec (templates/workspace-setup/example.spec.ts),
+ * with the company teamspace named DemoCo HQ and Home-page text for Marketing.
  */
 import { defineSpec } from "../../templates/workspace-setup/spec"
 
@@ -12,13 +12,13 @@ export default defineSpec({
     signedOffOn: "2026-10-16",
   },
   companyTeamspace: {
-    name: "Template Demo Company",
+    name: "DemoCo HQ",
     icon: { type: "notion_icon", description: "building", color: "gray" },
     description: "Company-wide home and the core databases every team works from.",
   },
   teams: [
-    { key: "ops", name: "TD Operations", access: "closed", color: "blue", icon: { type: "notion_icon", description: "gear", color: "blue" } },
-    { key: "mkt", name: "TD Marketing", access: "closed", color: "pink", icon: { type: "notion_icon", description: "megaphone", color: "pink" } },
+    { key: "ops", name: "Operations", access: "closed", color: "blue", icon: { type: "notion_icon", description: "gear", color: "blue" } },
+    { key: "mkt", name: "Marketing", access: "closed", color: "pink", icon: { type: "notion_icon", description: "megaphone", color: "pink" } },
   ],
   coreDatabases: {
     projects: {

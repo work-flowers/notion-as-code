@@ -10,9 +10,10 @@ npm run new-build -- template-demo --prefix td
 ```
 
 `spec.ts` is a copy of `templates/workspace-setup/example.spec.ts` with the
-company teamspace and teams renamed (Template Demo Company, TD Operations, TD
-Marketing) so they can't be confused with `setup-core` in the same workspace,
-plus Home-page text for TD Marketing. There is no signed-off spec doc for it;
+company teamspace named DemoCo HQ, plus Home-page text for Marketing. It was
+first deployed as Template Demo Company / TD Operations / TD Marketing, to keep
+it apart from `setup-core`, and renamed in deploy #3 once `setup-core` was
+removed. There is no signed-off spec doc for it;
 `specDocUrl` points at the TKT-978 task.
 
 ## Why a generator
@@ -29,9 +30,9 @@ what was deployed.
 
 | Teamspace | Access | Contents |
 | --- | --- | --- |
-| Template Demo Company | `default` | Home, plus one page per core database (Projects, Tasks, Meeting Notes, Docs), each holding its database inline |
-| TD Operations | `closed` | Home (with the team-only **Vendors** database inline), plus four pages named "TD Operations Projects" etc. holding linked views filtered to Team contains TD Operations |
-| TD Marketing | `closed` | Home, plus the same four filtered pages for TD Marketing |
+| DemoCo HQ | `default` | Home, plus one page per core database (Projects, Tasks, Meeting Notes, Docs), each holding its database inline |
+| Operations | `closed` | Operations Home (with the team-only **Vendors** database inline), plus four pages named "Operations Projects" etc. holding linked views filtered to Team contains Operations |
+| Marketing | `closed` | Marketing Home, plus the same four filtered pages for Marketing |
 
 - Standard schema and default views from the playbook. **Team** is a
   multi-select on all four databases, and team views filter on
@@ -87,10 +88,27 @@ no errors: 3 new view mappings, and no existing mapping changed.
 | The three tabs exist on the right databases, with their sorts | ✅ |
 | Their `me` filters | ⚠️ read back `null` in both `filter` and `quick_filters`, as for crm's My Emails / My Meetings. Only the UI can confirm them |
 
+## Deploy #3 (2026-10-16): renames
+
+The company teamspace became **DemoCo HQ** and the teams **Operations** and
+**Marketing**. The template now titles a team's Home page "<Team> Home"
+(Operations Home, Marketing Home); the company Home stays "Home". Regenerated
+with `--force` (every database still empty) and re-deployed. One run, no
+errors, and no mapping added or changed.
+
+| Check | Result |
+| --- | --- |
+| Page titles | ✅ Operations Home, Marketing Home, "Operations Tasks", "Marketing Docs" and so on |
+| Team multi-select options | ✅ renamed in place to Operations / Marketing on all four databases, with no leftover "TD …" options |
+| Team views | ✅ tabs named Operations / Marketing, quick filters `contains ["Operations"]` / `["Marketing"]` |
+| Teamspace names | ⚠️ not readable through the API; check in the UI (finding 24 left open whether a re-deploy renames a teamspace) |
+
 ## Post-deploy manual steps
 
-1. ✅ In Settings → Teamspaces, Template Demo Company is **Default** and
-   TD Operations / TD Marketing are **Closed** (confirmed by Dennis).
+1. ✅ In Settings → Teamspaces, the company teamspace is **Default** and the
+   two team teamspaces are **Closed** (confirmed by Dennis after deploy #2).
+   After deploy #3, also check they're named DemoCo HQ, Operations and
+   Marketing.
 2. Save each team view's quick filter as a saved filter (finding 21): 8 views.
 3. Check that My projects, My tasks and My meetings each show a "… contains
    Me" filter.

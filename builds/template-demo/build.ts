@@ -156,7 +156,7 @@ const spec: WorkspaceSpec = {
     "signedOffOn": "2026-10-16"
   },
   "companyTeamspace": {
-    "name": "Template Demo Company",
+    "name": "DemoCo HQ",
     "icon": {
       "type": "notion_icon",
       "description": "building",
@@ -167,7 +167,7 @@ const spec: WorkspaceSpec = {
   "teams": [
     {
       "key": "ops",
-      "name": "TD Operations",
+      "name": "Operations",
       "access": "closed",
       "color": "blue",
       "icon": {
@@ -178,7 +178,7 @@ const spec: WorkspaceSpec = {
     },
     {
       "key": "mkt",
-      "name": "TD Marketing",
+      "name": "Marketing",
       "access": "closed",
       "color": "pink",
       "icon": {
@@ -703,7 +703,7 @@ ${teamLinks.length > 0 ? `\n# Teams\n\n${teamLinks.join("\n")}\n` : ""}`,
     teamspace.addPage({
       resourceId: team.home(t.key),
       icon: t.icon,
-      properties: { title: notion.text("Home") },
+      properties: { title: notion.text(`${t.name} Home`) },
       content: `${paragraphs(intro)}
 
 # Our work

@@ -281,6 +281,10 @@ Also confirmed on this run:
   quick filter (finding 21).
 - **A re-deploy that only adds views is clean on an empty build.** The second
   template-demo run added 3 view mappings and changed none.
+- **A re-deploy renames in place.** The third run renamed page titles and
+  views, and renamed multi-select options without leaving the old ones
+  behind, on an empty build. Whether it renames teamspaces (left open in
+  finding 24) can only be checked in the UI.
 - **A teamspace's top-level pages can be trashed through the public API**
   (`PATCH /v1/pages/{id}` with `in_trash: true`), which is how `setup-core`
   and `default-teamspace-probe` were removed. Teamspaces themselves can only be
