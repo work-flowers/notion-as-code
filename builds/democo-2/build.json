@@ -11,8 +11,9 @@
   "tokenRef": "op://Employee/notion-as-code-demo/credential",
   "opAccount": "work-flowers",
   "autoIncrementPrefixes": [],
-  "status": "deployed",
+  "status": "removed",
   "deployedAt": "2026-10-16",
+  "removedAt": "2026-10-19",
   "teamspace": "DemoCo HQ (default), Operations (closed), Marketing (closed)",
   "hubUrl": "https://app.notion.com/p/3fb6b8781c068161b5a0e6c0c02ed5f4"
 }
