@@ -24,3 +24,9 @@ Created 3 teamspaces, 13 databases and 32 pages.
 | Board columns | ❌ reversed again (no DSL sort). Set to ascending through the API on all six boards |
 
 This build has rows: don't re-deploy it (findings 18, 33).
+
+## Removed (2026-10-19)
+
+Dennis archived its three teamspaces (DemoCo HQ, Operations, Marketing) so
+that `democo-3` could be deployed live for the demo video. Archived, not
+deleted: they can be restored from Settings → Teamspaces.

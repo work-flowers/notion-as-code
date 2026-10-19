@@ -523,7 +523,9 @@ empty on every meeting** (and no Tasks → Meeting back-links), on a clean first
 deploy, while every other relation landed. `democo`'s first deploy wrote the
 same values fine, so finding 32 isn't reliable: a script-written relation can
 still go missing on `ntn`, intermittently, as in findings 19 and 22. Check
-sample relations after every deploy.
+sample relations after every deploy. `democo-3` (same spec, clean first
+deploy, 2026-10-19) lost Action Items the same way, with Meeting Notes →
+Project intact, so it's now two runs of three.
 
 ## What works
 
