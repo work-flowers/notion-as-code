@@ -1,0 +1,10 @@
+{
+  "resourceIdToPointerMappings": {
+    "mtp-demo-space": {
+      "table": "space",
+      "id": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+      "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8"
+    }
+  },
+  "resourceIdToPropertyIdMappings": {}
+}

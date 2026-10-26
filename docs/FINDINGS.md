@@ -544,6 +544,35 @@ custom agent), and none of them covers these settings.
     | Skills-typed database | Nothing. `DatabaseIntent` has no type field, and "skill" isn't in the types. `ntn`'s hidden, experimental `ntn skills` command says the public API doesn't expose database types yet, so it detects skills databases heuristically. Copying the schema (Description text + Files) won't make Notion treat the database as Skills. | Create the Skills database in the UI, then fill it with `ntn skills` or the Notion MCP skill tools. |
     | Sidebar presets | Nothing. `pageLayout.sidebar` is the details pane on a database page, not the workspace sidebar. `TeamspaceIntent` takes name, access level, icon and description. `accessLevel: "default"` (finding 23) auto-joins members, but sets no order or pins. | Configure the sidebar in the UI. |
 
+## Rechecking meetings and workspace settings, 2026-10-26 (35) (TKT-1032)
+
+Rechecked against the vendored types (template `80be619`, still the latest
+upstream commit on 2026-10-26) and `ntn` 0.23.25, not by a deploy. The
+`meetings-probe` build tests the rest, but couldn't be deployed: every
+apply on 2026-10-26 failed with `503 service_unavailable`, "Async Public
+API operation could not be queued" (operation `rest:apply_infra_as_code`),
+including an unchanged re-apply of `dsl-recheck-probe`, so it was a Notion
+outage, not the script. Nothing was created and no session file changed.
+
+35. **A script can't create a meetings-typed database, and finding 34 still
+    stands at `ntn` 0.23.25.**
+
+    | Item | Result |
+    | --- | --- |
+    | Meetings-typed database | ❌ `DatabaseIntent` and `DataSourceSchema` have no type field, and the `ntn` binary has no meetings-type string. The only meeting surfaces in the DSL are the `<meeting-notes>` content block and the custom-agent `meeting_note_summarized` trigger. A script deploys an ordinary database with the same properties. Whether one can be converted to the meetings type afterwards, and what happens to its properties, views and relations, is a UI check. |
+    | Skills-typed database | ❌ unchanged from finding 34 |
+    | Sidebar presets | ❌ unchanged from finding 34 |
+    | Workspace default AI instructions | ❌ unchanged from finding 34 |
+
+    Pending the `meetings-probe` deploy: whether a **Shared with** person
+    property deploys alongside Attendees and Created by (expected, since
+    it's an ordinary person property; the auto-populated attendee
+    properties only exist on the meetings type), and whether the source
+    database can sit in a private admin teamspace with the everyday
+    Meeting Notes page built from linked views of it, plus a Projects
+    page-layout tab filtered to `this_page` (see
+    [meetings-probe](../builds/meetings-probe/NOTES.md)).
+
 ## What works
 
 Everything else deployed faithfully on the knoxx-rnd first run: two-way
