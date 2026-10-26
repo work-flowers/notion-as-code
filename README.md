@@ -20,6 +20,7 @@ sandbox teamspace** in the work.flowers workspace — see
 | [`democo-3`](builds/democo-3/NOTES.md) | Demo workspace: democo-2's spec, deployed live for the Notion as Code demo video. DemoCo HQ (default), Operations, Marketing | deployed 2026-10-19 |
 | [`default-teamspace-probe`](builds/default-teamspace-probe/NOTES.md) | Demo workspace: a script can create the all-company teamspace as a workspace default, alongside the pre-installed one (on create only) | removed 2026-10-16 |
 | [`dsl-recheck-probe`](builds/dsl-recheck-probe/NOTES.md) | Demo workspace: checks whether the DSL `ntn` 0.23.20 ships fixes findings 4, 9, 12 and 14, plus feed views and `this_page` page-layout tabs. First build on the `ntn` engine | deployed 2026-10-16 |
+| [`meetings-probe`](builds/meetings-probe/NOTES.md) | Demo workspace: attendee-only Meeting Notes layout (TKT-1032). Source database in a private admin teamspace, linked views and a Projects `this_page` tab in an open one | not deployed |
 
 **Findings so far: [docs/FINDINGS.md](docs/FINDINGS.md)** — the actual output of
 this repo, and what gets fed back to Notion.

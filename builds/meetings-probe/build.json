@@ -1,0 +1,15 @@
+{
+  "name": "meetings-probe",
+  "title": "Probe: attendee-only Meeting Notes layout (TKT-1032)",
+  "spaceId": "a426b878-1c06-81cd-8ffa-0003fa91e0c8",
+  "spaceAnchorResourceId": "mtp-demo-space",
+  "script": "build.ts",
+  "session": "session.json",
+  "engine": "ntn",
+  "tokenRef": "op://Employee/notion-as-code-demo/credential",
+  "opAccount": "work-flowers",
+  "autoIncrementPrefixes": [],
+  "status": "not-deployed",
+  "teamspace": "Meetings Probe Admin (private), Meetings Probe (open)",
+  "hubUrl": null
+}

@@ -31,6 +31,7 @@ function main() {
   const args = process.argv.slice(2)
   const name = args.find(arg => !arg.startsWith("-"))
   const dryRun = args.includes("--dry")
+  const verbose = args.includes("--verbose")
 
   if (!name) {
     console.log("Builds in this repo:\n")
@@ -77,7 +78,7 @@ function main() {
   console.log(`status:    ${manifest.status}`)
 
   if (manifest.engine === "ntn") {
-    deployWithNtn(build, dryRun)
+    deployWithNtn(build, dryRun, verbose)
   } else {
     deployWithSdk(build, dryRun)
   }
@@ -128,7 +129,7 @@ function deployWithSdk(build: Build, dryRun: boolean) {
  * vendored template runtime, then applies the intents file with the build's
  * session.json as the explicit state file (never ntn's named state store).
  */
-function deployWithNtn(build: Build, dryRun: boolean) {
+function deployWithNtn(build: Build, dryRun: boolean, verbose = false) {
   const { manifest } = build
   const intents = compileWithNtnRuntime(build.scriptPath)
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "nac-apply-"))
@@ -139,6 +140,8 @@ function deployWithNtn(build: Build, dryRun: boolean) {
     "apply",
     intentsPath,
     `--state=${build.sessionPath}`,
+    // ntn's --verbose prints the full error chain.
+    ...(verbose ? ["--verbose"] : []),
   ]
   const shownArgs = ["notion-as-code", "apply", "<compiled intents.json>", applyArgs[3]]
 
