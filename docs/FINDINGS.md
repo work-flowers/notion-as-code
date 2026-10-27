@@ -544,15 +544,17 @@ custom agent), and none of them covers these settings.
     | Skills-typed database | Nothing. `DatabaseIntent` has no type field, and "skill" isn't in the types. `ntn`'s hidden, experimental `ntn skills` command says the public API doesn't expose database types yet, so it detects skills databases heuristically. Copying the schema (Description text + Files) won't make Notion treat the database as Skills. | Create the Skills database in the UI, then fill it with `ntn skills` or the Notion MCP skill tools. |
     | Sidebar presets | Nothing. `pageLayout.sidebar` is the details pane on a database page, not the workspace sidebar. `TeamspaceIntent` takes name, access level, icon and description. `accessLevel: "default"` (finding 23) auto-joins members, but sets no order or pins. | Configure the sidebar in the UI. |
 
-## Rechecking meetings and workspace settings, 2026-10-26 (35) (TKT-1032)
+## Rechecking meetings and workspace settings, 2026-10-26 to 27 (35) (TKT-1032)
 
 Rechecked against the vendored types (template `80be619`, still the latest
-upstream commit on 2026-10-26) and `ntn` 0.23.25, not by a deploy. The
-`meetings-probe` build tests the rest, but couldn't be deployed: every
-apply on 2026-10-26 failed with `503 service_unavailable`, "Async Public
-API operation could not be queued" (operation `rest:apply_infra_as_code`),
-including an unchanged re-apply of `dsl-recheck-probe`, so it was a Notion
-outage, not the script. Nothing was created and no session file changed.
+upstream commit on 2026-10-26) and `ntn` 0.23.25, then probed with
+[meetings-probe](../builds/meetings-probe/NOTES.md), deployed 2026-10-27.
+Every apply on 2026-10-26 from about 16:50 to 18:11 SGT failed with
+`503 service_unavailable`, "Async Public API operation could not be queued"
+(operation `rest:apply_infra_as_code`), including an unchanged re-apply of
+`dsl-recheck-probe`. It was a Notion outage, not the script: nothing was
+created, no session file changed, and the queue was back by 09:37 the next
+morning.
 
 35. **A script can't create a meetings-typed database, and finding 34 still
     stands at `ntn` 0.23.25.**
@@ -564,14 +566,27 @@ outage, not the script. Nothing was created and no session file changed.
     | Sidebar presets | ❌ unchanged from finding 34 |
     | Workspace default AI instructions | ❌ unchanged from finding 34 |
 
-    Pending the `meetings-probe` deploy: whether a **Shared with** person
-    property deploys alongside Attendees and Created by (expected, since
-    it's an ordinary person property; the auto-populated attendee
-    properties only exist on the meetings type), and whether the source
-    database can sit in a private admin teamspace with the everyday
-    Meeting Notes page built from linked views of it, plus a Projects
-    page-layout tab filtered to `this_page` (see
-    [meetings-probe](../builds/meetings-probe/NOTES.md)).
+    **✅ The attendee-only Meeting Notes layout deploys** (on an ordinary
+    database, not the meetings type):
+
+    | Item | Result |
+    | --- | --- |
+    | **Shared with** person property | ✅ reads back as `people` next to Attendees (`people`) and Created by. The auto-populated attendee properties only exist on the meetings type, so they couldn't be tested together. |
+    | Source database on an admin-only page | ✅ in a closed teamspace (private was rejected, below) |
+    | Meeting Notes page of linked views (My meetings, Recent, Calendar) in another teamspace | ✅ one views-only `child_database` on the page, its three views on the source data source. A linked view can point across teamspaces. |
+    | Projects page-layout **Meeting Notes** tab, filtered to `this_page` | ✅ created on the source's data source, parented to the layout. Meeting Notes → Project paired on both sides (Alpha 2, Beta 1). |
+    | `me`, relative-date and `this_page` filters | read back `null`, as in findings 25 and 30. UI check pending. |
+
+    The access settings that make this model work (No access with Can
+    create pages, page-level access rules on Shared with and Created by,
+    auto-share) aren't scriptable, as before.
+
+    **A private teamspace needs a paid plan.** The first apply on
+    2026-10-27 was rejected by the async task with `internal_server_error:
+    Cannot set teamspace access level to Private under current pricing
+    plan.` The Demo workspace is on Free. Nothing was created (cf. finding
+    28). Closed deployed fine. Client workspaces are on Business or
+    Enterprise, so this only limits Demo-workspace probes.
 
 ## What works
 

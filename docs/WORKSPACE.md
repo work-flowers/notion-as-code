@@ -39,7 +39,7 @@ Auth: **Personal Access Token**, attached to this workspace, stored at
 | `democo-3` | DemoCo HQ (default), Operations (closed), Marketing (closed) | deployed 2026-10-19 | — |
 | `default-teamspace-probe` | Default Probe A (default), Default Probe B (open) | removed 2026-10-16 | — |
 | `dsl-recheck-probe` | DSL Recheck Probe (open) | deployed 2026-10-16 | — |
-| `meetings-probe` | Meetings Probe Admin (private), Meetings Probe (open) | not deployed | — |
+| `meetings-probe` | Meetings Probe Admin (closed), Meetings Probe (open) | deployed 2026-10-27 | — |
 
 ## Prefix checks
 

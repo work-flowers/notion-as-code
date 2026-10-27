@@ -8,7 +8,7 @@ everyday Meeting Notes page elsewhere, made only of linked views.
 
 | Piece | Probes |
 | --- | --- |
-| **Meetings Probe Admin** teamspace (private), page **Meeting Notes (source)** | the source database on an admin-only page |
+| **Meetings Probe Admin** teamspace (closed), page **Meeting Notes (source)** | the source database on an admin-only page |
 | **Probe Meeting Notes** database: Attendees, **Shared with** (person), Created by, Project | the Shared with property next to the attendee properties |
 | **Meetings Probe** teamspace (open), page **Meeting Notes** | a views-only linked database of the admin-only source: My meetings, Recent, Calendar |
 | **Probe Projects** page layout, **Meeting Notes** tab | a view of the admin-only source, filtered to `this_page` |
@@ -16,18 +16,28 @@ everyday Meeting Notes page elsewhere, made only of linked views.
 The DSL has no database type (finding 34), so the source is an ordinary
 database, not the meetings type.
 
-**Not deployed yet.** Five applies on 2026-10-26 failed with
-`503 service_unavailable` ("Async Public API operation could not be
-queued"), and so did an unchanged re-apply of `dsl-recheck-probe`, so it was
-a Notion outage (finding 35). Nothing was created. Deploy with
-`npm run build -- meetings-probe` (add `--verbose` for ntn's full error)
-once the queue recovers, then record the results here and in finding 35.
+**Deployed 2026-10-27** (hub: [About this probe](https://app.notion.com/p/4066b8781c06810f9922e235a8eda999)).
+Seven applies on 2026-10-26 failed with `503 service_unavailable` ("Async
+Public API operation could not be queued"), a Notion outage (finding 35).
+On 2026-10-27 the first run was rejected because the Demo workspace's plan
+doesn't allow private teamspaces, so the admin teamspace is closed. The
+second run created 2 teamspaces, 8 pages and 3 databases.
 
-## After the deploy
+## Results
 
-- Read back each view in `session.json` (`GET /v1/views/{id}`). The `me`
-  and relative-date filters will read `null` (findings 25, 30), so check My
-  meetings and Recent in the UI.
+Read back through the public API on 2026-10-27:
+
+| Piece | Result |
+| --- | --- |
+| Probe Meeting Notes schema | ✅ Name, Date, Attendees (`people`), **Shared with** (`people`), Created by, Project (two-way) |
+| Meeting Notes page | ✅ one views-only linked database; My meetings, Recent and Calendar all on the source data source in the closed teamspace |
+| Projects page layout, Meeting Notes tab | ✅ created, on the source data source |
+| Relations | ✅ Alpha has 2 meetings, Beta 1, on both sides |
+| My meetings (`me` OR group), Recent (past 30 days), Meeting Notes tab (`this_page`) | filters read `null`; UI check below |
+
+## UI check (pending)
+
+- My meetings should show all three meetings (Created by is the token owner).
 - Open Alpha in Probe Projects: its Meeting Notes tab should show the two
   Alpha meetings; Beta's shows one.
 - Recent should show the two Alpha meetings, not the September Beta one.

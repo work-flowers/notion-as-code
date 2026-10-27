@@ -9,7 +9,7 @@
  * The permissions guide's attendee model gives members No access to the
  * Meeting Notes source database and shows them meetings through linked views
  * only. What each piece probes:
- *   - Meeting Notes source database in a private "admin-only" teamspace, with
+ *   - Meeting Notes source database in a closed "admin-only" teamspace, with
  *     a "Shared with" person property next to Attendees and Created by.
  *     The DSL has no database type, so this is an ordinary database, not the
  *     meetings type (finding 34).
@@ -17,7 +17,7 @@
  *     that database: My meetings, Recent, Calendar.
  *   - A Projects database whose page layout has a Meeting Notes tab: a view of
  *     the source database, declared on it (finding 25's rule), filtered to
- *     `this_page`. The source sits in another, private teamspace.
+ *     `this_page`. The source sits in another, closed teamspace.
  *
  * Meeting Notes → Project is two-way with a back-link on Projects, like the
  * core template.
@@ -37,7 +37,9 @@ const adminTeamspace = notion.teamspace({
   resourceId: "mtp-admin-teamspace",
   parent: spaceParent,
   name: "Meetings Probe Admin",
-  accessLevel: "private",
+  // Private was rejected on the Demo workspace's plan (finding 35). Closed
+  // keeps non-members out of its content.
+  accessLevel: "closed",
   icon: { type: "notion_icon", description: "lock", color: "red" },
   description: "Notion as Code probe (TKT-1032): the Meeting Notes source database, admin-only.",
 })
@@ -136,7 +138,7 @@ companyTeamspace.addPage({
   properties: { title: notion.text("About this probe") },
   content: `Created by the **meetings-probe** build. Safe to delete.
 
-- <mention-page url="{{mtp-meetings-page}}">Meeting Notes</mention-page> has only linked views of the source database, which lives in the private Meetings Probe Admin teamspace.
+- <mention-page url="{{mtp-meetings-page}}">Meeting Notes</mention-page> has only linked views of the source database, which lives in the closed Meetings Probe Admin teamspace.
 - Open a project below. Its **Meeting Notes** tab should list only that project's meetings.
 
 <database url="{{mtp-projects-db}}" inline="true">Probe Projects</database>
